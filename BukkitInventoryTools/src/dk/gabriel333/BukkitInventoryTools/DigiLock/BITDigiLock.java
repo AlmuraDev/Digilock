@@ -799,13 +799,15 @@ public class BITDigiLock {
 		}
 
 		// GIF
+		// Modified the Widgit code to reduce the size of the picture displayed in the lock box.
 		x = 170;
 		y = 50;
+		
 		GenericItemWidget itemwidget = new GenericItemWidget(new ItemStack(
 				getPincodeBlock(sBlock)));
-		itemwidget.setX(x + 2 * height).setY(y);
-		itemwidget.setHeight(height * 2).setWidth(height * 2)
-				.setDepth(height * 2);
+		itemwidget.setX(x + height / 2).setY(y);
+		itemwidget.setHeight(height / 2).setWidth(height / 2)
+				.setDepth(height / 2);
 		if (!BITDigiLock.isLocked(sBlock)) {
 			itemwidget.setTooltip("Unlocked inventory");
 		} else {
