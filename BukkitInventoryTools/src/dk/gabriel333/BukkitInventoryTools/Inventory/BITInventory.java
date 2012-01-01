@@ -664,7 +664,7 @@ public class BITInventory {
 		sPlayer.getMainScreen().attachPopupScreen(popupScreen.get(id));
 
 	}
-
+  // Updated to reflect new Images.
 	private static String getTextureUrl(SpoutBlock sBlock) {
 		switch (sBlock.getTypeId()) {
 		case 23:
@@ -674,7 +674,7 @@ public class BITInventory {
 			return "http://dl.dropbox.com/u/36067670/BukkitInventoryTools/Textures/Bookshelf.png";
 			// Bookshelf - looks nice.
 		case 54:
-			return "http://dl.dropbox.com/u/36067670/BukkitInventoryTools/Textures/Chest.png";
+			return "http://minefiles.mcsnetworks.com/images/lockedbox.png";
 			// Chest - looks nice.
 		case 61:
 			return "http://dl.dropbox.com/u/36067670/BukkitInventoryTools/Textures/Furnace.png";
@@ -698,7 +698,7 @@ public class BITInventory {
 			return "http://dl.dropbox.com/u/36067670/BukkitInventoryTools/Textures/Trapdoor.png";
 			// Trap_door
 		}
-		return "http://dl.dropbox.com/u/36067670/BukkitInventoryTools/Textures/Chest.png";
+		return "http://minefiles.mcsnetworks.com/images/lockedbox.png";
 	}
 
 	public static void removeUserData(int id) {
