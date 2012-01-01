@@ -31,6 +31,7 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 import dk.gabriel333.BukkitInventoryTools.BIT;
 import dk.gabriel333.Library.BITConfig;
 import dk.gabriel333.Library.BITMessages;
+import dk.gabriel333.Library.BITPermissions;
 
 public class BITDigiLock {
 
@@ -946,8 +947,10 @@ public class BITDigiLock {
 			popupScreen.get(id).attachWidget(BIT.plugin, removeButton);
 		}
 
-		// AdminButton //Dockter 12/27/11
-				if (BITDigiLock.isLocked(sBlock)) {
+		// AdminButton //Dockter 12/27/11, updated 1/1/12 to only display button if .admin.
+				if (BITDigiLock.isLocked(sBlock)
+					|| BITPermissions.hasPerm(sPlayer, "digilock.admin",
+							BITPermissions.NOT_QUIET)){
 					GenericButton AdminButton = new GenericButton("Admin Open");
 					AdminButton.setAuto(false).setX(x - w1 - 70).setY(y)
 							.setHeight(height).setWidth(w1);
