@@ -1,0 +1,58 @@
+# Permission example for BukkitInventoryTools
+users:
+    Gabriel333:
+        permissions:
+            permissions.example: true
+        groups:
+        - admin
+    Testuser:
+        permissions:
+        - herp.derp
+        groups:
+        - Builder
+    TestBuilder:
+        permissions: []
+        groups:
+        - Builder
+    TestModerator:
+        permissions: []
+        groups:
+        - Moderator
+groups:
+    default:
+        permissions:
+            permissions.build: false
+    builder:
+        permissions:
+            permissions.build: true
+            bukkitinventorytools.sortinventory.use: true
+            bukkitinventorytools.sortinventory.stack.tools: true
+            bukkitinventorytools.sortinventory.stack.weapons: true
+            bukkitinventorytools.sortinventory.stack.armor: true
+            bukkitinventorytools.sortinventory.stack.food: true
+            bukkitinventorytools.sortinventory.stack.vehicles: true
+            bukkitinventorytools.sortinventory.stack.buckets: true
+            bukkitinventorytools.digilock.create
+            bukkitinventorytools.digilock.use
+            bukkitinventorytools.digilock.admin
+            worlds:
+                oceanworld:
+                    smartplugin.tool: true
+        inheritance:
+        - default
+    moderator:
+        permissions:
+            bar.foo: true
+        worlds:
+            OceanWorld:
+                coolplugin.item: true
+        inheritance:
+        - builder
+    admin:
+        permissions:
+            permissions.*: true
+               bukkitinventorytools.admin: true
+        inheritance:
+        - moderator
+messages:
+    build: '&cYou do not have permission to build here.'

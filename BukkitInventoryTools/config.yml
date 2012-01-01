@@ -1,0 +1,204 @@
+############################################################
+# +------------------------------------------------------+ #
+# |  Plugin configuration file for BukkitInventoryTools  | #
+# |                                                      | #
+# |                                                      | #
+# +------------------------------------------------------+ #
+############################################################
+ 
+
+############################################################
+# +------------------------------------------------------+ #
+# |                        General                       | #
+# +------------------------------------------------------+ #
+############################################################
+Library:
+    # Configuration file version. Do not change the version
+    # number.
+    Version: 1
+    # Set Language. Currently supported: EN
+    Language: EN
+
+    # Set the key to activate sort. 
+    # Deactivate the HOTKEY by setting SortKey: DISABLED
+    SortKey: KEY_S
+    LockKey: KEY_L
+    ReadKey: KEY_R
+    Backpack: KEY_B
+    Workbench: KEY_N
+    MenuKey: DISABLED
+
+
+    # If you want to disable Spouts SignEditGUI and use 
+    # the ordinary editor, set UseSignEditGUI: false
+    UseSignEditGUI: true
+
+############################################################
+# +------------------------------------------------------+ #
+# |                  Properties for SQL                  | #
+# +------------------------------------------------------+ #
+############################################################
+Storage:
+    # Storage supports [MYSQL|SQLITE]
+    Type: SQLITE
+
+    # MySQL Settings - Will only be used if Storage.Type: is
+    # set to MYSQL
+    # Host: servername:portnumber. Std port is 3306.
+    Host: localhost:3306
+    Username: 'root'
+    Password: 'password'
+    Database: minecraft
+
+############################################################
+# +------------------------------------------------------+ #
+# |                  Properties for Sort                 | #
+# +------------------------------------------------------+ #
+############################################################
+Sort:
+    DisplaySortArchievement: false
+
+    Tools: 256,257,258,269,270,271,273,274,275,277,278,279,284,285,286,290,291,292,293,294,346
+    Weapons: 267,268,272,276,283,261
+    Armors: 298,299,300,301,302,303,304,305,306,307,308,309,310,311,312,313,314,315,316,317
+    Foods: 260,282,297,319,320,322,349,350,354,357
+    Vehicles: 328,333,342,343
+    Buckets: 326,327,335
+
+    # This is the sorting sequence
+    # Be VERY carefull when you enter new items, be sure you 
+    # use the right itemnames
+    #
+    # http://jd.bukkit.org/apidocs/org/bukkit/Material.html
+    #
+    SortSEQ: APPLE,ARROW,BED,BED_BLOCK,BEDROCK,BOAT,BONE,BOOK,BOOKSHELF,BOW,BOWL,BREAD,BRICK,BROWN_MUSHROOM,BUCKET,BURNING_FURNACE,CACTUS,CAKE,CAKE_BLOCK,CHAINMAIL_BOOTS,CHAINMAIL_CHESTPLATE,CHAINMAIL_HELMET,CHAINMAIL_LEGGINGS,CHEST,LOCKED_CHEST,CLAY,CLAY_BALL,CLAY_BRICK,COAL,COAL_ORE,COBBLESTONE,COBBLESTONE_STAIRS,COMPASS,COOKED_FISH,COOKIE,CROPS,DEAD_BUSH,DETECTOR_RAIL,DIAMOND,DIAMOND_AXE,DIAMOND_BLOCK,DIAMOND_BOOTS,DIAMOND_CHESTPLATE,DIAMOND_HELMET,DIAMOND_HOE,DIAMOND_LEGGINGS,DIAMOND_ORE,DIAMOND_PICKAXE,DIAMOND_SPADE,DIAMOND_SWORD,DIODE,DIODE_BLOCK_OFF,DIODE_BLOCK_ON,DIRT,DISPENSER,DOUBLE_STEP,EGG,FEATHER,FENCE,FIRE,FISHING_ROD,FLINT,FLINT_AND_STEEL,FURNACE,GLASS,GLOWING_REDSTONE_ORE,GLOWSTONE,GLOWSTONE_DUST,GOLD_AXE,GOLD_BLOCK,GOLD_BOOTS,GOLD_CHESTPLATE,GOLD_HELMET,GOLD_HOE,GOLD_INGOT,GOLD_LEGGINGS,GOLD_ORE,GOLD_PICKAXE,GOLD_RECORD,GOLD_SPADE,GOLD_SWORD,GOLDEN_APPLE,GRASS,GRAVEL,GREEN_RECORD,GRILLED_PORK,SULPHUR,ICE,INK_SACK,IRON_AXE,IRON_BLOCK,IRON_BOOTS,IRON_CHESTPLATE,IRON_DOOR,IRON_DOOR_BLOCK,IRON_HELMET,IRON_HOE,IRON_INGOT,IRON_LEGGINGS,IRON_ORE,IRON_PICKAXE,IRON_SPADE,IRON_SWORD,JACK_O_LANTERN,JUKEBOX,LADDER,LAPIS_BLOCK,LAPIS_ORE,LAVA,LAVA_BUCKET,LEATHER,LEATHER_BOOTS,LEATHER_CHESTPLATE,LEATHER_HELMET,LEATHER_LEGGINGS,LEAVES,LEVER,LOG,LONG_GRASS,MAP,MILK_BUCKET,MINECART,STORAGE_MINECART,POWERED_MINECART,MOB_SPAWNER,MOSSY_COBBLESTONE,MUSHROOM_SOUP,NETHERRACK,NOTE_BLOCK,OBSIDIAN,PAINTING,PAPER,PISTON_BASE,PISTON_EXTENSION,PISTON_MOVING_PIECE,PISTON_STICKY_BASE,PORK,PORTAL,POWERED_RAIL,PUMPKIN,RAILS,RAW_FISH,RED_MUSHROOM,RED_ROSE,YELLOW_FLOWER,REDSTONE,REDSTONE_ORE,REDSTONE_TORCH_OFF,REDSTONE_TORCH_ON,REDSTONE_WIRE,SADDLE,SAND,SANDSTONE,SAPLING,SEEDS,SHEARS,SIGN,SIGN_POST,SLIME_BALL,SNOW,SNOW_BALL,SNOW_BLOCK,SOIL,SOUL_SAND,SPONGE,STATIONARY_LAVA,STATIONARY_WATER,STEP,STICK,STONE,STONE_AXE,STONE_BUTTON,STONE_HOE,STONE_PICKAXE,STONE_PLATE,STONE_SPADE,STONE_SWORD,STRING,SUGAR,SUGAR_CANE,SUGAR_CANE_BLOCK,TNT,TORCH,TRAP_DOOR,WALL_SIGN,WATCH,WATER,WATER_BUCKET,WEB,WHEAT,WOOD,WOOD_AXE,WOOD_DOOR,WOOD_HOE,WOOD_PICKAXE,WOOD_PLATE,WOOD_SPADE,WOOD_STAIRS,WOOD_SWORD,WOODEN_DOOR,WOOL,WORKBENCH
+
+############################################################
+# +------------------------------------------------------+ #
+# |                  Properties for Digilock             | #
+# +------------------------------------------------------+ #
+############################################################
+# Cost:        Is the cost of creating a new DigiLock
+# UseMaxCost:  Is the limit of the cost the PLAYER can
+#              charge anotherplayer, to use his DigiLock. 
+# DestroyCost: Is the cost for destroying a DigiLock. If the
+#              cost is negative, the player will gain money.
+DigiLock:
+    Cost: 100
+    UseMaxCost: 100
+    DestroyCost: -10
+    Sound: 'http://dl.dropbox.com/u/36067670/BukkitInventoryTools/Sounds/Digilock.wav'
+
+############################################################
+# +------------------------------------------------------+ #
+# |               Properties for Bookshelf               | #
+# +------------------------------------------------------+ #
+############################################################
+# Cost:          This the price when a user buys a Bookshelf
+# Size:          is size of a Bookshelf. 
+#                Must be 9,18,27,36,45,54
+# DestroyCost    is the cost the player is charged if he 
+#                destroys the Bookshelf.
+# RecoverOnBreak If true the Bookshelf is droped at the 
+#                ground when broken.
+Bookshelf:
+    Cost: 50
+    UseMaxCost: 100
+    Size: 9
+    DestroyCost: 10
+    RecoverOnBreak: false
+
+############################################################
+# +------------------------------------------------------+ #
+# |               Properties for Book                    | #
+# +------------------------------------------------------+ #
+############################################################
+# Cost:        This the price when a user creates a Book.
+# DestroyCost  is the cost the player is charged if he 
+#              destroys the Book.
+Book:
+    Cost: 10
+    UseMaxCost: 50
+    DestroyCost: 0
+
+############################################################
+# +------------------------------------------------------+ #
+# |            Properties for SpoutBackpack              | #
+# +------------------------------------------------------+ #
+############################################################
+# Language: EN or FR
+#
+# InventoriesShare: whether to share the backpack across 
+#           world: (true or false)
+#           world_nether: true or false
+#           creative: true or false
+# Add your own worlds with same syntax.
+#
+# RegionWhereBackpacksAreDisabled: WorldGuard Regions where
+#           the backpack can NOT be opened.
+#
+# PRICE9: price to buy the Backpack 1. time.
+# PRICE18 - PRICE54: Upgrade price. 
+# If PRICEXX is 0, the backpack will be upgrade automatically. 
+# If PRICE9 is 0, the user does need to buy the backpack with
+# /bp buy
+#
+# NoneBlackOrWhiteList: (0,1,2) 0: none. 1= Blacklist items
+#           2= whitelist item in backpack
+# Whitelist: The list of whitelisted items (seperated by comma)
+# Blacklist: 
+#
+# WorkbenchEnabled: Allows the user to carry a workbench-Backpack
+# WorkbenchBuyable: Allows the user to buy an Workbench
+# WorkbenchNeedInInventory: if the user can only open the 
+#           Workbench if the user carry an Workbench in his
+#           inventory/backpack
+#
+# WidgetEnabled: Show the available amount of money
+# WidgetPositionX,WidgetPositionY: Position of the Widget on
+#           inGame Screen.
+#
+# SavesLog: true/false.
+# SaveInterval(InMinutes): Specifies how often the inventories  
+#           is saved to disk.
+SBP:
+    Language: EN
+    InventoriesShareDefault: false
+    InventoriesShare:
+        world: true
+        world_nether: true
+        creative: false
+    RegionWhereBackpacksAreDisabled: region1, region2
+    Price9: 100.0
+    Price18: 10.0
+    Price27: 20.0
+    Price36: 30.0
+    Price45: 40.0
+    Price54: 50.0
+    NoneBlackOrWhiteList: 0
+    Whitelist: 262
+    Blacklist: 264
+    WorkbenchEnabled: false
+    WorkbenchBuyable: false
+    WorkbenchNeededInInventory: false
+    WidgetEnabled: true
+    WidgetPositionX: 3
+    WidgetPositionY: 5
+    SavesLog: false
+    SavesInterval(InMinutes): 5
+
+############################################################
+# +------------------------------------------------------+ #
+# |                  Properties for Debug                | #
+# +------------------------------------------------------+ #
+############################################################
+Debug:
+    Permissions: false
+    Inventory: false
+    Door: false
+    OnEnable: false
+    Keyboard: false
+    SQL: false
+    GUI: false
+    Events: false
+
