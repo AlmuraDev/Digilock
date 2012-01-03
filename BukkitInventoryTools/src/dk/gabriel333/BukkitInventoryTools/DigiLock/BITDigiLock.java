@@ -667,34 +667,34 @@ public class BITDigiLock {
 	 * @param sBlock
 	 * @return
 	 */
-	public static int getPincodeBlock(SpoutBlock sBlock) {
-		switch (sBlock.getTypeId()) {
+	 public static int getPincodeBlock(SpoutBlock sBlock) {
+		 switch (sBlock.getTypeId()) {
 		case 23:
-			return 23; // Dispenser - looks nice.
+			 return 23; // Dispenser - looks nice.
 		case 47:
-			return 47; // Bookshelf - looks nice.
+			 return 47; // Bookshelf - looks nice.
 		case 54:
-			return 95; // Chest - looks nice.
+			 return 54; // Chest - looks nice.
 		case 61:
-			return 61; // Furnace - looks nice.
+			 return 61; // Furnace - looks nice.
 		case 62:
 			return 62; // Burning Furnace
 		case 63:
 			return 95; // SIGN_POST
 		case 64:
-			// return 324; // Wooden door
-			return 95;
+			 return 324; // Wooden door
+			// return 95;
 		case 68:
-			return 68;
+			 return 68;
 		case 69:
-			// return 69; // Lever
-			return 95;
+			return 69; // Lever
+			// return 95;
 		case 71:
-			// return 330; // Iron door
-			return 95;
+			return 330; // Iron door
+			// return 95;
 		case 77:
-			// return 77; // Stone button
-			return 95;
+			return 77; // Stone button
+			// return 95;
 		case 96:
 			return 95; // Trap_door
 		case 107:
@@ -949,7 +949,8 @@ public class BITDigiLock {
 
 		// AdminButton //Dockter 12/27/11, updated 1/1/12 to only display button if .admin.
 				if (BITDigiLock.isLocked(sBlock)
-					|| BITPermissions.hasPerm(sPlayer, "digilock.admin",
+				    && BITDigiLock.isChest(sBlock) // Displays only if sBlock=Chest.
+					&& BITPermissions.hasPerm(sPlayer, "digilock.admin",
 							BITPermissions.NOT_QUIET)){
 					GenericButton AdminButton = new GenericButton("Admin Open");
 					AdminButton.setAuto(false).setX(x - w1 - 70).setY(y)
