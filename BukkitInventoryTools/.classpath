@@ -20,11 +20,11 @@
 	<classpathentry kind="lib" path="C:/Private/Dropbox/Libraries/Register/lib/iCo6.jar"/>
 	<classpathentry kind="lib" path="C:/Private/Dropbox/Libraries/Register/lib/MultiCurrency.jar"/>
 	<classpathentry kind="lib" path="C:/Private/Dropbox/Libraries/Newest/War.jar"/>
-	<classpathentry kind="lib" path="C:/Private/Dropbox/Libraries/Newest/bukkit-1.0.1-R1.jar"/>
-	<classpathentry kind="lib" path="C:/Private/Dropbox/Libraries/Newest/craftbukkit-1.0.1-R1.jar"/>
 	<classpathentry kind="lib" path="C:/Private/Dropbox/Libraries/Newest/spout.jar"/>
 	<classpathentry kind="lib" path="C:/Private/Dropbox/Libraries/Newest/spoutapi.jar"/>
 	<classpathentry kind="lib" path="C:/Private/Dropbox/Libraries/Newest/Essentials.jar"/>
 	<classpathentry kind="lib" path="C:/Private/Dropbox/Libraries/Newest/bpermissions.jar"/>
+	<classpathentry kind="lib" path="C:/Private/Dropbox/Libraries/Newest/craftbukkit(1702).jar"/>
+	<classpathentry kind="lib" path="C:/Private/Dropbox/Libraries/Newest/bukkit-(1135).jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

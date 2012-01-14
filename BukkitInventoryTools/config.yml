@@ -88,6 +88,8 @@ DigiLock:
     UseMaxCost: 100
     DestroyCost: -10
     Sound: 'http://dl.dropbox.com/u/36067670/BukkitInventoryTools/Sounds/Digilock.wav'
+    Sound_On: false
+    Advanced_GUI: true
 
 ############################################################
 # +------------------------------------------------------+ #
