@@ -576,7 +576,7 @@ public class BITPlayerListener extends PlayerListener {
 								&& BITConfig.LIBRARY_USESIGNEDITGUI
 								&& BIT.holdingKey.get(id).equals("KEY_LSHIFT")
 								&& BITPermissions.hasPerm(sPlayer,
-										"digilock.use",
+										"digilock.signadmin",
 										BITPermissions.NOT_QUIET)) {
 							Sign sign = (Sign) sBlock.getState();
 							sPlayer.openSignEditGUI(sign);
@@ -792,7 +792,10 @@ public class BITPlayerListener extends PlayerListener {
 			else if (BITDigiLock.isSign(sBlock)) {
 				if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
 						&& BITConfig.LIBRARY_USESIGNEDITGUI
-						&& BIT.holdingKey.get(id).equals("KEY_LSHIFT")) {
+						&& BIT.holdingKey.get(id).equals("KEY_LSHIFT")
+						&& BITPermissions.hasPerm(sPlayer,
+								"digilock.signadmin",
+								BITPermissions.NOT_QUIET)) {
 					Sign sign = (Sign) sBlock.getState();
 					sPlayer.openSignEditGUI(sign);
 				}
