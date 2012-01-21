@@ -109,7 +109,7 @@ public class BITDigiLockSpoutListener extends SpoutListener {
 						} else if (BITDigiLock.isSign(sBlock)) {
 							if (sPlayer.isSpoutCraftEnabled()
 									&& BITConfig.LIBRARY_USESIGNEDITGUI
-							        && BITPermissions.hasPerm(sPlayer, "digilock.admin",
+							        && BITPermissions.hasPerm(sPlayer, "digilock.signadmin",
 									BITPermissions.NOT_QUIET)) {
 								Sign sign = (Sign) sBlock.getState();
 								sPlayer.openSignEditGUI(sign);
