@@ -10,7 +10,9 @@ import org.getspout.spoutapi.event.inventory.InventoryCloseEvent;
 import org.getspout.spoutapi.event.inventory.InventoryCraftEvent;
 import org.getspout.spoutapi.event.inventory.InventoryListener;
 import org.getspout.spoutapi.event.inventory.InventoryOpenEvent;
-//import org.getspout.spoutapi.material.Item;
+import org.getspout.spoutapi.SpoutManager;
+
+import org.getspout.spoutapi.material.Item;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import dk.gabriel333.BukkitInventoryTools.BIT;
@@ -38,8 +40,12 @@ public class BITInventoryListener extends InventoryListener {
 			}
 		}
 		// CHEST_INVENTORY / BOOKSHELF_INVENTORY
-		Inventory inv = event.getInventory();
-		setBookNamesAndCleanup(sPlayer, inv);
+		// Inventory inv = event.getInventory();  Created AbstractErrorMethod HERE because of this line.
+		
+		String name = "Bookshelf"; //New Line
+		Inventory inv = SpoutManager.getInventoryBuilder() //NewLine
+				.construct(BITConfig.BOOKSHELF_SIZE, name);
+		setBookNamesAndCleanup(sPlayer, inv); //Abstract Error Method
 
 		if (!inv.getName().equals(sPlayer.getInventory().getName())) {
 			inv = sPlayer.getInventory();
