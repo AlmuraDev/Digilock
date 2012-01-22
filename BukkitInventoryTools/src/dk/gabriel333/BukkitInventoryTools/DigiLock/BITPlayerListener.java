@@ -804,7 +804,8 @@ public class BITPlayerListener extends PlayerListener {
 			// BOOKSHELF
 			else if (BITDigiLock.isBookshelf(sBlock)
 					&& event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
-					&& !BIT.holdingKey.equals("L-CONTROL")) {
+					&& !BIT.holdingKey.equals("L-CONTROL")
+					&& (BITConfig.BOOKSHELF_ENABLE))   {  //  Added this option to config to prevent BOOKWORM Conflict
 
 				if (BITInventory.isBitInventoryCreated(sBlock)
 						&& BITPermissions.hasPerm(sPlayer, "bookshelf.use",
