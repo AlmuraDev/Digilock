@@ -31,6 +31,7 @@ import dk.gabriel333.Library.BITConfig;
 import dk.gabriel333.Library.BITMessages;
 import dk.gabriel333.Library.BITPermissions;
 import dk.gabriel333.register.payment.Method.MethodAccount;
+import dk.gabriel333.BITBackpack.BITBackpackInventorySaveTask;
 
 @SuppressWarnings({})
 public class BITBackpack implements CommandExecutor {
@@ -43,12 +44,14 @@ public class BITBackpack implements CommandExecutor {
 
 	public BIT plugin;
 
-	public static String inventoryName = "Backpack";
-	public static Map<String, ItemStack[]> inventories = new HashMap<String, ItemStack[]>();
-	public static Map<String, Inventory> openedInventories = new HashMap<String, Inventory>();
-	public static Map<String, String> openedInventoriesOthers = new HashMap<String, String>();
-	public static Map<String, GenericLabel> widgets = new HashMap<String, GenericLabel>();
+	public static String inventoryName = "Backpack";  // Added Hash to Map
+	public static HashMap<String, ItemStack[]> inventories = new HashMap<String, ItemStack[]>();
+	public static HashMap<String, Inventory> openedInventories = new HashMap<String, Inventory>();
+	public static HashMap<String, String> openedInventoriesOthers = new HashMap<String, String>();
+	public static HashMap<String, GenericLabel> widgets = new HashMap<String, GenericLabel>();
 
+	
+	@Override
 	public boolean onCommand(CommandSender sender, Command cmd,
 			String commandLabel, String[] args) {
 		if (sender instanceof Player) {
@@ -74,7 +77,7 @@ public class BITBackpack implements CommandExecutor {
 									// player.getName(), playerName);
 									inv.setContents(inventories.get(playerName));
 									((org.getspout.spoutapi.player.SpoutPlayer) player)
-											.openInventoryWindow((Inventory) inv);
+											.openInventoryWindow(inv);
 								} else {
 									player.sendMessage(BIT.li
 											.getMessage("playerhasalreadyhis")
@@ -82,6 +85,7 @@ public class BITBackpack implements CommandExecutor {
 											+ inventoryName
 											+ ChatColor.WHITE
 											+ BIT.li.getMessage("opened"));
+									inventories.
 								}
 							} else {
 								player.sendMessage(ChatColor.RED
@@ -178,17 +182,36 @@ public class BITBackpack implements CommandExecutor {
 							}
 							return true;
 
-						} else if (argument.equalsIgnoreCase("clear")) {
+						} else if (argument.equalsIgnoreCase("clear")) {  // Updated 1/26/12 to fix Clear Inventory Dupe Bug.
 							if (BITPermissions.hasPerm(player,
 									"backpack.clear", BITPermissions.NOT_QUIET)) {
-								if (inventories.containsKey(player.getName())) {
-									inventories.remove(player.getName());
-									player.sendMessage(BIT.li
-											.getMessage("your")
-											+ ChatColor.RED
-											+ inventoryName
-											+ ChatColor.WHITE
-											+ BIT.li.getMessage("hasbeencleared"));
+									if (BITBackpack.canOpenBackpack(player.getWorld(), player)) {
+										BITBackpack.loadInventory(player, player.getWorld());
+										if (BITBackpack.inventories.containsKey(player.getName())) {
+											// inventories.remove(player.getName());  // Removing the Key does no good since the loadCall regens it.
+											ItemStack[] items = BITBackpack.inventories.get(player
+													.getName());
+											         Inventory inventory = SpoutManager
+													.getInventoryBuilder()
+													.construct(BITBackpack.allowedSize(player.getWorld(),player, true),	BITBackpack.inventoryName);
+											for (Integer i = 0; i < BITBackpack.allowedSize(
+													player.getWorld(), player, true); i++) {
+												ItemStack item = new ItemStack(0, 0);
+												inventory.setItem(i, item);
+											}
+											BITBackpack.inventories.put(player.getName(),
+													inventory.getContents());
+											BITBackpackInventorySaveTask.saveInventory(player,
+													player.getWorld());
+											player.sendMessage(BIT.li
+													.getMessage("your")
+													+ ChatColor.RED
+													+ inventoryName
+													+ ChatColor.WHITE
+													+ BIT.li.getMessage("hasbeencleared"));
+											
+										}
+									
 								} else {
 									player.sendMessage(BIT.li
 											.getMessage("youdonthavearegistred")
@@ -346,7 +369,7 @@ public class BITBackpack implements CommandExecutor {
 										inv.setContents(inventories
 												.get(playerName));
 										((org.getspout.spoutapi.player.SpoutPlayer) player)
-												.openInventoryWindow((Inventory) inv);
+												.openInventoryWindow(inv);
 									} else {
 										player.sendMessage(BIT.li
 												.getMessage("playerhasalreadyhis")
