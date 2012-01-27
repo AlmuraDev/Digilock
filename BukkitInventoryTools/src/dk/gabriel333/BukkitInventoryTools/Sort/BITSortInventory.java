@@ -32,6 +32,7 @@ public class BITSortInventory {
 		int i, j;
 		for (i = 0; i < inventory.getSize(); i++) {
 			ItemStack item1 = inventory.getItem(i);
+		
 			if ((item1.getAmount() == 64)
 			// Food must be alone in slot 0-8 so you can eat it.
 					|| (i < 9 && (item1.getAmount() == 0 || isTool(item1)
@@ -47,12 +48,6 @@ public class BITSortInventory {
 		orderInventoryItems(inventory, 9);
 	}
 
-	/**
-	 * Method to sort the players inventory, his backpack or wolfs pack
-	 * 
-	 * @param sPlayer
-	 * @param screentype
-	 */
 	public static void sortinventory(SpoutPlayer sPlayer, ScreenType screentype) {
 		// sort the ordinary player inventory
 		BITSortInventory.sortPlayerInventoryItems(sPlayer);
@@ -67,18 +62,13 @@ public class BITSortInventory {
 			BITBackpack.inventories.put(sPlayer.getName(), inv.getContents());
 		}
 
-		// sort the players MyWolfInventory if exists and if is open.
+	
 		if (BIT.mywolf) {
-			// if the wolf inventory is open then {
-
+	
 			CustomMCInventory inv = MyWolfPlugin.getMyWolf(sPlayer).inv;
 
 			if (inv != null) {
-				// test if myWolfInventory is opened and open it
-				// this on fails... can not be cast to ... Inventory
-
-				// BITSortInventory.sortInventoryItems(sPlayer, (Inventory)
-				// inv);
+			
 
 			}
 		}
@@ -154,6 +144,9 @@ public class BITSortInventory {
 						// G333Messages.showInfo("DONT do anything");
 						return;
 					}
+					if (!fromitem.getEnchantments().equals(toitem.getEnchantments())) {  // New Enchantment Checker to prevent duplication.  1/26/12
+						return;
+				    }	
 				}
 				if (total_amt > 64) {
 					to_amt = 64;
