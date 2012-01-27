@@ -27,6 +27,8 @@ import org.getspout.spoutapi.gui.GenericPopup;
 import org.getspout.spoutapi.gui.GenericTextField;
 import org.getspout.spoutapi.gui.PopupScreen;
 import org.getspout.spoutapi.player.SpoutPlayer;
+import org.getspout.spoutapi.gui.GenericTexture;
+import org.getspout.spoutapi.gui.RenderPriority;
 
 import dk.gabriel333.BukkitInventoryTools.BIT;
 import dk.gabriel333.Library.BITConfig;
@@ -723,29 +725,58 @@ public class BITDigiLock {
 	 * 
 	 * @author Gabriel333 / Rocologo
 	 */
-	public static void getPincode(SpoutPlayer sPlayer, SpoutBlock sBlock) {
-		int y = 50, height = 20, width = 100;
-		int x = 170;
+	public static void getPincode(SpoutPlayer sPlayer, SpoutBlock sBlock) {   // y = up/down  x = left/right
+		int y = 88, height = 15, width = 50;
+		int x = 204;
 		int id = sPlayer.getEntityId();
 		BITDigiLock.cleanupPopupScreen(sPlayer);
 		addUserData(id);
 		clickedBlock.put(id, sBlock);
 
+		// New Dockter Code
+		
+		GenericLabel label = new GenericLabel(ChatColor.WHITE + "Digilock System");
+	    label.setX(160).setY(30);
+	    label.setPriority(RenderPriority.Lowest);
+	    label.setWidth(-1).setHeight(-1);
+	    
+	    GenericLabel itemlabel = new GenericLabel(ChatColor.YELLOW + "Locked Item");
+	    itemlabel.setX(85).setY(55);
+	    itemlabel.setPriority(RenderPriority.Lowest);
+	    itemlabel.setWidth(-1).setHeight(-1);
+	    
+	    GenericLabel passlabel = new GenericLabel(ChatColor.WHITE + "Password:");
+	    passlabel.setX(72).setY(152);
+	    passlabel.setPriority(RenderPriority.Lowest);
+	    passlabel.setWidth(-1).setHeight(-1);
+		
+		GenericTexture border = new GenericTexture("http://www.almuramc.com/images/woodendoor.png");
+	    border.setX(65).setY(20);
+	    border.setPriority(RenderPriority.High);
+	    border.setWidth(263).setHeight(150);
+	   // popupScreen.get(id).attachWidget(BIT.plugin, label);
+	   // popupScreen.get(id).attachWidget(BIT.plugin, itemlabel);
+	    popupScreen.get(id).attachWidget(BIT.plugin, border);
+	   // popupScreen.get(id).attachWidget(BIT.plugin, passlabel);
+
+	    
 		GenericItemWidget itemwidget = new GenericItemWidget(new ItemStack(
 				getPincodeBlock(sBlock)));
-		itemwidget.setX(x + 2 * height).setY(y);
-		itemwidget.setHeight(height * 2).setWidth(height * 2)
-				.setDepth(height * 2);
+		//itemwidget.setX(x + 2 * height).setY(y);
+		itemwidget.setX(115).setY(70);
+		itemwidget.setHeight(height).setWidth(height)
+				.setDepth(height);
 		itemwidget.setTooltip("Locked inventory");
 		itemwidget.setMargin(5).setFixed(false);
-		popupScreen.get(id).attachWidget(BIT.plugin, itemwidget);
+		// popupScreen.get(id).attachWidget(BIT.plugin, itemwidget);
+		
 		y = y + 3 * height;
 
 		pincodeGUI.get(id).setText("");
 		pincodeGUI.get(id).setTooltip("Enter the pincode and press unlock.");
 		pincodeGUI.get(id).setCursorPosition(1).setMaximumCharacters(20);
-		pincodeGUI.get(id).setX(x).setY(y);
-		pincodeGUI.get(id).setHeight(height).setWidth(width);
+		pincodeGUI.get(id).setX(123).setY(148);
+		pincodeGUI.get(id).setHeight(height).setWidth(35);
 		pincodeGUI.get(id).setPasswordField(true);
 		pincodeGUI.get(id).setFocus(true);
 		popupScreen.get(id).attachWidget(BIT.plugin, pincodeGUI.get(id));
