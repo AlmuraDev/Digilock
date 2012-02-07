@@ -51,7 +51,9 @@ public class BITConfig {
 	public static String DIGILOCK_SOUND;
 	public static Boolean DIGILOCK_SOUND_ON;
 	public static Boolean DIGILOCK_ADVANCED_GUI;
+	public static String DIGILOCK_DefCloseTimer;
 	
+	public static Boolean BOOKSHELF_ENABLE;
 	public static int BOOKSHELF_COST;
 	public static int BOOKSHELF_USEMAXCOST;
 	public static int BOOKSHELF_SIZE;
@@ -162,8 +164,10 @@ public class BITConfig {
 		DIGILOCK_SOUND = getStringParm("DigiLock.Sound","http://dl.dropbox.com/u/36067670/BukkitInventoryTools/Sounds/Digilock.wav");
 		DIGILOCK_SOUND_ON = getBooleanParm("DigiLock.SoundOn", false);
 		DIGILOCK_ADVANCED_GUI = getBooleanParm("DigiLock.AdvancedGUIOn", false);
+		DIGILOCK_DefCloseTimer = getStringParm("DigiLock.DefCloseTimer", "2");
 		
 		//Bookshelf
+		BOOKSHELF_ENABLE = getBooleanParm("Bookshelf.Enabled", false);
 		BOOKSHELF_COST = getIntParm("Bookshelf.Cost", 50);
 		BOOKSHELF_USEMAXCOST = getIntParm("Bookshelf.UseMaxCost", 100);
 		BOOKSHELF_SIZE = getIntParm("Bookshelf.Size", 9);
