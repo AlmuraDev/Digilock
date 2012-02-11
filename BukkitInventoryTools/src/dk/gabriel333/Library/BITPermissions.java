@@ -90,7 +90,7 @@ public class BITPermissions {
 						.getPlugin("GroupManager");
 				//if (groupManagerPlugin != null) {
 					groupManager = (GroupManager) groupManagerPlugin;
-					BITMessages.showInfo("GroupManager is detected.");
+					BITMessages.showInfo("Essentials GroupManager is detected.");
 					essentialsGroupManager = true;
 				//}
 
@@ -111,8 +111,8 @@ public class BITPermissions {
 			}
 
 			// No permission systems found
-			if (!(permissions3 || permissionsBukkit || permissionsex || bPermissions)) {
-				BITMessages.showInfo("Defaulting to build-in permissions.");
+			if (!(permissions3 || permissionsBukkit || permissionsex || bPermissions || essentialsGroupManager)) {  // Added lookup for EssentialGroupManager 2/6/12
+				BITMessages.showInfo("No permissions system found, Defaulting to build-in permissions.");
 				return;
 			}
 		}
