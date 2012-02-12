@@ -85,8 +85,7 @@ public class BITBackpack implements CommandExecutor {
 											+ inventoryName
 											+ ChatColor.WHITE
 											+ BIT.li.getMessage("opened"));
-									inventories.
-								}
+									}
 							} else {
 								player.sendMessage(ChatColor.RED
 										+ BIT.li.getMessage("playernotfound"));
@@ -331,7 +330,21 @@ public class BITBackpack implements CommandExecutor {
 									"backpack.clear.other",
 									BITPermissions.NOT_QUIET)) {
 								if (inventories.containsKey(playerName)) {
-									inventories.remove(playerName);
+									// inventories.remove(playerName); Inventory Dupe Bug Fix. 1-26-12
+									ItemStack[] items = BITBackpack.inventories.get(player
+											.getName());
+									         Inventory inventory = SpoutManager
+											.getInventoryBuilder()
+											.construct(BITBackpack.allowedSize(player.getWorld(),player, true),	BITBackpack.inventoryName);
+									for (Integer i = 0; i < BITBackpack.allowedSize(
+											player.getWorld(), player, true); i++) {
+										ItemStack item = new ItemStack(0, 0);
+										inventory.setItem(i, item);
+									}
+									BITBackpack.inventories.put(player.getName(),
+											inventory.getContents());
+									BITBackpackInventorySaveTask.saveInventory(player,
+											player.getWorld());
 									player.sendMessage(BIT.li
 											.getMessage("frenchonly")
 											+ playerName
@@ -440,8 +453,11 @@ public class BITBackpack implements CommandExecutor {
 				return;
 			}
 		}
+		
+		// The next line should not run if user has no backpack.
 		BITBackpackInventorySaveTask.saveInventory(player, player.getWorld());
-		inventories.remove(player.getName());
+		inventories.remove(player.getName());  //DOCKTER
+		
 		File saveFile;
 		if (BITConfig.getBooleanParm("SBP.InventoriesShare."
 				+ player.getWorld().getName(), true)) {
@@ -743,20 +759,33 @@ public class BITBackpack implements CommandExecutor {
 	public static void loadInventory(Player player, World world) {
 		if (inventories.containsKey(player.getName())) {
 			if (inventories.get(player.getName()).length > 0) {
-				return;
+				//BITMessages.showInfo("Player already has a Key assigned.");
+				 return;
 			}
 		}
 		File saveFile;
-		if (BITConfig.getBooleanParm("SBP.InventoriesShare."
-				+ player.getWorld().getName(), true)) {
-			saveFile = new File(BIT.plugin.getDataFolder() + File.separator
-					+ "inventories", player.getName() + ".yml");
+		
+		//if (BITConfig.getBooleanParm("SBP.InventoriesShare."+ player.getWorld().getName(), true)) { //Version 3.2.5
+		//	saveFile = new File(BIT.plugin.getDataFolder() + File.separator	+ "inventories", player.getName() + ".yml");
+		
+		//} else {
+		
+		//	saveFile = new File(BIT.plugin.getDataFolder() + File.separator	+ "inventories", player.getName() + "_" + world.getName()+ ".yml");
+		
+		//}
+		
+		if (BITConfig.getBooleanParm("SBP.InventoriesShare."+ world.getName(), true)) {  // Fix for Transport Error / Shared Inventories
+			saveFile = new File(BIT.plugin.getDataFolder() + File.separator	+ "inventories", player.getName() + ".yml");
+		
 		} else {
-			saveFile = new File(BIT.plugin.getDataFolder() + File.separator
-					+ "inventories", player.getName() + "_" + world.getName()
-					+ ".yml");
+		
+			saveFile = new File(BIT.plugin.getDataFolder() + File.separator	+ "inventories", player.getName() + "_" + world.getName()+ ".yml");
+		
 		}
-		@SuppressWarnings({})
+		
+			// BITMessages.showInfo("Player Config:" +" " + saveFile +" " + world + " " +player);
+		
+			@SuppressWarnings({})
 		YamlConfiguration config = new YamlConfiguration();
 		try {
 			config.load(saveFile);
@@ -793,11 +822,13 @@ public class BITBackpack implements CommandExecutor {
 				item.setDurability(Short.parseShort(durability.toString()));
                 String enchant = null;
                 if((enchant = config.getString(i.toString() + ".enchant0")) != null){
-                    item.addEnchantment(Enchantment.getByName(enchant), config.getInt(i.toString() + ".level0", 0));
+                    // item.addEnchantment(Enchantment.getByName(enchant), config.getInt(i.toString() + ".level0", 0));
+                	item.addUnsafeEnchantment(Enchantment.getByName(enchant), config.getInt(i.toString() + ".level0", 0));
                 }
                 enchant = null;
                 if((enchant = config.getString(i.toString() + ".enchant1")) != null){
-                    item.addEnchantment(Enchantment.getByName(enchant), config.getInt(i.toString() + ".level1", 0));
+                    //item.addEnchantment(Enchantment.getByName(enchant), config.getInt(i.toString() + ".level1", 0));
+                	item.addUnsafeEnchantment(Enchantment.getByName(enchant), config.getInt(i.toString() + ".level1", 0));
                 }
 				inv.setItem(i, item);
 			}
