@@ -599,10 +599,12 @@ public class BITBackpack implements CommandExecutor {
 		}
 
 		// Automatic upgrading BP if its free
+		
 		if (BIT.useEconomy) {
 			double upgradePrice = 0;
-			while (upgradePrice == 0) {
+			while (upgradePrice == 0 && size<=54) {
 				upgradePrice = calculateCostToUpgrade(size);
+				//BITMessages.showInfo("Endless Loop.");
 				if (upgradePrice == 0)
 					size = size + 9;
 			}
