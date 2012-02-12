@@ -250,7 +250,7 @@ public class BITConfig {
 		if (!config.contains(path)) {
 			config.set(path, def);
 			dosave=true;
-			BITMessages.showWarning("Missing parameter:" +path);
+			BITMessages.showWarning("Missing parameter:" +path+ " , Let me add that for you and save it.");
 		} 
 		return config.getInt(path, def);
 	}
@@ -259,7 +259,7 @@ public class BITConfig {
 		if (!config.contains(path)) {
 			config.set(path, def);
 			dosave=true;
-			BITMessages.showWarning("Missing parameter:" +path);
+			BITMessages.showWarning("Missing parameter:" +path+ " , Let me add that for you and save it.");
 		} 
 		return config.getDouble(path, def);
 	}
@@ -268,7 +268,7 @@ public class BITConfig {
 		if (!config.contains(path)) {
 			config.set(path, def);
 			dosave=true;
-			BITMessages.showWarning("Missing parameter:" +path);
+			BITMessages.showWarning("Missing parameter:" +path+ " , Let me add that for you and save it.");
 		} 
 		return config.getString(path, def);
 	}
@@ -277,7 +277,7 @@ public class BITConfig {
 		if (!config.contains(path)) {
 			config.set(path, def);
 			dosave=true;
-			BITMessages.showWarning("Missing parameter:" +path);
+			BITMessages.showWarning("Missing parameter:" +path+ " , Let me add that for you and save it.");
 		} 
 		return config.getBoolean(path, def);
 	}
