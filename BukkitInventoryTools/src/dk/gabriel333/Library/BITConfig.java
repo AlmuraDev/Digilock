@@ -68,6 +68,8 @@ public class BITConfig {
 	public static Boolean SBP_InventoriesShareDefault;
 	private static String noBackpackRegions;
 	public static String[] SBP_noBackpackRegions;
+	public static Boolean SBP_DISABLEECONOMY;
+	public static Boolean SBP_DisableSBPCreative;
 	public static double SBP_price9;
 	public static double SBP_price18;
 	public static double SBP_price27;
@@ -98,6 +100,7 @@ public class BITConfig {
 	public static Boolean DEBUG_GUI;
 	public static Boolean DEBUG_DOOR;
 	public static Boolean DEBUG_EVENTS;
+	public static Boolean DEBUG_ADVANCEDGUI;
 	
 	private static String CONFIG_FILE = "config.yml";
 	public static YamlConfiguration config;
@@ -184,6 +187,8 @@ public class BITConfig {
 		SBP_InventoriesShareDefault = getBooleanParm("SBP.InventoriesShareDefault",true);
 		noBackpackRegions = getStringParm("SBP.RegionWhereBackpacksAreDisabled", "region1,region2");
 		SBP_noBackpackRegions = noBackpackRegions.split(",");
+		SBP_DISABLEECONOMY = getBooleanParm("SBP.DISABLEECONOMY",false);
+		SBP_DisableSBPCreative = getBooleanParm("SBP.DisableSBPCreative",true);
 		SBP_price9 = getDoubleParm("SBP.Price9", 100.00);
 		SBP_price18 = getDoubleParm("SBP.Price18", 10.00);
 		SBP_price27 = getDoubleParm("SBP.Price27", 20.00);
@@ -194,6 +199,8 @@ public class BITConfig {
 		if (SBP_blackOrWhiteList != 1 && SBP_blackOrWhiteList != 2) {
 			SBP_blackOrWhiteList = 0;
 		}
+
+			
 		whitelist = getStringParm("SBP.Whitelist","262");
 		SBP_whitelist = whitelist.split(",");
 		blacklist = getStringParm("SBP.Blacklist","264");
@@ -216,6 +223,7 @@ public class BITConfig {
 		DEBUG_GUI = getBooleanParm("Debug.GUI", false);
 		DEBUG_DOOR = getBooleanParm("Debug.Door", false);
 		DEBUG_EVENTS = getBooleanParm("Debug.Events", false);
+		DEBUG_ADVANCEDGUI = getBooleanParm("Debug.AdvancedGUI", false);
 		
 		if (dosave || LATEST_VERSION>LIBRARY_VERSION) {
 			config.options().header("##########################################################\n"+
