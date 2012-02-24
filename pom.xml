@@ -22,6 +22,11 @@
 			<version>1.1-R5-SNAPSHOT</version>
 		</dependency>
 		<dependency>
+				<groupId>org.bukkit</groupId>
+				<artifactId>craftbukkit</artifactId>
+				<version>1.1-R5-SNAPSHOT</version>
+			</dependency>
+		<dependency>
 					<groupId>org.getspout</groupId>
 					<artifactId>spoutplugin</artifactId>
 					<version>dev-SNAPSHOT</version>
@@ -32,25 +37,16 @@
 				<version>dev-SNAPSHOT</version>
 		</dependency>
 		<dependency>
-					<groupId>org.spoutcraft</groupId>
-					<artifactId>spoutcraftapi</artifactId>
-					<version>dev-SNAPSHOT</version>
-		</dependency>
-		<dependency>
 			<groupId>net.milkbowl</groupId>
 			<artifactId>vault</artifactId>
 			<version>1.2.9</version>
 		</dependency>
 		<dependency>
-			<groupId>ru.tehkode</groupId>
-			<artifactId>PermissionsEx</artifactId>
-			<version>1.18</version>
+					<groupId>com.sk89q</groupId>
+					<artifactId>worldguard</artifactId>
+					<version>5.5</version>
 		</dependency>
-		<dependency>
-				<groupId>ru.tehkode</groupId>
-				<artifactId>PermissionsEx</artifactId>
-				<version>1.18</version>
-		</dependency>
+
 		<!-- local deps -->
 		<dependency>
 			<groupId>com.garbagemule</groupId>
@@ -67,9 +63,18 @@
 				<systemPath>${basedir}/lib/MyWolf.jar</systemPath>
 		</dependency>
 		<dependency>
-				<groupId>com.sk89q</groupId>
-				<artifactId>worldguard</artifactId>
-				<version>5.5</version>
+				<groupId>com.tommytony</groupId>
+				<artifactId>war</artifactId>
+				<version>1.7</version>
+				<scope>system</scope>
+				<systemPath>${basedir}/lib/War.jar</systemPath>
+		</dependency>
+		<dependency>
+				<groupId>com.matejdro.bukkit</groupId>
+				<artifactId>jail</artifactId>
+				<version>2.1.1</version>
+				<scope>system</scope>
+				<systemPath>${basedir}/lib/Jail.jar</systemPath>
 		</dependency>
 
 	</dependencies>
@@ -83,16 +88,6 @@
 				<enabled>true</enabled>
 			</releases>
 			<url>http://repo.bukkit.org/artifactory/repo</url>
-		</repository>
-		<repository>
-			<id>tehkode-repo</id>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-			<url>http://repo.tehkode.ru/repository/repo</url>
 		</repository>
 		<repository>
 			<id>zml repo</id>
