@@ -1,24 +1,26 @@
 package dk.gabriel333.BukkitInventoryTools.Sort;
 
+import dk.gabriel333.BITBackpack.BITBackpack;
+import dk.gabriel333.BukkitInventoryTools.BIT;
+import dk.gabriel333.BukkitInventoryTools.DigiLock.BITDigiLock;
+import dk.gabriel333.BukkitInventoryTools.Inventory.BITInventory;
+import dk.gabriel333.Library.BITConfig;
+import dk.gabriel333.Library.BITMessages;
+import dk.gabriel333.Library.BITPermissions;
 import org.bukkit.Material;
 import org.bukkit.block.Dispenser;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.block.SpoutChest;
-import org.getspout.spoutapi.event.input.InputListener;
 import org.getspout.spoutapi.event.input.KeyPressedEvent;
 import org.getspout.spoutapi.event.input.KeyReleasedEvent;
 import org.getspout.spoutapi.event.input.RenderDistanceChangeEvent;
 import org.getspout.spoutapi.gui.ScreenType;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
-import dk.gabriel333.BITBackpack.BITBackpack;
-import dk.gabriel333.BukkitInventoryTools.BIT;
-import dk.gabriel333.BukkitInventoryTools.DigiLock.BITDigiLock;
-import dk.gabriel333.BukkitInventoryTools.Inventory.BITInventory;
-import dk.gabriel333.Library.*;
-
-public class BITSortInputListener extends InputListener {
+public class BITSortInputListener implements Listener {
 
 	public BIT plugin;
 
@@ -26,7 +28,7 @@ public class BITSortInputListener extends InputListener {
 		this.plugin = plugin;
 	}
 
-	@Override
+	@EventHandler
 	public void onKeyPressedEvent(KeyPressedEvent event) {
 		String keypressed = event.getKey().name();
 		if (!(keypressed.equals(BITConfig.LIBRARY_SORTKEY) || keypressed
@@ -152,12 +154,12 @@ public class BITSortInputListener extends InputListener {
 		}
 	}
 
-	@Override
+	@EventHandler
 	public void onKeyReleasedEvent(KeyReleasedEvent event) {
 
 	}
 
-	@Override
+	@EventHandler
 	public void onRenderDistanceChange(RenderDistanceChangeEvent event) {
 
 	}

@@ -1,18 +1,19 @@
 package dk.gabriel333.BukkitInventoryTools;
 
-import org.getspout.spoutapi.event.input.InputListener;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.getspout.spoutapi.event.input.KeyPressedEvent;
 import org.getspout.spoutapi.event.input.KeyReleasedEvent;
 
-public class BITKeyboardListener extends InputListener {
+public class BITKeyboardListener implements Listener {
 
-	@Override
+	@EventHandler
 	public void onKeyPressedEvent(KeyPressedEvent event) {
 		BIT.holdingKey.put(event.getPlayer().getEntityId(), event.getKey()
 				.name());
 	}
 
-	@Override
+	@EventHandler
 	public void onKeyReleasedEvent(KeyReleasedEvent event) {
 		BIT.holdingKey.put(event.getPlayer().getEntityId(), "");
 	}

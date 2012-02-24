@@ -9,7 +9,6 @@ import org.bukkit.Material;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.inventory.Inventory;
 import org.getspout.spoutapi.SpoutManager;
-import org.getspout.spoutapi.event.input.InputListener;
 import org.getspout.spoutapi.event.input.KeyPressedEvent;
 import org.getspout.spoutapi.gui.Color;
 import org.getspout.spoutapi.gui.GenericLabel;
@@ -17,11 +16,12 @@ import org.getspout.spoutapi.gui.ScreenType;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import dk.gabriel333.BukkitInventoryTools.BIT;
-import dk.gabriel333.BITBackpack.BITBackpack;
 import dk.gabriel333.Library.BITConfig;
 import dk.gabriel333.Library.BITPermissions;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 
-public class BITBackpackInputListener extends InputListener {
+public class BITBackpackInputListener implements Listener {
 
 	public BIT plugin;
 
@@ -29,7 +29,7 @@ public class BITBackpackInputListener extends InputListener {
 		this.plugin = plugin;
 	}
 
-	@Override
+	@EventHandler
 	public void onKeyPressedEvent(KeyPressedEvent event) {
 		String keypressed = event.getKey().name();
 		ScreenType screentype = event.getScreenType();
@@ -48,7 +48,6 @@ public class BITBackpackInputListener extends InputListener {
 					if (!BITBackpack.canOpenBackpack(sPlayer.getWorld(),
 							sPlayer)) {
 						sPlayer.sendMessage("You are not allowed to open the backpack here.");
-						return;
 					} else {
 						if (screentype == ScreenType.CHEST_INVENTORY) {
 							if (!BITBackpack.openedInventoriesOthers

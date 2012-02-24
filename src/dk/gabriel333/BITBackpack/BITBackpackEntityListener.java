@@ -1,26 +1,25 @@
 package dk.gabriel333.BITBackpack;
 
+import dk.gabriel333.BukkitInventoryTools.BIT;
+import dk.gabriel333.Library.BITPermissions;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.EntityListener;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.SpoutManager;
 
-import dk.gabriel333.BukkitInventoryTools.BIT;
-import dk.gabriel333.Library.BITPermissions;
-
-public class BITBackpackEntityListener extends EntityListener {
-	@SuppressWarnings("unused")
+public class BITBackpackEntityListener implements Listener {
 	private BIT plugin;
 
 	public BITBackpackEntityListener(BIT plugin) {
 		this.plugin = plugin;
 	}
 
-	@Override
+	@EventHandler
 	public void onEntityDeath(EntityDeathEvent event) {
 		Entity entity = event.getEntity();
 		if (entity instanceof Player) {

@@ -1,22 +1,19 @@
 package dk.gabriel333.BukkitInventoryTools.Sort;
 
-import org.bukkit.Material;
-
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-
-import org.getspout.spout.inventory.CustomMCInventory;
-import org.getspout.spoutapi.SpoutManager;
-import org.getspout.spoutapi.gui.ScreenType;
-import org.getspout.spoutapi.player.SpoutPlayer;
-
 import de.Keyle.MyWolf.MyWolfPlugin;
-import dk.gabriel333.BITBackpack.BITBackpackAPI;
 import dk.gabriel333.BITBackpack.BITBackpack;
+import dk.gabriel333.BITBackpack.BITBackpackAPI;
 import dk.gabriel333.BukkitInventoryTools.BIT;
 import dk.gabriel333.Library.BITConfig;
 import dk.gabriel333.Library.BITMessages;
 import dk.gabriel333.Library.BITPermissions;
+import org.bukkit.Material;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.getspout.spout.inventory.CustomMCInventory;
+import org.getspout.spoutapi.SpoutManager;
+import org.getspout.spoutapi.gui.ScreenType;
+import org.getspout.spoutapi.player.SpoutPlayer;
 
 public class BITSortInventory {
 

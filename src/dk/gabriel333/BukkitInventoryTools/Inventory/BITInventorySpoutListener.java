@@ -1,24 +1,20 @@
 package dk.gabriel333.BukkitInventoryTools.Inventory;
 
+import dk.gabriel333.BukkitInventoryTools.BIT;
+import dk.gabriel333.BukkitInventoryTools.DigiLock.BITDigiLock;
+import dk.gabriel333.Library.BITConfig;
+import dk.gabriel333.Library.BITMessages;
 import java.util.UUID;
-
-import org.bukkit.event.Event;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
-
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.event.screen.ButtonClickEvent;
-import org.getspout.spoutapi.event.spout.SpoutListener;
 import org.getspout.spoutapi.gui.Button;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
-import dk.gabriel333.BukkitInventoryTools.BIT;
-import dk.gabriel333.BukkitInventoryTools.DigiLock.BITDigiLock;
-import dk.gabriel333.BukkitInventoryTools.Inventory.BITInventory;
-import dk.gabriel333.Library.BITConfig;
-import dk.gabriel333.Library.BITMessages;
-
-public class BITInventorySpoutListener extends SpoutListener {
+public class BITInventorySpoutListener implements Listener {
 	
 	@SuppressWarnings("unused")
 	private BIT plugin;
@@ -27,67 +23,66 @@ public class BITInventorySpoutListener extends SpoutListener {
 		this.plugin = plugin;
 	}
 
-	public void onCustomEvent(Event event) {
-		if (event instanceof ButtonClickEvent) {
-			Button button = ((ButtonClickEvent) event).getButton();
-			UUID uuid = button.getId();
-			SpoutPlayer sPlayer = ((ButtonClickEvent) event).getPlayer();
-			//SpoutBlock sBlock = (SpoutBlock) sPlayer.getTargetBlock(null, 5);
-			int id = sPlayer.getEntityId();
-			SpoutBlock sBlock;
-			sBlock = BITDigiLock.clickedBlock.get(id);
-			if (sBlock == null) {
-				sBlock = (SpoutBlock) sPlayer.getTargetBlock(null, 5);
-			}
+        @EventHandler
+	public void onCustomEvent(ButtonClickEvent event) {
+                Button button = event.getButton();
+                UUID uuid = button.getId();
+                SpoutPlayer sPlayer = event.getPlayer();
+                //SpoutBlock sBlock = (SpoutBlock) sPlayer.getTargetBlock(null, 5);
+                int id = sPlayer.getEntityId();
+                SpoutBlock sBlock;
+                sBlock = BITDigiLock.clickedBlock.get(id);
+                if (sBlock == null) {
+                        sBlock = (SpoutBlock) sPlayer.getTargetBlock(null, 5);
+                }
 
-			if ((BITInventory.BITBookButtons.get(uuid) == "setPincodeCancel")) {
-				sPlayer.closeActiveWindow();
-				BITInventory.cleanupPopupScreen(sPlayer);
-				BITInventory.BITBookButtons.remove(uuid);
+                if (("setPincodeCancel".equals(BITInventory.BITBookButtons.get(uuid)))) {
+                        sPlayer.closeActiveWindow();
+                        BITInventory.cleanupPopupScreen(sPlayer);
+                        BITInventory.BITBookButtons.remove(uuid);
 
-			} else if ((BITInventory.BITBookButtons.get(uuid) == "OwnerButton")) {
-				if (validateSetPincodeFields(sPlayer)) {
-				}
+                } else if (("OwnerButton".equals(BITInventory.BITBookButtons.get(uuid)))) {
+                        if (validateSetPincodeFields(sPlayer)) {
+                        }
 
-			} else if ((BITInventory.BITBookButtons.get(uuid) == "CoOwnerButton")) {
-				if (validateSetPincodeFields(sPlayer)) {
-				}
+                } else if (("CoOwnerButton".equals(BITInventory.BITBookButtons.get(uuid)))) {
+                        if (validateSetPincodeFields(sPlayer)) {
+                        }
 
-			} else if ((BITInventory.BITBookButtons.get(uuid) == "UseCostButton")) {
-				if (validateSetPincodeFields(sPlayer)) {
-				}
+                } else if (("UseCostButton".equals(BITInventory.BITBookButtons.get(uuid)))) {
+                        if (validateSetPincodeFields(sPlayer)) {
+                        }
 
-			}
+                }
 
-			else if ((BITInventory.BITBookButtons.get(uuid) == "CreateBookshelfButton")) {
-				if (validateSetPincodeFields(sPlayer)) {
-					String coowners = "";
-					String name = "";
-					String owner = sPlayer.getName();
-					int usecost = 0;
-					Inventory inventory = SpoutManager.getInventoryBuilder()
-							.construct(BITConfig.BOOKSHELF_SIZE, name);
-					BITInventory.saveBitInventory(sPlayer, sBlock, owner, name,
-							coowners, inventory, usecost);
-					sPlayer.closeActiveWindow();
-					BITInventory.cleanupPopupScreen(sPlayer);
-				}
-			}
+                else if (("CreateBookshelfButton".equals(BITInventory.BITBookButtons.get(uuid)))) {
+                        if (validateSetPincodeFields(sPlayer)) {
+                                String coowners = "";
+                                String name = "";
+                                String owner = sPlayer.getName();
+                                int usecost = 0;
+                                Inventory inventory = SpoutManager.getInventoryBuilder()
+                                                .construct(BITConfig.BOOKSHELF_SIZE, name);
+                                BITInventory.saveBitInventory(sPlayer, sBlock, owner, name,
+                                                coowners, inventory, usecost);
+                                sPlayer.closeActiveWindow();
+                                BITInventory.cleanupPopupScreen(sPlayer);
+                        }
+                }
 
-			else if ((BITInventory.BITBookButtons.get(uuid) == "removeBookshelfButton")) {
-				if (validateSetPincodeFields(sPlayer)) {
-				}
-			}
+                else if (("removeBookshelfButton".equals(BITInventory.BITBookButtons.get(uuid)))) {
+                        if (validateSetPincodeFields(sPlayer)) {
+                        }
+                }
 
-			// ************************************
-			// This only happens if I have forgot to handle a button
-			// ************************************
-			else {
-				if (BITConfig.DEBUG_GUI)
-					sPlayer.sendMessage("BITSpoutListener: Unknow button:"
-							+ BITInventory.BITBookButtons.get(uuid));
-			}
-		}
+                // ************************************
+                // This only happens if I have forgot to handle a button
+                // ************************************
+                else {
+                        if (BITConfig.DEBUG_GUI)
+                                sPlayer.sendMessage("BITSpoutListener: Unknow button:"
+                                                + BITInventory.BITBookButtons.get(uuid));
+                }
 	}
 
 	private boolean validateSetPincodeFields(SpoutPlayer sPlayer) {

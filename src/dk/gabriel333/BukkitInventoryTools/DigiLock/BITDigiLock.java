@@ -1,18 +1,20 @@
 package dk.gabriel333.BukkitInventoryTools.DigiLock;
 
+import dk.gabriel333.BukkitInventoryTools.BIT;
+import dk.gabriel333.Library.BITConfig;
+import dk.gabriel333.Library.BITMessages;
+import dk.gabriel333.Library.BITPermissions;
 import java.net.MalformedURLException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Dispenser;
-
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Button;
 import org.bukkit.material.Door;
@@ -20,20 +22,8 @@ import org.bukkit.material.Lever;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.block.SpoutChest;
-import org.getspout.spoutapi.gui.GenericButton;
-import org.getspout.spoutapi.gui.GenericItemWidget;
-import org.getspout.spoutapi.gui.GenericLabel;
-import org.getspout.spoutapi.gui.GenericPopup;
-import org.getspout.spoutapi.gui.GenericTextField;
-import org.getspout.spoutapi.gui.PopupScreen;
+import org.getspout.spoutapi.gui.*;
 import org.getspout.spoutapi.player.SpoutPlayer;
-import org.getspout.spoutapi.gui.GenericTexture;
-import org.getspout.spoutapi.gui.RenderPriority;
-
-import dk.gabriel333.BukkitInventoryTools.BIT;
-import dk.gabriel333.Library.BITConfig;
-import dk.gabriel333.Library.BITMessages;
-import dk.gabriel333.Library.BITPermissions;
 
 public class BITDigiLock {
 
@@ -577,7 +567,7 @@ public class BITDigiLock {
 		for (BlockFace bf : BlockFace.values()) {
 			if (isLocked(block.getRelative(bf))) {
 				BITDigiLock digilock = BITDigiLock.loadDigiLock(block
-						.getFace(bf));
+						.getRelative(bf));
 				if (digilock.getOwner().equalsIgnoreCase(owner)) {
 					return true;
 				}
@@ -935,13 +925,13 @@ public class BITDigiLock {
 		usersGUI.get(id).setMaximumCharacters(200);
 		usersGUI.get(id).setText(usersGUI.get(id).getText());
 		popupScreen.get(id).attachWidget(BIT.plugin, usersGUI.get(id));
-		y = y + height;
+		//y = y + height;
 
 		// Second row ------------X=170-270-370------------------------------
 		y = 110;
 		x = 180;
 		w1 = 80;
-		w2 = 80;
+		//w2 = 80;
 		// pincode3
 		pincodeGUI.get(id).setTooltip("Enter/change the pincode...");
 		pincodeGUI.get(id).setCursorPosition(1).setMaximumCharacters(20);
@@ -1334,6 +1324,7 @@ public class BITDigiLock {
 		// 20 ticks / second
 		int taskID = BIT.plugin.getServer().getScheduler()
 				.scheduleSyncDelayedTask(BIT.plugin, new Runnable() {
+                                        @Override
 					public void run() {
 						SpoutBlock sb = sBlock;
 						SpoutPlayer sp = sPlayer;
@@ -1515,6 +1506,7 @@ public class BITDigiLock {
 		// 20 ticks / second
 		int taskID = BIT.plugin.getServer().getScheduler()
 				.scheduleSyncDelayedTask(BIT.plugin, new Runnable() {
+                                        @Override
 					public void run() {
 						SpoutBlock sb = sBlock;
 						SpoutPlayer sp = sPlayer;
@@ -1610,6 +1602,7 @@ public class BITDigiLock {
 		// 20 ticks / second
 		int taskID = BIT.plugin.getServer().getScheduler()
 				.scheduleSyncDelayedTask(BIT.plugin, new Runnable() {
+                                        @Override
 					public void run() {
 						SpoutBlock sb = sBlock;
 						SpoutPlayer sp = sPlayer;

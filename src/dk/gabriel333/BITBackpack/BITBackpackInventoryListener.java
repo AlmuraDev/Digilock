@@ -1,19 +1,19 @@
 package dk.gabriel333.BITBackpack;
 
+import dk.gabriel333.BukkitInventoryTools.BIT;
+import dk.gabriel333.Library.BITConfig;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.event.inventory.InventoryClickEvent;
 import org.getspout.spoutapi.event.inventory.InventoryCloseEvent;
-import org.getspout.spoutapi.event.inventory.InventoryListener;
 import org.getspout.spoutapi.event.inventory.InventorySlotType;
 
-import dk.gabriel333.BukkitInventoryTools.BIT;
-import dk.gabriel333.Library.BITConfig;
-
-public class BITBackpackInventoryListener extends InventoryListener {
+public class BITBackpackInventoryListener implements Listener {
 	
 	@SuppressWarnings("unused")
 	private BIT plugin;
@@ -22,7 +22,7 @@ public class BITBackpackInventoryListener extends InventoryListener {
 	  this.plugin = plugin;
 	}
 
-	@Override
+	@EventHandler
 	public void onInventoryClose(InventoryCloseEvent event) {
 		Player player = event.getPlayer();
 		if (!BITBackpack.openedInventoriesOthers.containsKey(player.getName())) {
@@ -65,7 +65,7 @@ public class BITBackpackInventoryListener extends InventoryListener {
 		}
 	}
 
-	@Override
+	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event) {
 		Player player = event.getPlayer();
 		if (BITBackpack.openedInventoriesOthers
@@ -93,7 +93,6 @@ public class BITBackpackInventoryListener extends InventoryListener {
 						player.sendMessage(ChatColor.RED
 								+ BIT.li.getMessage("yourenotallowedtomovethis")
 								+ BITBackpack.inventoryName + "!");
-						return;
 					}
 				}
 				// 2=whitelist
@@ -105,7 +104,6 @@ public class BITBackpackInventoryListener extends InventoryListener {
 						player.sendMessage(ChatColor.RED
 								+ BIT.li.getMessage("yourenotallowedtomovethis")
 								+ BITBackpack.inventoryName + "!");
-						return;
 					}
 				}
 			}

@@ -1,21 +1,21 @@
 package dk.gabriel333.BukkitInventoryTools.DigiLock;
 
+import dk.gabriel333.BukkitInventoryTools.BIT;
+import dk.gabriel333.BukkitInventoryTools.Inventory.BITInventory;
+import dk.gabriel333.Library.BITConfig;
+import dk.gabriel333.Library.BITMessages;
+import dk.gabriel333.Library.BITPermissions;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.material.Lever;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.block.SpoutBlock;
-import org.getspout.spoutapi.event.input.InputListener;
 import org.getspout.spoutapi.event.input.KeyPressedEvent;
-import org.getspout.spoutapi.event.input.KeyReleasedEvent;
-import org.getspout.spoutapi.event.input.RenderDistanceChangeEvent;
 import org.getspout.spoutapi.gui.ScreenType;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
-import dk.gabriel333.BukkitInventoryTools.BIT;
-import dk.gabriel333.BukkitInventoryTools.Inventory.BITInventory;
-import dk.gabriel333.Library.*;
-
-public class BITDigiLockInputListener extends InputListener {
+public class BITDigiLockInputListener implements Listener {
 
 	public BIT plugin;
 
@@ -23,7 +23,7 @@ public class BITDigiLockInputListener extends InputListener {
 		this.plugin = plugin;
 	}
 
-	@Override
+	@EventHandler
 	public void onKeyPressedEvent(KeyPressedEvent event) {
 		SpoutPlayer sPlayer = event.getPlayer();
 		ScreenType screentype = event.getScreenType();
@@ -143,8 +143,8 @@ public class BITDigiLockInputListener extends InputListener {
 		}
 
 	}
-
-	@Override
+        /*
+	@EventHandler
 	public void onKeyReleasedEvent(KeyReleasedEvent event) {
 		// SpoutPlayer sPlayer = event.getPlayer();
 		// Keyboard keyUp = event.getKey();
@@ -152,9 +152,9 @@ public class BITDigiLockInputListener extends InputListener {
 		// "sPlayer:" + sPlayer.getName() + "Pressed key:" + keyUp);
 	}
 
-	@Override
+	@EventHandler
 	public void onRenderDistanceChange(RenderDistanceChangeEvent event) {
 
 	}
-
+        */
 }

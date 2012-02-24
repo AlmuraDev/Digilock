@@ -1,35 +1,30 @@
 package dk.gabriel333.BukkitInventoryTools.DigiLock;
 
-import org.bukkit.Material;
-import org.bukkit.block.Dispenser;
-import org.bukkit.block.Furnace;
-import org.bukkit.block.Jukebox;
-import org.bukkit.block.Sign;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerItemHeldEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerKickEvent;
-import org.bukkit.event.player.PlayerListener;
-import org.bukkit.event.player.PlayerLoginEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.Button;
-import org.bukkit.material.Lever;
-
-import org.getspout.spoutapi.block.SpoutBlock;
-import org.getspout.spoutapi.block.SpoutChest;
-import org.getspout.spoutapi.player.SpoutPlayer;
-
 import dk.gabriel333.BukkitInventoryTools.BIT;
 import dk.gabriel333.BukkitInventoryTools.Inventory.BITInventory;
 import dk.gabriel333.Library.BITConfig;
 import dk.gabriel333.Library.BITMessages;
 import dk.gabriel333.Library.BITPermissions;
+import org.bukkit.Material;
+import org.bukkit.block.Dispenser;
+import org.bukkit.block.Furnace;
+import org.bukkit.block.Jukebox;
+import org.bukkit.block.Sign;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.*;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.Button;
+import org.bukkit.material.Lever;
+import org.getspout.spoutapi.block.SpoutBlock;
+import org.getspout.spoutapi.block.SpoutChest;
+import org.getspout.spoutapi.player.SpoutPlayer;
 
-public class BITPlayerListener extends PlayerListener {
+public class BITPlayerListener implements Listener {
 
+        @EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event) {
 
 		if (event.isCancelled())
@@ -804,7 +799,7 @@ public class BITPlayerListener extends PlayerListener {
 			// BOOKSHELF
 			else if (BITDigiLock.isBookshelf(sBlock)
 					&& event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
-					&& !BIT.holdingKey.equals("L-CONTROL")
+					&& !BIT.holdingKey.get(id).equals("KEY_LCONTROL")
 					&& (BITConfig.BOOKSHELF_ENABLE))   {  //  Added this option to config to prevent BOOKWORM Conflict
 
 				if (BITInventory.isBitInventoryCreated(sBlock)
@@ -827,11 +822,11 @@ public class BITPlayerListener extends PlayerListener {
 		}
 	}
 
+        @EventHandler
 	public void onItemHeldChange(PlayerItemHeldEvent event) {
 		if (BITConfig.DEBUG_GUI) {
 			SpoutPlayer sPlayer = (SpoutPlayer) event.getPlayer();
-			sPlayer.sendMessage("Event:" + event.getEventName() + " type:"
-					+ event.getType());
+			sPlayer.sendMessage("Event:" + event.getEventName() );
 		}
 
 		// ItemStack item =

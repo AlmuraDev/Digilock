@@ -1,34 +1,30 @@
 package dk.gabriel333.BukkitInventoryTools.Inventory;
 
-import org.bukkit.Material;
-import org.bukkit.event.Event;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.craftbukkit.inventory.CraftInventory;
-import org.getspout.spoutapi.event.inventory.InventoryClickEvent;
-import org.getspout.spoutapi.event.inventory.InventoryCloseEvent;
-import org.getspout.spoutapi.event.inventory.InventoryCraftEvent;
-import org.getspout.spoutapi.event.inventory.InventoryListener;
-import org.getspout.spoutapi.event.inventory.InventoryOpenEvent;
-import org.getspout.spoutapi.SpoutManager;
-
-import org.getspout.spoutapi.material.Item;
-import org.getspout.spoutapi.player.SpoutPlayer;
-
 import dk.gabriel333.BukkitInventoryTools.BIT;
 import dk.gabriel333.BukkitInventoryTools.Book.BITBook;
 import dk.gabriel333.Library.BITConfig;
 import dk.gabriel333.Library.BITMessages;
 import dk.gabriel333.Library.BITPermissions;
+import org.bukkit.Material;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.getspout.spoutapi.SpoutManager;
+import org.getspout.spoutapi.event.inventory.InventoryClickEvent;
+import org.getspout.spoutapi.event.inventory.InventoryCloseEvent;
+import org.getspout.spoutapi.event.inventory.InventoryCraftEvent;
+import org.getspout.spoutapi.event.inventory.InventoryOpenEvent;
+import org.getspout.spoutapi.player.SpoutPlayer;
 
-public class BITInventoryListener extends InventoryListener {
+public class BITInventoryListener implements Listener {
 
 	public BIT plugin;
 
 	public BITInventoryListener(BIT plugin) {
 		this.plugin = plugin;
 	}
-
+        @EventHandler
 	public void onInventoryOpen(InventoryOpenEvent event) {
 		SpoutPlayer sPlayer = (SpoutPlayer) event.getPlayer();
 		if (sPlayer.isSpoutCraftEnabled()) {
@@ -54,9 +50,9 @@ public class BITInventoryListener extends InventoryListener {
 	}
 
 	private void setBookNamesAndCleanup(SpoutPlayer sPlayer, Inventory inv) {
-		short bookId = 0;
 		if (inv.contains(Material.BOOK)) {
-			BITBook bitBook = new BITBook();
+           		short bookId;
+			BITBook bitBook;
 			for (int i = 0; i < inv.getSize(); i++) {
 				if (inv.getItem(i).getType() == Material.BOOK) {
 					bookId = inv.getItem(i).getDurability();
@@ -82,7 +78,8 @@ public class BITInventoryListener extends InventoryListener {
 			}
 		}
 	}
-
+        
+        @EventHandler
 	public void onInventoryClose(InventoryCloseEvent event) {
 		SpoutPlayer sPlayer = (SpoutPlayer) event.getPlayer();
 		if (event.getInventory().getName().equals("Bookshelf")) {
@@ -93,6 +90,7 @@ public class BITInventoryListener extends InventoryListener {
 		}
 	}
 
+        @EventHandler
 	public void onInventoryClick(InventoryClickEvent event) {
 
 		SpoutPlayer sPlayer = (SpoutPlayer) event.getPlayer();
@@ -160,11 +158,12 @@ public class BITInventoryListener extends InventoryListener {
 			}
 		}
 	}
-
+        @EventHandler
 	public void onInventoryCraft(InventoryCraftEvent event) {
 	}
-
-	public void onCustumEvent(Event event) {
+/*
+        @EventHandler(priority = EventPriority.LOW)
+	public void onCustomEvent(Event event) {
 	}
-
+*/
 }

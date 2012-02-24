@@ -1,35 +1,33 @@
 package dk.gabriel333.BukkitInventoryTools.DigiLock;
 
+import dk.gabriel333.BukkitInventoryTools.Inventory.BITInventory;
+import dk.gabriel333.Library.BITConfig;
+import dk.gabriel333.Library.BITMessages;
+import dk.gabriel333.Library.BITPermissions;
 import java.util.UUID;
-
 import org.bukkit.Material;
 import org.bukkit.block.Dispenser;
 import org.bukkit.block.Furnace;
 import org.bukkit.block.Jukebox;
 import org.bukkit.block.Sign;
-import org.bukkit.event.Event;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-
 import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.block.SpoutChest;
 import org.getspout.spoutapi.event.screen.ButtonClickEvent;
-import org.getspout.spoutapi.event.spout.SpoutListener;
 import org.getspout.spoutapi.gui.Button;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
-import dk.gabriel333.BukkitInventoryTools.Inventory.BITInventory;
-import dk.gabriel333.Library.BITConfig;
-import dk.gabriel333.Library.BITMessages;
-import dk.gabriel333.Library.BITPermissions;
+public class BITDigiLockSpoutListener implements Listener {
 
-public class BITDigiLockSpoutListener extends SpoutListener {
-
-	public void onCustomEvent(Event event) {
+        @EventHandler
+	public void onCustomEvent(ButtonClickEvent event) {
 		if (event instanceof ButtonClickEvent) {
-			Button button = ((ButtonClickEvent) event).getButton();
+			Button button = event.getButton();
 			UUID uuid = button.getId();
-			SpoutPlayer sPlayer = ((ButtonClickEvent) event).getPlayer();
+			SpoutPlayer sPlayer = event.getPlayer();
 			int id = sPlayer.getEntityId();
 			SpoutBlock sBlock;
 			sBlock = BITDigiLock.clickedBlock.get(id);
@@ -41,7 +39,7 @@ public class BITDigiLockSpoutListener extends SpoutListener {
 				// ************************************
 				// Buttons in getPincodeWindow
 				// ************************************
-				if (BITDigiLock.BITDigiLockButtons.get(uuid) == "getPincodeUnlock") {
+				if ("getPincodeUnlock".equals(BITDigiLock.BITDigiLockButtons.get(uuid))) {
 					BITDigiLock.popupScreen.get(id).close();
 					BITDigiLock.cleanupPopupScreen(sPlayer);
 					if ((digilock.getPincode().equals(
@@ -159,7 +157,7 @@ public class BITDigiLockSpoutListener extends SpoutListener {
 					BITDigiLock.cleanupPopupScreen(sPlayer);
 					BITDigiLock.BITDigiLockButtons.remove(uuid);
 
-				} else if (BITDigiLock.BITDigiLockButtons.get(uuid) == "getPincodeCancel") {
+				} else if (BITDigiLock.BITDigiLockButtons.get(uuid).equals("getPincodeCancel")) {
 					sPlayer.closeActiveWindow();
 					BITDigiLock.cleanupPopupScreen(sPlayer);
 					BITDigiLock.BITDigiLockButtons.remove(uuid);
@@ -168,7 +166,7 @@ public class BITDigiLockSpoutListener extends SpoutListener {
 				// ************************************
 				// Buttons in sPlayer.setPincode
 				// ************************************
-				else if (BITDigiLock.BITDigiLockButtons.get(uuid) == "setPincodeLock"
+				else if ("setPincodeLock".equals(BITDigiLock.BITDigiLockButtons.get(uuid))
 						&& BITPermissions.hasPerm(sPlayer, "digilock.create",
 								BITPermissions.QUIET)) {
 					if (validateSetPincodeFields(sPlayer)) {
@@ -187,12 +185,12 @@ public class BITDigiLockSpoutListener extends SpoutListener {
 						BITDigiLock.BITDigiLockButtons.remove(uuid);
 					}
 
-				} else if ((BITDigiLock.BITDigiLockButtons.get(uuid) == "setPincodeCancel")) {
+				} else if ((BITDigiLock.BITDigiLockButtons.get(uuid).equals("setPincodeCancel"))) {
 					sPlayer.closeActiveWindow();
 					BITDigiLock.cleanupPopupScreen(sPlayer);
 					BITDigiLock.BITDigiLockButtons.remove(uuid);
 
-				} else if ((BITDigiLock.BITDigiLockButtons.get(uuid) == "setPincodeRemove")) {
+				} else if (("setPincodeRemove".equals(BITDigiLock.BITDigiLockButtons.get(uuid)))) {
 					sPlayer.closeActiveWindow();
 					BITDigiLock.cleanupPopupScreen(sPlayer);
 					BITDigiLock.BITDigiLockButtons.remove(uuid);
@@ -202,7 +200,7 @@ public class BITDigiLockSpoutListener extends SpoutListener {
 					}
 					
 					// Dockter 12/27/11 to add AdminOpen Button to User Interface.
-				} else if ((BITDigiLock.BITDigiLockButtons.get(uuid) == "AdminOpen")) {
+				} else if (("AdminOpen".equals(BITDigiLock.BITDigiLockButtons.get(uuid)))) {
 					BITDigiLock.popupScreen.get(id).close();
 					BITDigiLock.cleanupPopupScreen(sPlayer);
 					BITDigiLock.BITDigiLockButtons.remove(uuid);
@@ -216,23 +214,23 @@ public class BITDigiLockSpoutListener extends SpoutListener {
 					}
 					
 
-				} else if ((BITDigiLock.BITDigiLockButtons.get(uuid) == "OwnerButton")) {
+				} else if (("OwnerButton".equals(BITDigiLock.BITDigiLockButtons.get(uuid)))) {
 					if (validateSetPincodeFields(sPlayer)) {
 					}
 
-				} else if ((BITDigiLock.BITDigiLockButtons.get(uuid) == "CoOwnerButton")) {
+				} else if ((BITDigiLock.BITDigiLockButtons.get(uuid).equals("CoOwnerButton"))) {
 					if (validateSetPincodeFields(sPlayer)) {
 					}
 
-				} else if ((BITDigiLock.BITDigiLockButtons.get(uuid) == "usersButton")) {
+				} else if ((BITDigiLock.BITDigiLockButtons.get(uuid).equals("usersButton"))) {
 					if (validateSetPincodeFields(sPlayer)) {
 					}
 
-				} else if ((BITDigiLock.BITDigiLockButtons.get(uuid) == "UseCostButton")) {
+				} else if ((BITDigiLock.BITDigiLockButtons.get(uuid).equals("UseCostButton"))) {
 					if (validateSetPincodeFields(sPlayer)) {
 					}
 
-				} else if ((BITDigiLock.BITDigiLockButtons.get(uuid) == "ClosetimerButton")) {
+				} else if ((BITDigiLock.BITDigiLockButtons.get(uuid).equals("ClosetimerButton"))) {
 					if (validateSetPincodeFields(sPlayer)) {
 					}
 

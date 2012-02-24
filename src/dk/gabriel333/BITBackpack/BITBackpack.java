@@ -1,5 +1,11 @@
 package dk.gabriel333.BITBackpack;
 
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import dk.gabriel333.BITBackpack.BITBackpackLanguageInterface.Language;
+import dk.gabriel333.BukkitInventoryTools.BIT;
+import dk.gabriel333.Library.BITConfig;
+import dk.gabriel333.Library.BITMessages;
+import dk.gabriel333.Library.BITPermissions;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -8,7 +14,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -24,14 +29,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.gui.GenericLabel;
-import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-import dk.gabriel333.BITBackpack.BITBackpackLanguageInterface.Language;
-import dk.gabriel333.BukkitInventoryTools.BIT;
-import dk.gabriel333.Library.BITConfig;
-import dk.gabriel333.Library.BITMessages;
-import dk.gabriel333.Library.BITPermissions;
-import dk.gabriel333.register.payment.Method.MethodAccount;
-import dk.gabriel333.BITBackpack.BITBackpackInventorySaveTask;
 
 @SuppressWarnings({})
 public class BITBackpack implements CommandExecutor {
@@ -40,7 +37,7 @@ public class BITBackpack implements CommandExecutor {
 		plugin = instance;
 	}
 
-	public static Logger logger = Logger.getLogger("minecraft");
+	public static final Logger logger = Logger.getLogger("minecraft");
 
 	public BIT plugin;
 
@@ -624,7 +621,6 @@ public class BITBackpack implements CommandExecutor {
 
 	public static void setClosedBackpack(Player player, Inventory inventory) {
 		inventories.put(player.getName(), inventory.getContents());
-		return;
 	}
 
 	public static boolean isOpenBackpack(Player player) {
@@ -640,7 +636,7 @@ public class BITBackpack implements CommandExecutor {
 	}
 
 	public static boolean canOpenBackpack(World world, Player player) {
-		boolean canOpenBackpack = false;
+		boolean canOpenBackpack;
 		if (BITPermissions.hasPerm(player, "backpack.size54",
 				BITPermissions.QUIET)
 				|| BITPermissions.hasPerm(player, "backpack.size45",
@@ -814,20 +810,18 @@ public class BITBackpack implements CommandExecutor {
 		Inventory inv = SpoutManager.getInventoryBuilder().construct(size,
 				inventoryName);
 		if (saveFile.exists()) {
-			Integer i = 0;
-			for (i = 0; i < size; i++) {
+			for (Integer i = 0; i < size; i++) {
 				ItemStack item = new ItemStack(0, 0);
 				item.setAmount(config.getInt(i.toString() + ".amount", 0));
 				item.setTypeId(config.getInt(i.toString() + ".type", 0));
 				Integer durability = config.getInt(
 						i.toString() + ".durability", 0);
 				item.setDurability(Short.parseShort(durability.toString()));
-                String enchant = null;
+                String enchant;
                 if((enchant = config.getString(i.toString() + ".enchant0")) != null){
                     // item.addEnchantment(Enchantment.getByName(enchant), config.getInt(i.toString() + ".level0", 0));
                 	item.addUnsafeEnchantment(Enchantment.getByName(enchant), config.getInt(i.toString() + ".level0", 0));
                 }
-                enchant = null;
                 if((enchant = config.getString(i.toString() + ".enchant1")) != null){
                     //item.addEnchantment(Enchantment.getByName(enchant), config.getInt(i.toString() + ".level1", 0));
                 	item.addUnsafeEnchantment(Enchantment.getByName(enchant), config.getInt(i.toString() + ".level1", 0));

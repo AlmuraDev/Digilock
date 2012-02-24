@@ -1,31 +1,20 @@
 package dk.gabriel333.BukkitInventoryTools.DigiLock;
 
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockListener;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.event.block.BlockBurnEvent;
-import org.bukkit.event.block.BlockDamageEvent;
-import org.bukkit.event.block.BlockFadeEvent;
-import org.bukkit.event.block.BlockFormEvent;
-import org.bukkit.event.block.BlockFromToEvent;
-import org.bukkit.event.block.BlockIgniteEvent;
-import org.bukkit.event.block.BlockPhysicsEvent;
-import org.bukkit.event.block.BlockPistonExtendEvent;
-import org.bukkit.event.block.BlockPistonRetractEvent;
-import org.bukkit.event.block.BlockRedstoneEvent;
-import org.bukkit.event.block.BlockSpreadEvent;
-import org.bukkit.event.block.SignChangeEvent;
-import org.getspout.spoutapi.block.SpoutBlock;
-import org.getspout.spoutapi.player.SpoutPlayer;
-
 import dk.gabriel333.BukkitInventoryTools.BIT;
 import dk.gabriel333.BukkitInventoryTools.Inventory.BITInventory;
 import dk.gabriel333.Library.BITConfig;
 import dk.gabriel333.Library.BITMessages;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.*;
+import org.getspout.spoutapi.block.SpoutBlock;
+import org.getspout.spoutapi.player.SpoutPlayer;
 
-public class BITBlockListener extends BlockListener {
+public class BITBlockListener implements Listener {
 
+        @EventHandler
 	public void onBlockRedstoneChange(BlockRedstoneEvent event) {
 		// TODO: THERE IS AN MEMORY LEAK HERE!!!
 		/*
@@ -42,7 +31,8 @@ public class BITBlockListener extends BlockListener {
 		 * event.setNewCurrent(event.getOldCurrent()); } } }
 		 */
 	}
-
+        
+        @EventHandler
 	public void onBlockPhysics(BlockPhysicsEvent event) {
 		if (event.isCancelled())
 			return;
@@ -63,9 +53,9 @@ public class BITBlockListener extends BlockListener {
 		}
 	}
 
-	@Override
+	@EventHandler
 	public void onBlockFromTo(BlockFromToEvent event) {
-		super.onBlockFromTo(event);
+		// super.onBlockFromTo(event);
 		if (event.isCancelled())
 			return;
 		SpoutBlock sBlock = (SpoutBlock) event.getBlock();
@@ -84,6 +74,7 @@ public class BITBlockListener extends BlockListener {
 		}
 	}
 
+        @EventHandler
 	public void onBlockBreak(BlockBreakEvent event) {
 		if (event.isCancelled())
 			return;
@@ -116,7 +107,8 @@ public class BITBlockListener extends BlockListener {
 			event.setCancelled(true);
 		}
 	}
-
+        
+        @EventHandler
 	public void onBlockDamage(BlockDamageEvent event) {
 		if (event.isCancelled())
 			return;
@@ -129,6 +121,7 @@ public class BITBlockListener extends BlockListener {
 		}
 	}
 
+        @EventHandler
 	public void onBlockBurn(BlockBurnEvent event) {
 		if (event.isCancelled())
 			return;
@@ -138,9 +131,8 @@ public class BITBlockListener extends BlockListener {
 		}
 	}
 
-	@Override
+	@EventHandler
 	public void onBlockFade(BlockFadeEvent event) {
-		super.onBlockFade(event);
 		if (event.isCancelled())
 			return;
 		SpoutBlock sBlock = (SpoutBlock) event.getBlock();
@@ -151,9 +143,8 @@ public class BITBlockListener extends BlockListener {
 		}
 	}
 
-	@Override
+	@EventHandler
 	public void onBlockForm(BlockFormEvent event) {
-		super.onBlockForm(event);
 		if (event.isCancelled())
 			return;
 		SpoutBlock sBlock = (SpoutBlock) event.getBlock();
@@ -164,9 +155,8 @@ public class BITBlockListener extends BlockListener {
 		}
 	}
 
-	@Override
+	@EventHandler
 	public void onBlockSpread(BlockSpreadEvent event) {
-		super.onBlockSpread(event);
 		if (event.isCancelled())
 			return;
 		SpoutBlock sBlock = (SpoutBlock) event.getBlock();
@@ -177,9 +167,8 @@ public class BITBlockListener extends BlockListener {
 		}
 	}
 
-	@Override
+	@EventHandler
 	public void onBlockIgnite(BlockIgniteEvent event) {
-		super.onBlockIgnite(event);
 		if (event.isCancelled())
 			return;
 		SpoutBlock sBlock = (SpoutBlock) event.getBlock();
@@ -192,9 +181,8 @@ public class BITBlockListener extends BlockListener {
 		}
 	}
 
-	@Override
+	@EventHandler
 	public void onSignChange(SignChangeEvent event) {
-		super.onSignChange(event);
 		if (event.isCancelled())
 			return;
 		SpoutBlock sBlock = (SpoutBlock) event.getBlock();
@@ -207,9 +195,8 @@ public class BITBlockListener extends BlockListener {
 		}
 	}
 
-	@Override
+	@EventHandler
 	public void onBlockPistonExtend(BlockPistonExtendEvent event) {
-		super.onBlockPistonExtend(event);
 		if (event.isCancelled())
 			return;
 		SpoutBlock sBlock = (SpoutBlock) event.getBlock();
@@ -220,9 +207,8 @@ public class BITBlockListener extends BlockListener {
 		}
 	}
 
-	@Override
+	@EventHandler
 	public void onBlockPistonRetract(BlockPistonRetractEvent event) {
-		super.onBlockPistonRetract(event);
 		if (event.isCancelled())
 			return;
 		SpoutBlock sBlock = (SpoutBlock) event.getBlock();

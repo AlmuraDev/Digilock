@@ -1,24 +1,21 @@
 package dk.gabriel333.BITBackpack;
 
-import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerKickEvent;
-import org.bukkit.event.player.PlayerListener;
-import org.bukkit.event.player.PlayerPortalEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
-
 import dk.gabriel333.BukkitInventoryTools.BIT;
 import dk.gabriel333.Library.BITConfig;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.*;
 
-public class BITBackpackPlayerListener extends PlayerListener {
+public class BITBackpackPlayerListener implements Listener {
 	private BIT plugin;
 
 	public BITBackpackPlayerListener(BIT plugin) {
 		this.plugin = plugin;
 	}
 
-	@Override
+	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		try {
 			Player player = event.getPlayer();
@@ -28,11 +25,11 @@ public class BITBackpackPlayerListener extends PlayerListener {
 		}
 	}
 
-	@Override
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerTeleport(PlayerTeleportEvent event) {
 
-		if (((event.getFrom().getWorld().getName() != event.getTo().getWorld()
-				.getName()) || plugin.portals.contains(event.getPlayer()))) {
+		if (((!event.getFrom().getWorld().getName().equals(event.getTo().getWorld()
+                                     .getName())) || plugin.portals.contains(event.getPlayer()))) {
 			String path = "SBP.InventoriesShare."
 					+ event.getTo().getWorld().getName();
 			if (!BITConfig.config.contains(path)) {
@@ -57,12 +54,12 @@ public class BITBackpackPlayerListener extends PlayerListener {
 		}
 	}
 
-	@Override
+	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerPortal(PlayerPortalEvent event) {
 		plugin.portals.add(event.getPlayer());
 	}
 
-	@Override
+	@EventHandler
 	public void onPlayerKick(PlayerKickEvent event) {
 		try {
 			Player player = event.getPlayer();
@@ -73,7 +70,7 @@ public class BITBackpackPlayerListener extends PlayerListener {
 		}
 	}
 
-	@Override
+	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		try {
 			Player player = event.getPlayer();

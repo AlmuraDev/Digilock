@@ -22,6 +22,11 @@
 			<version>1.1-R5-SNAPSHOT</version>
 		</dependency>
 		<dependency>
+					<groupId>org.getspout</groupId>
+					<artifactId>spoutplugin</artifactId>
+					<version>dev-SNAPSHOT</version>
+			</dependency>
+		<dependency>
 				<groupId>org.getspout</groupId>
 				<artifactId>spoutpluginapi</artifactId>
 				<version>dev-SNAPSHOT</version>
@@ -41,28 +46,30 @@
 			<artifactId>PermissionsEx</artifactId>
 			<version>1.18</version>
 		</dependency>
-		
+		<dependency>
+				<groupId>ru.tehkode</groupId>
+				<artifactId>PermissionsEx</artifactId>
+				<version>1.18</version>
+		</dependency>
 		<!-- local deps -->
 		<dependency>
 			<groupId>com.garbagemule</groupId>
-			<artifactId>MobArena</artifactId>
+			<artifactId>mobarena</artifactId>
 			<version>0.94.3.24</version>
 			<scope>system</scope>
 			<systemPath>${basedir}/lib/MobArena.jar</systemPath>
 		</dependency>
 		<dependency>
 				<groupId>de.Keyle</groupId>
-				<artifactId>MyWolf</artifactId>
+				<artifactId>mywolf</artifactId>
 				<version>0.5.4</version>
 				<scope>system</scope>
 				<systemPath>${basedir}/lib/MyWolf.jar</systemPath>
 		</dependency>
 		<dependency>
-				<groupId>com.matejdro.bukkit</groupId>
-				<artifactId>jail</artifactId>
-				<version>2.1.1</version>
-				<scope>system</scope>
-				<systemPath>${basedir}/lib/Jail.jar</systemPath>
+				<groupId>com.sk89q</groupId>
+				<artifactId>worldguard</artifactId>
+				<version>5.5</version>
 		</dependency>
 
 	</dependencies>
@@ -88,14 +95,14 @@
 			<url>http://repo.tehkode.ru/repository/repo</url>
 		</repository>
 		<repository>
-			<id>chrisgward-repo</id>
+			<id>zml repo</id>
 			<snapshots>
 				<enabled>true</enabled>
 			</snapshots>
 			<releases>
 				<enabled>true</enabled>
 			</releases>
-			<url>http://repo.chrisgward.com/repository/</url>
+			<url>http://files.zachsthings.com/repo/</url>
 		</repository>
 		<repository>
 				<id>spout-repo</id>
