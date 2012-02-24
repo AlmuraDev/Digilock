@@ -46,7 +46,7 @@ public class BIT extends JavaPlugin {
 
 	// Hook into vault
 	public static Boolean useEconomy = false;
-        public static Economy economy = null;
+        public Economy economy = null;
 
         // BITBackpack
 	public static BITBackpackLanguageInterface li;
@@ -80,7 +80,8 @@ public class BIT extends JavaPlugin {
 			setupMobArena();
 			setupJail();
 			setupWar();
-			useEconomy = setupEconomy();
+                        if (!BITConfig.SBP_DISABLEECONOMY)
+        			useEconomy = setupEconomy();
 			li = new BITBackpackLanguageInterface(BITBackpack.loadLanguage());
 			// Load BITBackpack
 			for (Player player : Bukkit.getServer().getOnlinePlayers()) {
@@ -361,8 +362,8 @@ public class BIT extends JavaPlugin {
 			// Initialize SQLite handler
 			manageSQLite.initialize();
 			// Check if the table exists, if it doesn't create it
-			String query = "";
-			String insert = "";
+			String query;
+			String insert;
 			if (!manageSQLite.checkTable(digilockTable)) {
 				if (manageSQLite.checkTable(oldDigilockTable)) {
 					BITMessages.showInfo("Upgrade table " + oldDigilockTable
