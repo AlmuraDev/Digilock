@@ -1,12 +1,16 @@
 package dk.gabriel333.BukkitInventoryTools.Inventory;
 
+import dk.gabriel333.BukkitInventoryTools.BIT;
+import dk.gabriel333.BukkitInventoryTools.Book.BITBook;
+import dk.gabriel333.BukkitInventoryTools.DigiLock.BITDigiLock;
+import dk.gabriel333.Library.BITConfig;
+import dk.gabriel333.Library.BITMessages;
 import java.net.MalformedURLException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -15,21 +19,9 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.block.SpoutBlock;
-import org.getspout.spoutapi.gui.GenericButton;
-import org.getspout.spoutapi.gui.GenericItemWidget;
-import org.getspout.spoutapi.gui.GenericLabel;
-import org.getspout.spoutapi.gui.GenericPopup;
-import org.getspout.spoutapi.gui.GenericTextField;
-import org.getspout.spoutapi.gui.GenericTexture;
-import org.getspout.spoutapi.gui.PopupScreen;
+import org.getspout.spoutapi.gui.*;
 import org.getspout.spoutapi.material.Item;
 import org.getspout.spoutapi.player.SpoutPlayer;
-
-import dk.gabriel333.BukkitInventoryTools.BIT;
-import dk.gabriel333.BukkitInventoryTools.Book.BITBook;
-import dk.gabriel333.BukkitInventoryTools.DigiLock.BITDigiLock;
-import dk.gabriel333.Library.BITConfig;
-import dk.gabriel333.Library.BITMessages;
 
 public class BITInventory {
 
@@ -317,9 +309,9 @@ public class BITInventory {
 			e.printStackTrace();
 		}
 
-		short bookId = 0;
+		short bookId;
 		if (inventory.contains(Material.BOOK)) {
-			BITBook bitBook = new BITBook();
+			BITBook bitBook;
 			for (int j = 0; j < inventory.getSize(); j++) {
 				if (inventory.getItem(j).getType() == Material.BOOK) {
 					bookId = inventory.getItem(j).getDurability();
@@ -341,7 +333,7 @@ public class BITInventory {
 
 	public static String loadBitInventoryName(SpoutPlayer sPlayer,
 			SpoutBlock block) {
-		String name = "";
+		String name;
 		String query = "SELECT * FROM " + BIT.bitInventoryTable
 				+ " WHERE (x = " + block.getX() + " AND y = " + block.getY()
 				+ " AND z = " + block.getZ() + " AND world='"
@@ -619,13 +611,13 @@ public class BITInventory {
 		coOwnersGUI.get(id).setMaximumCharacters(200);
 		coOwnersGUI.get(id).setText(coOwnersGUI.get(id).getText());
 		popupScreen.get(id).attachWidget(BIT.plugin, coOwnersGUI.get(id));
-		y = y + height;
+		// y = y + height;
 
 		// Second row ------------X=170-270-370------------------------------
 		y = 110;
 		x = 180;
 		w1 = 80;
-		w2 = 80;
+		// w2 = 80;
 		y = y + height;
 
 		// CreateBookshelfButton

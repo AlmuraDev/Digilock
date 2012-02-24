@@ -1,12 +1,14 @@
 package dk.gabriel333.BukkitInventoryTools.Book;
 
+import dk.gabriel333.BukkitInventoryTools.BIT;
+import dk.gabriel333.Library.BITConfig;
+import dk.gabriel333.Library.BITMessages;
 import java.net.MalformedURLException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -15,19 +17,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
-import org.getspout.spoutapi.gui.GenericButton;
-import org.getspout.spoutapi.gui.GenericItemWidget;
-import org.getspout.spoutapi.gui.GenericLabel;
-import org.getspout.spoutapi.gui.GenericPopup;
-import org.getspout.spoutapi.gui.GenericTextField;
-import org.getspout.spoutapi.gui.PopupScreen;
+import org.getspout.spoutapi.gui.*;
 import org.getspout.spoutapi.material.Item;
 import org.getspout.spoutapi.packet.PacketItemName;
 import org.getspout.spoutapi.player.SpoutPlayer;
-
-import dk.gabriel333.BukkitInventoryTools.BIT;
-import dk.gabriel333.Library.BITConfig;
-import dk.gabriel333.Library.BITMessages;
 
 public class BITBook {
 
@@ -323,7 +316,7 @@ public class BITBook {
 						canBeMovedFromInventoryGUI.get(id),
 						copyTheBookWhenMovedGUI.get(id), Integer
 								.valueOf(useCostGUI.get(id).getText())));
-		String query = "";
+		String query;
 		boolean createBook = true;
 		int cost = BITConfig.BOOK_COST;
 		if (isWritten(sPlayer, bookId)) {

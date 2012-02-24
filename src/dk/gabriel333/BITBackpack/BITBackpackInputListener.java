@@ -1,12 +1,15 @@
 package dk.gabriel333.BITBackpack;
 
+import dk.gabriel333.BukkitInventoryTools.BIT;
+import dk.gabriel333.Library.BITConfig;
+import dk.gabriel333.Library.BITPermissions;
 import net.minecraft.server.EntityPlayer;
 import net.minecraft.server.Packet100OpenWindow;
-//import net.minecraft.server.Packet101CloseWindow;
-
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.event.input.KeyPressedEvent;
@@ -14,12 +17,6 @@ import org.getspout.spoutapi.gui.Color;
 import org.getspout.spoutapi.gui.GenericLabel;
 import org.getspout.spoutapi.gui.ScreenType;
 import org.getspout.spoutapi.player.SpoutPlayer;
-
-import dk.gabriel333.BukkitInventoryTools.BIT;
-import dk.gabriel333.Library.BITConfig;
-import dk.gabriel333.Library.BITPermissions;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 
 public class BITBackpackInputListener implements Listener {
 

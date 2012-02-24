@@ -125,22 +125,18 @@ public class BITDigiLock {
 					+ users + "', " + block.getTypeId() + ", '" + connectedTo
 					+ "', " + useCost + " );";
 			if (BIT.useEconomy) {
-				if (BIT.plugin.Method.hasAccount(sPlayer.getName()) && cost > 0) {
-					if (BIT.plugin.Method.getAccount(sPlayer.getName())
-							.hasEnough(cost)) {
-						BIT.plugin.Method.getAccount(sPlayer.getName())
-								.subtract(cost);
+				if (BIT.plugin.economy.hasAccount(sPlayer.getName()) && cost > 0) {
+					if (BIT.plugin.economy.has(sPlayer.getName(), cost)) {
+						BIT.plugin.economy.withdrawPlayer(sPlayer.getName(), cost);
 						sPlayer.sendMessage("Your account ("
-								+ BIT.plugin.Method.getAccount(
-										sPlayer.getName()).balance()
+								+ BIT.plugin.economy.getBalance(sPlayer.getName())
 								+ ") has been deducted "
-								+ BIT.plugin.Method.format(cost) + ".");
+								+ BIT.plugin.economy.format(cost) + ".");
 					} else {
 						sPlayer.sendMessage("You dont have enough money ("
-								+ BIT.plugin.Method.getAccount(
-										sPlayer.getName()).balance()
+								+ BIT.plugin.economy.getBalance(sPlayer.getName())
 								+ "). Cost is:"
-								+ BIT.plugin.Method.format(cost));
+								+ BIT.plugin.economy.format(cost));
 						createlock = false;
 					}
 				}
@@ -496,11 +492,9 @@ public class BITDigiLock {
 					BIT.plugin.Method.getAccount(sPlayer.getName()).subtract(
 							BITConfig.DIGILOCK_DESTROYCOST);
 					sPlayer.sendMessage("Your account ("
-							+ BIT.plugin.Method.getAccount(sPlayer.getName())
-									.balance()
+							+ BIT.plugin.economy.getBalance(sPlayer.getName());
 							+ ") has been deducted "
-							+ BIT.plugin.Method
-									.format(BITConfig.DIGILOCK_DESTROYCOST)
+							+ BIT.plugin.economy.format(BITConfig.DIGILOCK_DESTROYCOST)
 							+ ".");
 				} else {
 					sPlayer.sendMessage("You dont have enough money ("
@@ -1697,6 +1691,7 @@ public class BITDigiLock {
 		// 20 ticks / second
 		int taskID = BIT.plugin.getServer().getScheduler()
 				.scheduleSyncDelayedTask(BIT.plugin, new Runnable() {
+                                        @Override
 					public void run() {
 						SpoutBlock sb = sBlock;
 						SpoutPlayer sp = sPlayer;
@@ -1976,6 +1971,7 @@ public class BITDigiLock {
 		// 20 ticks / second
 		int taskID = BIT.plugin.getServer().getScheduler()
 				.scheduleSyncDelayedTask(BIT.plugin, new Runnable() {
+                                        @Override
 					public void run() {
 						SpoutBlock sb = sBlock;
 						SpoutPlayer sp = sPlayer;

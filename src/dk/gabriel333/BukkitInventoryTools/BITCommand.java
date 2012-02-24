@@ -31,10 +31,12 @@ public class BITCommand implements CommandExecutor {
 						action = args[0];
 							if (action.equalsIgnoreCase("reload")) {
 								plugin.onDisable();
+                                                                /*
 								BITPermissions.permissions3=false;
 								BITPermissions.permissionsBukkit=false;
 								BITPermissions.permissionsex=false; 
 								BITPermissions.bPermissions=false;
+                                                                * */
 								plugin.onEnable();
 								BITMessages.showInfo("BIT was restarted...." );	
 								sPlayer.sendMessage("BIT was restarted.");

@@ -1,5 +1,25 @@
 package dk.gabriel333.BukkitInventoryTools;
 
+import com.alta189.sqlLibrary.MySQL.mysqlCore;
+import com.alta189.sqlLibrary.SQLite.sqlCore;
+import com.garbagemule.MobArena.MobArenaHandler;
+import com.matejdro.bukkit.jail.Jail;
+import com.matejdro.bukkit.jail.JailAPI;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.tommytony.war.War;
+import de.Keyle.MyWolf.MyWolfPlugin;
+import dk.gabriel333.BITBackpack.*;
+import dk.gabriel333.BukkitInventoryTools.Book.BITBookInputListener;
+import dk.gabriel333.BukkitInventoryTools.Book.BITBookSpoutListener;
+import dk.gabriel333.BukkitInventoryTools.Book.BITCommandBookshelf;
+import dk.gabriel333.BukkitInventoryTools.DigiLock.*;
+import dk.gabriel333.BukkitInventoryTools.Inventory.BITInventoryListener;
+import dk.gabriel333.BukkitInventoryTools.Inventory.BITInventorySpoutListener;
+import dk.gabriel333.BukkitInventoryTools.Sort.BITCommandSort;
+import dk.gabriel333.BukkitInventoryTools.Sort.BITSortInputListener;
+import dk.gabriel333.Library.BITConfig;
+import dk.gabriel333.Library.BITMessages;
+import dk.gabriel333.Library.BITPlugin;
 import java.lang.reflect.Field;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -7,7 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
-
+import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -15,36 +35,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-import com.tommytony.war.War;  //previous load = bukkit.tommytony.war.War;
-
-import com.alta189.sqlLibrary.MySQL.mysqlCore;
-import com.alta189.sqlLibrary.SQLite.sqlCore;
-import com.garbagemule.MobArena.MobArenaHandler;
-import com.matejdro.bukkit.jail.Jail;
-import com.matejdro.bukkit.jail.JailAPI;
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-
-import dk.gabriel333.register.BITServerListener;
-import dk.gabriel333.register.payment.Method;
-import dk.gabriel333.register.payment.Methods;
-import de.Keyle.MyWolf.MyWolfPlugin;
-import dk.gabriel333.BITBackpack.BITBackpackEntityListener;
-import dk.gabriel333.BITBackpack.BITBackpackInputListener;
-import dk.gabriel333.BITBackpack.BITBackpackInventoryListener;
-import dk.gabriel333.BITBackpack.BITBackpackInventorySaveTask;
-import dk.gabriel333.BITBackpack.BITBackpackLanguageInterface;
-import dk.gabriel333.BITBackpack.BITBackpack;
-import dk.gabriel333.BITBackpack.BITBackpackPlayerListener;
-import dk.gabriel333.BukkitInventoryTools.Sort.BITCommandSort;
-import dk.gabriel333.BukkitInventoryTools.Sort.BITSortInputListener;
-import dk.gabriel333.BukkitInventoryTools.Book.*;
-import dk.gabriel333.BukkitInventoryTools.DigiLock.*;
-import dk.gabriel333.BukkitInventoryTools.Inventory.BITInventoryListener;
-import dk.gabriel333.BukkitInventoryTools.Inventory.BITInventorySpoutListener;
-import dk.gabriel333.Library.BITConfig;
-import dk.gabriel333.Library.BITMessages;
-import dk.gabriel333.Library.BITPlugin;
 
 public class BIT extends JavaPlugin {
 
@@ -52,12 +44,11 @@ public class BIT extends JavaPlugin {
 
 	public static Boolean spout = false;
 
-	// Hook into register
+	// Hook into vault
 	public static Boolean useEconomy = false;
-	public Methods Methods;
-	public Method Method;
+        public static Economy economy = null;
 
-	// BITBackpack
+        // BITBackpack
 	public static BITBackpackLanguageInterface li;
 	public static MobArenaHandler mobArenaHandler;
 	public List<Player> portals = new ArrayList<Player>();
@@ -82,7 +73,6 @@ public class BIT extends JavaPlugin {
 			BITConfig.bitSetupConfig();
 			setupSpout();
 			setupSQL();
-			setupRegister();
 			setupMyWolf();
 			registerEvents();
 			addCommands();
@@ -90,6 +80,7 @@ public class BIT extends JavaPlugin {
 			setupMobArena();
 			setupJail();
 			setupWar();
+			useEconomy = setupEconomy();
 			li = new BITBackpackLanguageInterface(BITBackpack.loadLanguage());
 			// Load BITBackpack
 			for (Player player : Bukkit.getServer().getOnlinePlayers()) {
@@ -111,9 +102,6 @@ public class BIT extends JavaPlugin {
 			war = new War();
 			BITMessages.showInfo("War v."+warPlugin.getDescription().getVersion()+" detected.");
 			warIsEnabled=true;
-			return;
-		} else {
-			return;
 		}
 	}
 
@@ -199,53 +187,17 @@ public class BIT extends JavaPlugin {
 		}
 	}
 
-	private void setupRegister() {
-		Plugin iconomyPlugin = this.getServer().getPluginManager()
-				.getPlugin("iConomy");
-		Plugin boseconomyPlugin = this.getServer().getPluginManager()
-				.getPlugin("BOSEconomy");
-		Plugin essentialsPlugin = this.getServer().getPluginManager()
-				.getPlugin("Essentials");
-		Plugin multiCurrencyPlugin = this.getServer().getPluginManager()
-				.getPlugin("MultiCurrency");
-		if (iconomyPlugin != null || boseconomyPlugin != null
-				|| essentialsPlugin != null || multiCurrencyPlugin != null) {
-			getServer().getPluginManager().registerEvent(Type.PLUGIN_ENABLE,
-					new BITServerListener(this), Priority.Monitor, this);
-			getServer().getPluginManager().registerEvent(Type.PLUGIN_DISABLE,
-					new BITServerListener(this), Priority.Monitor, this);
-            useEconomy=true;
-            if (iconomyPlugin != null){
-            	BITMessages.showInfo("iConomy Plugin detected and loaded properly.");
-            }
-            
-            if (boseconomyPlugin != null){
-            	BITMessages.showInfo("BOSEConomy Plugin detected and loaded properly.");
-            }
-            
-            if (essentialsPlugin != null){
-            	BITMessages.showInfo("Essentials Economy Plugin detected and loaded properly.");
-            }
-            
-            if (multiCurrencyPlugin != null){
-            	BITMessages.showInfo("Multi-Currency Economy Plugin detected and loaded properly.");
-            }
-          
-		}
-		if (BITConfig.SBP_EnableEconomy){
-			BITMessages.showInfo("Economy Plugin was detected and is forced enabled.");		
-			useEconomy=true;
-		} else {
-			BITMessages.showInfo("Economy Plugin was detected but economy functionality has disabled in the config.yml file.");
-			useEconomy=false;
-		}
+        private Boolean setupEconomy()
+        {
+            RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
+           if (economyProvider != null) {
+               economy = economyProvider.getProvider();
+               BITMessages.showInfo("Vault is detected.");
+           }
 
-		//	if (iconomyPlugin == null || boseconomyPlugin == null	|| essentialsPlugin == null || multiCurrencyPlugin == null){
-	//		useEconomy=false;
-	//		BITMessages.showInfo("Economy Plugin was not detected, economy functionality disabled.");
-	//	}
-		
-	}
+           return (economy != null);
+        }
+
 
 	public static boolean isPlayer(CommandSender sender) {
 		if (sender instanceof Player)
@@ -585,12 +537,12 @@ public class BIT extends JavaPlugin {
 	}
 
 	public static WorldGuardPlugin getWorldGuard() {
-		Plugin plugin = Bukkit.getServer().getPluginManager()
+		Plugin wgPlugin = Bukkit.getServer().getPluginManager()
 				.getPlugin("WorldGuard");
-		if (plugin == null || !(plugin instanceof WorldGuardPlugin)) {
+		if (wgPlugin == null || !(wgPlugin instanceof WorldGuardPlugin)) {
 			return null;
 		}
-		return (WorldGuardPlugin) plugin;
+		return (WorldGuardPlugin) wgPlugin;
 	}
 
 	private void setupMobArena() {
@@ -604,7 +556,6 @@ public class BIT extends JavaPlugin {
 		}
 		mobArenaHandler = new MobArenaHandler();
 		BITMessages.showInfo("MobArena detected.");
-		return;
 	}
 
 	// long delay = 20L * 60 * saveTime;
@@ -615,10 +566,7 @@ public class BIT extends JavaPlugin {
 		if (jailPlugin != null) {
 			jail = ((Jail) jailPlugin).API;
 			BITMessages.showInfo("Jail detected.");
-			return;
-		} else {
-			return;
-		}
+                }
 	}
 
 }
