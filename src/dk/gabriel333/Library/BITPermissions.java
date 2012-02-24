@@ -23,10 +23,12 @@ public class BITPermissions {
 	// Initialize all permissionsplugins
         protected static void setupPermissions(Plugin plugin)
         {
+            if (plugin.getServer().getPluginManager().getPlugin("Vault") != null) {
                 RegisteredServiceProvider<Permission> permissionProvider = plugin.getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
                 if (permissionProvider != null) {
                     permission = permissionProvider.getProvider();
                 }
+            }
         }
 
 	// Test if the player has permissions to do the action

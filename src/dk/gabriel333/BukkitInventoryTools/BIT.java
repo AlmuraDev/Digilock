@@ -190,6 +190,9 @@ public class BIT extends JavaPlugin {
 
         private Boolean setupEconomy()
         {
+            if (getServer().getPluginManager().getPlugin("Vault") == null)
+                return false;
+            
             RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
            if (economyProvider != null) {
                economy = economyProvider.getProvider();
