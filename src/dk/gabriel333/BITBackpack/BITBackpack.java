@@ -30,7 +30,6 @@ import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.gui.GenericLabel;
 
-@SuppressWarnings({})
 public class BITBackpack implements CommandExecutor {
 
 	public BITBackpack(BIT instance) {
@@ -142,7 +141,7 @@ public class BITBackpack implements CommandExecutor {
 									player.sendMessage(BIT.li
 											.getMessage("nextupgradecost")
 											+ ChatColor.RED
-											+ plugin.Method.format(cost)
+											+ plugin.economy.format(cost)
 											+ ChatColor.WHITE + ".");
 								}
 							}
@@ -260,7 +259,7 @@ public class BITBackpack implements CommandExecutor {
 											player.sendMessage(BIT.li
 													.getMessage("nextupgradecost")
 													+ ChatColor.RED
-													+ plugin.Method
+													+ plugin.economy
 															.format(cost)
 													+ ChatColor.WHITE + ".");
 										}
@@ -411,22 +410,19 @@ public class BITBackpack implements CommandExecutor {
 			Player notificationsAndMoneyPlayer) {
 		int sizeAfter = sizeBefore + 9;
 		double cost = calculateCostToUpgrade(sizeBefore);
-		if (plugin.Method.hasAccount(notificationsAndMoneyPlayer.getName())) {
-			MethodAccount account = plugin.Method
-					.getAccount(notificationsAndMoneyPlayer.getName());
-			if (plugin.Method.hasAccount(notificationsAndMoneyPlayer.getName())) {
-				if (account.hasEnough(cost)) {
-					account.subtract(cost);
+		if (plugin.economy.hasAccount(notificationsAndMoneyPlayer.getName())) {
+			if (plugin.economy.hasAccount(notificationsAndMoneyPlayer.getName())) {
+				if (plugin.economy.has(notificationsAndMoneyPlayer.getName(), cost)) {
+					plugin.economy.withdrawPlayer(notificationsAndMoneyPlayer.getName(), cost);
 					notificationsAndMoneyPlayer.sendMessage("Your account ("
-							+ plugin.Method.getAccount(
-									notificationsAndMoneyPlayer.getName())
-									.balance() + ") has been deducted "
-							+ plugin.Method.format(cost) + ".");
+							+ plugin.economy.getBalance(notificationsAndMoneyPlayer.getName())
+                                                        + ") has been deducted "
+							+ plugin.economy.format(cost) + ".");
 					if (!player.getName().equals(
 							notificationsAndMoneyPlayer.getName())) {
 						player.sendMessage(player.getName()
 								+ "'s account has been deducted "
-								+ plugin.Method.format(cost) + ".");
+								+ plugin.economy.format(cost) + ".");
 					}
 				} else {
 					if (player.equals(notificationsAndMoneyPlayer)) {
@@ -783,7 +779,6 @@ public class BITBackpack implements CommandExecutor {
 		
 			// BITMessages.showInfo("Player Config:" +" " + saveFile +" " + world + " " +player);
 		
-			@SuppressWarnings({})
 		YamlConfiguration config = new YamlConfiguration();
 		try {
 			config.load(saveFile);

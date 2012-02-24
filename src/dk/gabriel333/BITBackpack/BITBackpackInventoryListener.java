@@ -15,7 +15,6 @@ import org.getspout.spoutapi.event.inventory.InventorySlotType;
 
 public class BITBackpackInventoryListener implements Listener {
 	
-	@SuppressWarnings("unused")
 	private BIT plugin;
 
 	public void SBInventoryListener(BIT plugin) {

@@ -1,5 +1,7 @@
 package dk.gabriel333.BITBackpack;
 
+import dk.gabriel333.BukkitInventoryTools.BIT;
+import dk.gabriel333.Library.BITConfig;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
@@ -11,12 +13,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.SpoutManager;
-import dk.gabriel333.BukkitInventoryTools.BIT;
-import dk.gabriel333.Library.BITConfig;
 
 public class BITBackpackInventorySaveTask implements Runnable {
 
-	@SuppressWarnings("unused")
 	private BIT plugin;
 
 	public void SBInventorySaveTask(BIT plugin) {
@@ -65,7 +64,7 @@ public class BITBackpackInventorySaveTask implements Runnable {
 				Inventory inv = SpoutManager.getInventoryBuilder().construct(
 						size, BITBackpack.inventoryName);
 				inv.setContents(BITBackpack.inventories.get(player.getName()));
-				Integer i = 0;
+				Integer i;
 				for (i = 0; i < size; i++) {
 					ItemStack item = inv.getItem(i);
 					config.set(i.toString() + ".amount", item.getAmount());

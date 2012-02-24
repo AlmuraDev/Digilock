@@ -1,13 +1,13 @@
 name: BukkitInventoryTools
 main: dk.gabriel333.BukkitInventoryTools.BIT
-version: 3.3.0
+version: 3.4.0
 author: Rocologo / Dockter
 authors: [Gabriel333]
 website: http://dev.bukkit.org/server-mods/bukkitinventorytools/
 dev-url: https://github.com/BukkitInventoryTools
 description: Shop, Digital lock, sort and stack inventories
 depend: [Spout]
-softdepend: [PermissionsBukkit, bPermissions, PermissionsEx, Permissions, GroupManager, iConomy, BOSEconomy, Essentials, MultiCurrency, WorldGuard, MobArena, Jail, War]
+softdepend: [Vault, WorldGuard, MobArena, Jail, War]
 commands:
     bit:
         description: Admin commands.

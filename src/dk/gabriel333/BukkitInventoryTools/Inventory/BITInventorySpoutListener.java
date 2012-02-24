@@ -16,7 +16,6 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 
 public class BITInventorySpoutListener implements Listener {
 	
-	@SuppressWarnings("unused")
 	private BIT plugin;
 
 	public BITInventorySpoutListener(BIT plugin) {

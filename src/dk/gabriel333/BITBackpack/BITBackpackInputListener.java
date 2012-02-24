@@ -177,21 +177,21 @@ public class BITBackpackInputListener implements Listener {
 	}
 
 	public void addBalanceWidget(SpoutPlayer sPlayer) {
-		if (plugin.Method != null && BITConfig.SBP_useWidget) {
+		if (plugin.economy != null && BITConfig.SBP_useWidget) {
 			if (BITBackpack.widgets.containsKey(sPlayer.getName())
 					&& BITConfig.SBP_useWidget) {
 				BITBackpack.widgets.get(sPlayer.getName()).setVisible(true)
 						.setDirty(true);
 			} else {
-				if (!plugin.Method.hasAccount(sPlayer.getName())) {
+				if (!plugin.economy.hasAccount(sPlayer.getName())) {
 					return;
 				}
 				GenericLabel widget = new GenericLabel("");
 				widget.setText(
 						BIT.li.getMessage("money")
-								+ String.format(plugin.Method
-										.format(plugin.Method.getAccount(
-												sPlayer.getName()).balance())))
+								+ String.format(plugin.economy
+										.format(plugin.economy.getBalance(
+												sPlayer.getName()))))
 						.setTextColor(new Color(1.0F, 1.0F, 1.0F, 1.0F))
 						.setX(BITConfig.SBP_widgetX)
 						.setY(BITConfig.SBP_widgetY).setHeight(15).setWidth(50)

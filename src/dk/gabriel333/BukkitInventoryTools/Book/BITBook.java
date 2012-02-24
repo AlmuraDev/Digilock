@@ -377,22 +377,20 @@ public class BITBook {
 		} else {
 			// NEW BOOK
 			if (BIT.useEconomy) {
-				if (BIT.plugin.Method.hasAccount(sPlayer.getName()) && cost > 0) {
-					if (BIT.plugin.Method.getAccount(sPlayer.getName())
-							.hasEnough(cost)) {
-						BIT.plugin.Method.getAccount(sPlayer.getName())
-								.subtract(cost);
+				if (BIT.plugin.economy.hasAccount(sPlayer.getName()) && cost > 0) {
+					if (BIT.plugin.economy.has(sPlayer.getName(), cost)) {
+						BIT.plugin.economy.withdrawPlayer(sPlayer.getName(), cost);
 						sPlayer.sendMessage("Your account ("
-								+ BIT.plugin.Method.getAccount(
-										sPlayer.getName()).balance()
+								+ BIT.plugin.economy.getBalance(
+										sPlayer.getName())
 								+ ") has been deducted "
-								+ BIT.plugin.Method.format(cost) + ".");
+								+ BIT.plugin.economy.format(cost) + ".");
 					} else {
 						sPlayer.sendMessage("You dont have enough money ("
-								+ BIT.plugin.Method.getAccount(
-										sPlayer.getName()).balance()
+								+ BIT.plugin.economy.getBalance(
+										sPlayer.getName())
 								+ "). Cost is:"
-								+ BIT.plugin.Method.format(cost));
+								+ BIT.plugin.economy.format(cost));
 						createBook = false;
 					}
 				}
@@ -556,21 +554,19 @@ public class BITBook {
 	public void removeBook(SpoutPlayer sPlayer, short bookId, int destroycost) {
 		boolean deleteBook = true;
 		if (BIT.useEconomy) {
-			if (BIT.plugin.Method.hasAccount(sPlayer.getName())) {
-				if (BIT.plugin.Method.getAccount(sPlayer.getName()).hasEnough(
-						destroycost)
+			if (BIT.plugin.economy.hasAccount(sPlayer.getName())) {
+				if (BIT.plugin.economy.has(sPlayer.getName(), destroycost)
 						|| destroycost < 0) {
-					BIT.plugin.Method.getAccount(sPlayer.getName()).subtract(
-							destroycost);
+					BIT.plugin.economy.withdrawPlayer(sPlayer.getName(), destroycost);
 					sPlayer.sendMessage("Your account ("
-							+ BIT.plugin.Method.getAccount(sPlayer.getName())
-									.balance() + ") has been deducted "
-							+ BIT.plugin.Method.format(destroycost) + ".");
+							+ BIT.plugin.economy.getBalance(sPlayer.getName())
+                                                        + ") has been deducted "
+							+ BIT.plugin.economy.format(destroycost) + ".");
 				} else {
 					sPlayer.sendMessage("You dont have enough money ("
-							+ BIT.plugin.Method.getAccount(sPlayer.getName())
-									.balance() + "). Cost is:"
-							+ BIT.plugin.Method.format(destroycost));
+							+ BIT.plugin.economy.getBalance(sPlayer.getName())
+							+ "). Cost is:"
+							+ BIT.plugin.economy.format(destroycost));
 					deleteBook = false;
 				}
 			}

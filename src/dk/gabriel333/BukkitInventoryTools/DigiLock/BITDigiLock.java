@@ -27,7 +27,6 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 
 public class BITDigiLock {
 
-	@SuppressWarnings("unused")
 	private BIT plugin;
 
 	public BITDigiLock(BIT plugin) {
@@ -213,7 +212,7 @@ public class BITDigiLock {
 	}
 
 	/**
-	 * Method to find the the next block which is connected to a lever or a
+	 * economy to find the the next block which is connected to a lever or a
 	 * stonebutton.
 	 * 
 	 * @param sBlock
@@ -485,23 +484,22 @@ public class BITDigiLock {
 	public void RemoveDigiLock(SpoutPlayer sPlayer) {
 		boolean deletelock = true;
 		if (BIT.useEconomy) {
-			if (BIT.plugin.Method.hasAccount(sPlayer.getName())) {
-				if (BIT.plugin.Method.getAccount(sPlayer.getName()).hasEnough(
+			if (BIT.plugin.economy.hasAccount(sPlayer.getName())) {
+				if (BIT.plugin.economy.has(sPlayer.getName(),
 						BITConfig.DIGILOCK_DESTROYCOST)
 						|| BITConfig.DIGILOCK_DESTROYCOST < 0) {
-					BIT.plugin.Method.getAccount(sPlayer.getName()).subtract(
+					BIT.plugin.economy.withdrawPlayer(sPlayer.getName(),
 							BITConfig.DIGILOCK_DESTROYCOST);
 					sPlayer.sendMessage("Your account ("
-							+ BIT.plugin.economy.getBalance(sPlayer.getName());
+							+ BIT.plugin.economy.getBalance(sPlayer.getName())
 							+ ") has been deducted "
 							+ BIT.plugin.economy.format(BITConfig.DIGILOCK_DESTROYCOST)
 							+ ".");
 				} else {
 					sPlayer.sendMessage("You dont have enough money ("
-							+ BIT.plugin.Method.getAccount(sPlayer.getName())
-									.balance()
+							+ BIT.plugin.economy.getBalance(sPlayer.getName())
 							+ "). Cost is:"
-							+ BIT.plugin.Method
+							+ BIT.plugin.economy
 									.format(BITConfig.DIGILOCK_DESTROYCOST));
 					deletelock = false;
 				}
@@ -1115,28 +1113,24 @@ public class BITDigiLock {
 					&& digilock.isUser(sPlayer)
 					&& !(digilock.isOwner(sPlayer) || digilock
 							.isCoowner(sPlayer))) {
-				if (BIT.plugin.Method.hasAccount(sPlayer.getName())) {
-					if (BIT.plugin.Method.getAccount(sPlayer.getName())
-							.hasEnough(cost)) {
-						BIT.plugin.Method.getAccount(sPlayer.getName())
-								.subtract(cost);
-						if (BIT.plugin.Method.hasAccount(nextDigilock
-								.getOwner())) {
-							BIT.plugin.Method.getAccount(
-									nextDigilock.getOwner()).add(cost);
+				if (BIT.plugin.economy.hasAccount(sPlayer.getName())) {
+					if (BIT.plugin.economy.has(sPlayer.getName(), cost)) {
+						BIT.plugin.economy.withdrawPlayer(sPlayer.getName(), cost);
+						if (BIT.plugin.economy.hasAccount(nextDigilock.getOwner())) {
+							BIT.plugin.economy.depositPlayer(nextDigilock.getOwner(), cost);
 						}
 
 						sPlayer.sendMessage("Your account ("
-								+ BIT.plugin.Method.getAccount(
-										sPlayer.getName()).balance()
+								+ BIT.plugin.economy.getBalance(
+										sPlayer.getName())
 								+ ") has been deducted "
-								+ BIT.plugin.Method.format(cost) + ".");
+								+ BIT.plugin.economy.format(cost) + ".");
 					} else {
 						sPlayer.sendMessage("You dont have enough money ("
-								+ BIT.plugin.Method.getAccount(
-										sPlayer.getName()).balance()
+								+ BIT.plugin.economy.getBalance(
+										sPlayer.getName())
 								+ "). Cost is:"
-								+ BIT.plugin.Method.format(cost));
+								+ BIT.plugin.economy.format(cost));
 						pressButton = false;
 					}
 				}
@@ -1230,27 +1224,25 @@ public class BITDigiLock {
 						&& digilock.isUser(sPlayer)
 						&& !(digilock.isOwner(sPlayer) || digilock
 								.isCoowner(sPlayer))) {
-					if (BIT.plugin.Method.hasAccount(sPlayer.getName())) {
-						if (BIT.plugin.Method.getAccount(sPlayer.getName())
-								.hasEnough(cost)) {
-							BIT.plugin.Method.getAccount(sPlayer.getName())
-									.subtract(cost);
-							if (BIT.plugin.Method.hasAccount(nextDigilock
+					if (BIT.plugin.economy.hasAccount(sPlayer.getName())) {
+						if (BIT.plugin.economy.has(sPlayer.getName(), cost)) {
+							BIT.plugin.economy.withdrawPlayer(sPlayer.getName(), cost);
+							if (BIT.plugin.economy.hasAccount(nextDigilock
 									.getOwner())) {
-								BIT.plugin.Method.getAccount(
-										nextDigilock.getOwner()).add(cost);
+								BIT.plugin.economy.depositPlayer(
+										nextDigilock.getOwner(), cost);
 							}
 							sPlayer.sendMessage("Your account ("
-									+ BIT.plugin.Method.getAccount(
-											sPlayer.getName()).balance()
+									+ BIT.plugin.economy.getBalance(
+											sPlayer.getName())
 									+ ") has been deducted "
-									+ BIT.plugin.Method.format(cost) + ".");
+									+ BIT.plugin.economy.format(cost) + ".");
 						} else {
 							sPlayer.sendMessage("You dont have enough money ("
-									+ BIT.plugin.Method.getAccount(
-											sPlayer.getName()).balance()
+									+ BIT.plugin.economy.getBalance(
+											sPlayer.getName())
 									+ "). Cost is:"
-									+ BIT.plugin.Method.format(cost));
+									+ BIT.plugin.economy.format(cost));
 							setleveron = false;
 						}
 					}
@@ -1364,24 +1356,24 @@ public class BITDigiLock {
 		BITDigiLock digilock = loadDigiLock(sBlock);
 		if (BIT.useEconomy && cost > 0 && digilock.isUser(sPlayer)
 				&& !(digilock.isOwner(sPlayer) || digilock.isCoowner(sPlayer))) {
-			if (BIT.plugin.Method.hasAccount(sPlayer.getName())) {
-				if (BIT.plugin.Method.getAccount(sPlayer.getName()).hasEnough(
+			if (BIT.plugin.economy.hasAccount(sPlayer.getName())) {
+				if (BIT.plugin.economy.has(sPlayer.getName(),
 						cost)) {
-					BIT.plugin.Method.getAccount(sPlayer.getName()).subtract(
+					BIT.plugin.economy.withdrawPlayer(sPlayer.getName(),
 							cost);
-					if (BIT.plugin.Method.hasAccount(digilock.getOwner())) {
-						BIT.plugin.Method.getAccount(digilock.getOwner()).add(
+					if (BIT.plugin.economy.hasAccount(digilock.getOwner())) {
+						BIT.plugin.economy.depositPlayer(digilock.getOwner(),
 								cost);
 					}
 					sPlayer.sendMessage("Your account ("
-							+ BIT.plugin.Method.getAccount(sPlayer.getName())
-									.balance() + ") has been deducted "
-							+ BIT.plugin.Method.format(cost) + ".");
+							+ BIT.plugin.economy.getBalance(sPlayer.getName())
+							+ ") has been deducted "
+							+ BIT.plugin.economy.format(cost) + ".");
 				} else {
 					sPlayer.sendMessage("You dont have enough money ("
-							+ BIT.plugin.Method.getAccount(sPlayer.getName())
-									.balance() + "). Cost is:"
-							+ BIT.plugin.Method.format(cost));
+							+ BIT.plugin.economy.getBalance(sPlayer.getName())
+							+ "). Cost is:"
+							+ BIT.plugin.economy.format(cost));
 					opendoor = false;
 				}
 
@@ -1418,25 +1410,25 @@ public class BITDigiLock {
 		BITDigiLock digilock = loadDigiLock(sBlock);
 		if (BIT.useEconomy && cost > 0 && digilock.isUser(sPlayer)
 				&& !(digilock.isOwner(sPlayer) || digilock.isCoowner(sPlayer))) {
-			if (BIT.plugin.Method.hasAccount(sPlayer.getName())) {
-				if (BIT.plugin.Method.getAccount(sPlayer.getName()).hasEnough(
+			if (BIT.plugin.economy.hasAccount(sPlayer.getName())) {
+				if (BIT.plugin.economy.has(sPlayer.getName(),
 						cost)) {
-					BIT.plugin.Method.getAccount(sPlayer.getName()).subtract(
+					BIT.plugin.economy.withdrawPlayer(sPlayer.getName(),
 							cost);
-					if (BIT.plugin.Method.hasAccount(digilock.getOwner())) {
-						BIT.plugin.Method.getAccount(digilock.getOwner()).add(
+					if (BIT.plugin.economy.hasAccount(digilock.getOwner())) {
+						BIT.plugin.economy.depositPlayer(digilock.getOwner(),
 								cost);
 					}
 
 					sPlayer.sendMessage("Your account ("
-							+ BIT.plugin.Method.getAccount(sPlayer.getName())
-									.balance() + ") has been deducted "
-							+ BIT.plugin.Method.format(cost) + ".");
+							+ BIT.plugin.economy.getBalance(sPlayer.getName())
+							+ ") has been deducted "
+							+ BIT.plugin.economy.format(cost) + ".");
 				} else {
 					sPlayer.sendMessage("You dont have enough money ("
-							+ BIT.plugin.Method.getAccount(sPlayer.getName())
-									.balance() + "). Cost is:"
-							+ BIT.plugin.Method.format(cost));
+							+ BIT.plugin.economy.getBalance(sPlayer.getName())
+							+ "). Cost is:"
+							+ BIT.plugin.economy.format(cost));
 					closedoor = false;
 				}
 			}
@@ -1546,24 +1538,24 @@ public class BITDigiLock {
 		BITDigiLock digilock = loadDigiLock(sBlock);
 		if (BIT.useEconomy && cost > 0 && digilock.isUser(sPlayer)
 				&& !(digilock.isOwner(sPlayer) || digilock.isCoowner(sPlayer))) {
-			if (BIT.plugin.Method.hasAccount(sPlayer.getName())) {
-				if (BIT.plugin.Method.getAccount(sPlayer.getName()).hasEnough(
+			if (BIT.plugin.economy.hasAccount(sPlayer.getName())) {
+				if (BIT.plugin.economy.has(sPlayer.getName(),
 						cost)) {
-					BIT.plugin.Method.getAccount(sPlayer.getName()).subtract(
+					BIT.plugin.economy.withdrawPlayer(sPlayer.getName(),
 							cost);
-					if (BIT.plugin.Method.hasAccount(digilock.getOwner())) {
-						BIT.plugin.Method.getAccount(digilock.getOwner()).add(
+					if (BIT.plugin.economy.hasAccount(digilock.getOwner())) {
+						BIT.plugin.economy.depositPlayer(digilock.getOwner(),
 								cost);
 					}
 					sPlayer.sendMessage("Your account ("
-							+ BIT.plugin.Method.getAccount(sPlayer.getName())
-									.balance() + ") has been deducted "
-							+ BIT.plugin.Method.format(cost) + ".");
+							+ BIT.plugin.economy.getBalance(sPlayer.getName())
+							+ ") has been deducted "
+							+ BIT.plugin.economy.format(cost) + ".");
 				} else {
 					sPlayer.sendMessage("You dont have enough money ("
-							+ BIT.plugin.Method.getAccount(sPlayer.getName())
-									.balance() + "). Cost is:"
-							+ BIT.plugin.Method.format(cost));
+							+ BIT.plugin.economy.getBalance(sPlayer.getName())
+							+ "). Cost is:"
+							+ BIT.plugin.economy.format(cost));
 					opentrapdoor = false;
 				}
 			}
@@ -1641,24 +1633,24 @@ public class BITDigiLock {
 		BITDigiLock digilock = loadDigiLock(sBlock);
 		if (BIT.useEconomy && cost > 0 && digilock.isUser(sPlayer)
 				&& !(digilock.isOwner(sPlayer) || digilock.isCoowner(sPlayer))) {
-			if (BIT.plugin.Method.hasAccount(sPlayer.getName())) {
-				if (BIT.plugin.Method.getAccount(sPlayer.getName()).hasEnough(
+			if (BIT.plugin.economy.hasAccount(sPlayer.getName())) {
+				if (BIT.plugin.economy.has(sPlayer.getName(),
 						cost)) {
-					BIT.plugin.Method.getAccount(sPlayer.getName()).subtract(
+					BIT.plugin.economy.withdrawPlayer(sPlayer.getName(),
 							cost);
-					if (BIT.plugin.Method.hasAccount(digilock.getOwner())) {
-						BIT.plugin.Method.getAccount(digilock.getOwner()).add(
+					if (BIT.plugin.economy.hasAccount(digilock.getOwner())) {
+						BIT.plugin.economy.depositPlayer(digilock.getOwner(),
 								cost);
 					}
 					sPlayer.sendMessage("Your account ("
-							+ BIT.plugin.Method.getAccount(sPlayer.getName())
-									.balance() + ") has been deducted "
-							+ BIT.plugin.Method.format(cost) + ".");
+							+ BIT.plugin.economy.getBalance(sPlayer.getName())
+							+ ") has been deducted "
+							+ BIT.plugin.economy.format(cost) + ".");
 				} else {
 					sPlayer.sendMessage("You dont have enough money ("
-							+ BIT.plugin.Method.getAccount(sPlayer.getName())
-									.balance() + "). Cost is:"
-							+ BIT.plugin.Method.format(cost));
+							+ BIT.plugin.economy.getBalance(sPlayer.getName())
+							+ "). Cost is:"
+							+ BIT.plugin.economy.format(cost));
 					openFenceGate = false;
 				}
 			}
