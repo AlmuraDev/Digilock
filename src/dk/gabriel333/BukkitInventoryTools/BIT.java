@@ -80,7 +80,7 @@ public class BIT extends JavaPlugin {
 			setupMobArena();
 			setupJail();
 			setupWar();
-                        if (!BITConfig.SBP_DISABLEECONOMY)
+                        if (!BITConfig.SBP_EnableEconomy)
         			useEconomy = setupEconomy();
 			li = new BITBackpackLanguageInterface(BITBackpack.loadLanguage());
 			// Load BITBackpack
