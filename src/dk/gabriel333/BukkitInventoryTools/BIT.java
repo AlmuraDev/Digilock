@@ -184,21 +184,22 @@ public class BIT extends JavaPlugin {
 			spout = true;
 			BITMessages.showInfo("Spout is detected.");
 		} else {
-			BITMessages.showError("BIT is dependend on Spout!");
+			BITMessages.showError("BIT is dependent on Spout!");
 		}
 	}
 
         private Boolean setupEconomy()
         {
-            if (getServer().getPluginManager().getPlugin("Vault") == null)
+            if (getServer().getPluginManager().getPlugin("Vault") == null) {
+                BITMessages.showInfo("Vault not detected, economy support will be disabled.");
                 return false;
-            
+            }
             RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
            if (economyProvider != null) {
                economy = economyProvider.getProvider();
-               BITMessages.showInfo("Vault is detected.");
-           }
-
+               BITMessages.showInfo("Vault is detected, using it for economy.");
+           } else
+               BITMessages.showInfo("Vault is detected, but you don't have an economy plugin.");
            return (economy != null);
         }
 

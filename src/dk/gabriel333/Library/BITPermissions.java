@@ -23,12 +23,16 @@ public class BITPermissions {
 	// Initialize all permissionsplugins
         protected static void setupPermissions(Plugin plugin)
         {
+            PERMISSION_NODE = plugin.getDescription().getName() + ".";
             if (plugin.getServer().getPluginManager().getPlugin("Vault") != null) {
                 RegisteredServiceProvider<Permission> permissionProvider = plugin.getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
                 if (permissionProvider != null) {
                     permission = permissionProvider.getProvider();
+                    BITMessages.showInfo("Vault is detected, using it for permissions.");
                 }
-            }
+            } else
+            BITMessages.showInfo("Vault not found, Defaulting to built-in permissions.");
+
         }
 
 	// Test if the player has permissions to do the action
