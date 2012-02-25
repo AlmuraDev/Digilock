@@ -56,13 +56,13 @@ public class BITBlockListener implements Listener {
 	@EventHandler
 	public void onBlockFromTo(BlockFromToEvent event) {
 		// super.onBlockFromTo(event);
-		if (event.isCancelled())
+		if (event.isCancelled() || !(event.getBlock() instanceof SpoutBlock)) // hack for spout/worldborder bugs
 			return;
-		SpoutBlock sBlock = (SpoutBlock) event.getBlock();
-		if (!BITDigiLock.isLockable(sBlock))
+		SpoutBlock block = (SpoutBlock) event.getBlock();
+		if (!BITDigiLock.isLockable(block))
 			return;
-		if (BITDigiLock.isLocked(sBlock)) {
-			if (BITDigiLock.isDoubleDoor(sBlock)) {
+		if (BITDigiLock.isLocked(block)) {
+			if (BITDigiLock.isDoubleDoor(block)) {
 				BITMessages.showInfo("Tried to break doubledoor");
 			}
 			event.setCancelled(true);
