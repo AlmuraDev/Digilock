@@ -36,21 +36,21 @@ public class BITBackpackPlayerListener implements Listener {
 				BITConfig.addBooleanParmToConfig(path, true);
 			}
 			// TODO: check for null = no backpack
-			if (!BITConfig.getBooleanParm(path, 
-					BITConfig.getBooleanParm("SBP.InventoriesShareDefault",false))) {
-				try {
-					Player player = event.getPlayer();
+                        //if (!BITConfig.getBooleanParm(path,	BITConfig.getBooleanParm("SBP.InventoriesShareDefault",false))) {  // Removed, invalid				try {
+                                try {
+                                        Player player = event.getPlayer();
 					if (BITBackpack.inventories.containsKey(player.getName())) {
 						BITBackpackInventorySaveTask.saveInventory(player,
 								event.getFrom().getWorld());
 						BITBackpack.inventories.remove(player.getName());
+                                                BITBackpack.inventories.clear();
 					}
 					BITBackpack.loadInventory(player, event.getTo().getWorld());
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 				plugin.portals.remove(event.getPlayer());
-			}
+			//}
 		}
 	}
 
@@ -78,6 +78,7 @@ public class BITBackpackPlayerListener implements Listener {
 					player.getWorld());
 			if (BITBackpack.inventories.containsKey(player)) {
 				BITBackpack.inventories.remove(player);
+                                BITBackpack.inventories.clear();  // Updated line for 1/30/12
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

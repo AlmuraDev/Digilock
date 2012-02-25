@@ -312,7 +312,7 @@ public class BITInventory {
 					bookId = inventory.getItem(j).getDurability();
 					if (bookId > 1000) {
 						bitBook = BITBook.loadBook(sPlayer, bookId);
-						Item item = (Item) inventory.getItem(j);
+						Item item = (Item) inventory.getItem(j); //BUG > ITEMStack from SpoutAPI Invalid
 						item.setName(bitBook.getTitle()+" written by "+bitBook.getAuthor());
 						//BITBook.setBookName(bookId, bitBook.getTitle(),
 						//		bitBook.getAuthor());

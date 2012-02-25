@@ -26,6 +26,7 @@ public class BITBackpackInventoryListener implements Listener {
 		Player player = event.getPlayer();
 		if (!BITBackpack.openedInventoriesOthers.containsKey(player.getName())) {
 			if (BITBackpack.openedInventories.containsKey(player.getName())) {
+                            BITBackpackInventorySaveTask.saveInventory(player, player.getWorld()); //New Line
 				if (BITBackpack.widgets.containsKey(player.getName())
 						&& BITConfig.SBP_useWidget) {
 					BITBackpack.widgets.get(player.getName()).setVisible(false)

@@ -14,10 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -649,6 +646,18 @@ public class BITBackpack implements CommandExecutor {
 		} else {
 			canOpenBackpack = false;
 		}
+
+                if (player.getGameMode().equals(GameMode.CREATIVE) && BITConfig.SBP_DisableSBPCreative
+                        || (player.getGameMode().equals(GameMode.CREATIVE) && !BITPermissions.hasPerm(player, "backpack.creative",
+                        BITPermissions.QUIET))) {
+                    canOpenBackpack = false;
+                }
+
+                //if (BITPermissions.hasPerm(player, "backpack.creative",	BITPermissions.QUIET)){
+                //	BITMessages.showInfo("Creative = yes.");
+                //} else { 
+                //	BITMessages.showInfo("Creative = no.");
+                //}
 
 		if (BIT.getWorldGuard() != null) {
 			Location location = player.getLocation();

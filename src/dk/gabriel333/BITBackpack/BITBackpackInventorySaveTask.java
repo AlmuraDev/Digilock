@@ -58,11 +58,13 @@ public class BITBackpackInventorySaveTask implements Runnable {
 		YamlConfiguration config = new YamlConfiguration();
 		if (BITBackpack.inventories.containsKey(player.getName())) {
 			int size=BITBackpack.inventories.get(player.getName()).length;
-			if (size>0){
+			//if (size>0){
 			//int sizeInConfig = BITBackpack.sizeInConfig(player.getWorld(), player);
 			//if (sizeInConfig > 0) {
-				Inventory inv = SpoutManager.getInventoryBuilder().construct(
-						size, BITBackpack.inventoryName);
+                        //int size=BITBackpack.sizeInConfig(player.getWorld(), player);
+                        //BITMessages.showInfo("Size =" + size);
+                        if (size>0){
+                                Inventory inv = SpoutManager.getInventoryBuilder().construct(						size, BITBackpack.inventoryName);
 				inv.setContents(BITBackpack.inventories.get(player.getName()));
 				Integer i;
 				for (i = 0; i < size; i++) {
@@ -81,6 +83,7 @@ public class BITBackpackInventorySaveTask implements Runnable {
 							size);
 					try {
 						config.save(saveFile);
+                                                //player.sendMessage("The backpack is now Saved.");
 					} catch (IOException e) {
 						player.sendMessage("The backpack could not be saved.");
 						e.printStackTrace();

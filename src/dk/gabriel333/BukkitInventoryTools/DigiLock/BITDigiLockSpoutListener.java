@@ -171,16 +171,20 @@ public class BITDigiLockSpoutListener implements Listener {
 								BITPermissions.QUIET)) {
 					if (validateSetPincodeFields(sPlayer)) {
 						sPlayer.closeActiveWindow();
+						String digiString2 = BITDigiLock.closetimerGUI.get(id).getText();
+						digiString2 = digiString2.replaceAll("[^0-9]+", "");
+						
+						String digiString3 = BITDigiLock.closetimerGUI.get(id).getText();
+						digiString3 = digiString3.replaceAll("[^0-9]+", "");
+						
 						BITDigiLock.SaveDigiLock(sPlayer, sBlock,
 								BITDigiLock.pincodeGUI.get(id).getText(),
-								BITDigiLock.ownerGUI.get(id).getText(), Integer
-										.valueOf(BITDigiLock.closetimerGUI.get(
-												id).getText()),
+								BITDigiLock.ownerGUI.get(id).getText(), 
+								Integer.valueOf(digiString2),
 								BITDigiLock.coOwnersGUI.get(id).getText(),
 								BITDigiLock.usersGUI.get(id).getText(), sBlock
-										.getTypeId(), "", Integer
-										.valueOf(BITDigiLock.useCostGUI.get(id)
-												.getText()));
+										.getTypeId(), "", 
+										Integer.valueOf(digiString3));
 						BITDigiLock.cleanupPopupScreen(sPlayer);
 						BITDigiLock.BITDigiLockButtons.remove(uuid);
 					}
@@ -258,9 +262,19 @@ public class BITDigiLockSpoutListener implements Listener {
 			BITDigiLock.useCostGUI.get(id).setText("0");
 			BITDigiLock.popupScreen.get(id).setDirty(true);
 		}
-		int closetimer = Integer.valueOf(BITDigiLock.closetimerGUI.get(id)
-				.getText());
-		int useCost = Integer.valueOf(BITDigiLock.useCostGUI.get(id).getText());
+		
+		String digiString = BITDigiLock.closetimerGUI.get(id).getText();
+		digiString = digiString.replaceAll("[^0-9]+", "");
+		 
+		String digiString1 = BITDigiLock.useCostGUI.get(id).getText();
+		digiString1 = digiString1.replaceAll("[^0-9]+", "");
+		
+		//int closetimer = Integer.valueOf(BITDigiLock.closetimerGUI.get(id).getText());
+		int closetimer = Integer.valueOf(digiString);
+		int useCost = Integer.valueOf(digiString1);
+		
+		//int useCost = Integer.valueOf(BITDigiLock.useCostGUI.get(id).getText());
+		
 		if (closetimer < 0) {
 			BITMessages.sendNotification(sPlayer, "Closetimer must be > 0");
 			BITDigiLock.closetimerGUI.get(id).setText("0");

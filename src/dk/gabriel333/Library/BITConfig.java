@@ -1,13 +1,9 @@
 package dk.gabriel333.Library;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import dk.gabriel333.BukkitInventoryTools.BIT;
+import java.io.*;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
-import dk.gabriel333.BukkitInventoryTools.BIT;
 
 public class BITConfig {
 	
@@ -68,7 +64,7 @@ public class BITConfig {
 	public static Boolean SBP_InventoriesShareDefault;
 	private static String noBackpackRegions;
 	public static String[] SBP_noBackpackRegions;
-	public static Boolean SBP_DISABLEECONOMY;
+	public static Boolean SBP_EnableEconomy;
 	public static Boolean SBP_DisableSBPCreative;
 	public static double SBP_price9;
 	public static double SBP_price18;
@@ -102,7 +98,7 @@ public class BITConfig {
 	public static Boolean DEBUG_EVENTS;
 	public static Boolean DEBUG_ADVANCEDGUI;
 	
-	private static String CONFIG_FILE = "config.yml";
+	private final static String CONFIG_FILE = "config.yml";
 	public static YamlConfiguration config;
 	private static Boolean dosave = false;
 	final static File configfile = new File(BIT.plugin.getDataFolder(),
@@ -187,7 +183,7 @@ public class BITConfig {
 		SBP_InventoriesShareDefault = getBooleanParm("SBP.InventoriesShareDefault",true);
 		noBackpackRegions = getStringParm("SBP.RegionWhereBackpacksAreDisabled", "region1,region2");
 		SBP_noBackpackRegions = noBackpackRegions.split(",");
-		SBP_DISABLEECONOMY = getBooleanParm("SBP.DISABLEECONOMY",false);
+		SBP_EnableEconomy = getBooleanParm("SBP.EnableEconomy",true);
 		SBP_DisableSBPCreative = getBooleanParm("SBP.DisableSBPCreative",true);
 		SBP_price9 = getDoubleParm("SBP.Price9", 100.00);
 		SBP_price18 = getDoubleParm("SBP.Price18", 10.00);
@@ -328,7 +324,7 @@ public class BITConfig {
 				try {
 					output = new FileOutputStream(actual);
 					byte[] buf = new byte[8192];
-					int length = 0;
+					int length;
 
 					while ((length = input.read(buf)) > 0) {
 						output.write(buf, 0, length);
