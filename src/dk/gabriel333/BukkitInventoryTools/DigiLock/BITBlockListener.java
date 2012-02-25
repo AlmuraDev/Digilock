@@ -37,7 +37,7 @@ public class BITBlockListener implements Listener {
 		if (event.isCancelled())
 			return;
 		Block b = event.getBlock();
-		if (b != null) {
+		if (b != null && !(event.getBlock() instanceof SpoutBlock)) {
 			
 			if (!BITDigiLock.isLockable(b))
 				return;
