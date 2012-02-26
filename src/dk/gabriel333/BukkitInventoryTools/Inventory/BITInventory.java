@@ -562,7 +562,7 @@ public class BITInventory {
 
 		y = 170;
 		// ownerButton
-		GenericButton ownerButton = new GenericButton("Owner");
+		BITInventorySpoutButton ownerButton = new BITInventorySpoutButton("Owner");
 		ownerButton.setAuto(false).setX(x).setY(y).setHeight(height)
 				.setWidth(w1);
 		ownerButton.setTooltip("Set Owner");
@@ -576,7 +576,7 @@ public class BITInventory {
 		popupScreen.get(id).attachWidget(BIT.plugin, ownerGUI.get(id));
 
 		// useCostButton
-		GenericButton useCostButton = new GenericButton("Use cost");
+		BITInventorySpoutButton useCostButton = new BITInventorySpoutButton("Use cost");
 		useCostButton.setAuto(false).setX(x + w1 + w2 + 10 + w1 + w3 + 10)
 				.setY(y).setHeight(height).setWidth(w1);
 		useCostButton.setTooltip("Set cost");
@@ -592,7 +592,7 @@ public class BITInventory {
 		y = y + height + 1;
 
 		// setCoOwnerButton
-		GenericButton CoOwnerButton = new GenericButton("CoOwners");
+		BITInventorySpoutButton CoOwnerButton = new BITInventorySpoutButton("CoOwners");
 		CoOwnerButton.setAuto(false).setX(x).setY(y).setHeight(height)
 				.setWidth(w1);
 		CoOwnerButton.setTooltip("CoOwners must be seperated by a comma.");
@@ -614,7 +614,7 @@ public class BITInventory {
 		y = y + height;
 
 		// CreateBookshelfButton
-		GenericButton CreateBookshelfButton = new GenericButton("Create");
+		BITInventorySpoutButton CreateBookshelfButton = new BITInventorySpoutButton("Create");
 		CreateBookshelfButton.setAuto(false).setX(x).setY(y).setHeight(height)
 				.setWidth(w1);
 		CreateBookshelfButton
@@ -624,7 +624,7 @@ public class BITInventory {
 				"CreateBookshelfButton");
 
 		// cancelButton
-		GenericButton cancelButton2 = new GenericButton("Cancel");
+		BITInventorySpoutButton cancelButton2 = new BITInventorySpoutButton("Cancel");
 		cancelButton2.setAuto(false).setX(x + w1 + 10).setY(y)
 				.setHeight(height).setWidth(w1);
 		popupScreen.get(id).attachWidget(BIT.plugin, cancelButton2);
@@ -632,7 +632,7 @@ public class BITInventory {
 
 		// removeBookshelfButton
 		if (BITInventory.isBitInventoryCreated(sBlock)) {
-			GenericButton removeBookshelfButton = new GenericButton("Remove");
+			BITInventorySpoutButton removeBookshelfButton = new BITInventorySpoutButton("Remove");
 			removeBookshelfButton.setAuto(false).setX(x - w1 - 10).setY(y)
 					.setHeight(height).setWidth(w1);
 			removeBookshelfButton

@@ -10,11 +10,10 @@ import com.tommytony.war.War;
 import de.Keyle.MyWolf.MyWolfPlugin;
 import dk.gabriel333.BITBackpack.*;
 import dk.gabriel333.BukkitInventoryTools.Book.BITBookInputListener;
-import dk.gabriel333.BukkitInventoryTools.Book.BITBookSpoutListener;
 import dk.gabriel333.BukkitInventoryTools.Book.BITCommandBookshelf;
 import dk.gabriel333.BukkitInventoryTools.DigiLock.*;
 import dk.gabriel333.BukkitInventoryTools.Inventory.BITInventoryListener;
-import dk.gabriel333.BukkitInventoryTools.Inventory.BITInventorySpoutListener;
+import dk.gabriel333.BukkitInventoryTools.Inventory.BITInventorySpoutButton;
 import dk.gabriel333.BukkitInventoryTools.Sort.BITCommandSort;
 import dk.gabriel333.BukkitInventoryTools.Sort.BITSortInputListener;
 import dk.gabriel333.Library.BITConfig;
@@ -150,15 +149,15 @@ public class BIT extends JavaPlugin {
 		pm.registerEvents(new BITBlockListener(), this);
 		pm.registerEvents(new BITPlayerListener(), this);
 		pm.registerEvents(new BITDigiLockInputListener(this), this);
-		pm.registerEvents(new BITDigiLockSpoutListener(), this);
+		///pm.registerEvents(new BITDigiLockSpoutButton(), this);
 
 		// BITIventory Listeners
-		pm.registerEvents(new BITInventorySpoutListener(this), this);
+		///pm.registerEvents(new BITInventorySpoutButton(this), this);
 
 		// BITBook Listeners
 		pm.registerEvents(new BITInventoryListener(this), this);
 		pm.registerEvents(new BITBookInputListener(), this);
-		pm.registerEvents(new BITBookSpoutListener(), this);
+		///pm.registerEvents(new BITBookSpoutListener(), this);
 
 		// BITBackpack Listeners
 		pm.registerEvents(new BITBackpackInputListener(this), this);

@@ -104,13 +104,13 @@ public class BITBook {
 	public static Map<Integer, GenericTextField> authorGUI = new HashMap<Integer, GenericTextField>();
 	public static Map<Integer, GenericTextField> coAuthorsGUI = new HashMap<Integer, GenericTextField>();
 	public static Map<Integer, Boolean> masterCopyGUI = new HashMap<Integer, Boolean>();
-	public static Map<Integer, GenericButton> masterCopyButtonGUI = new HashMap<Integer, GenericButton>();
+	public static Map<Integer, BITBookSpoutButton> masterCopyButtonGUI = new HashMap<Integer, BITBookSpoutButton>();
 	public static Map<Integer, Short> masterCopyIdGUI = new HashMap<Integer, Short>();
 	public static Map<Integer, Boolean> forceBookToPlayerInventoryGUI = new HashMap<Integer, Boolean>();
-	public static Map<Integer, GenericButton> forceBookToPlayerInventoryButtonGUI = new HashMap<Integer, GenericButton>();
-	public static Map<Integer, GenericButton> canBeMovedFromInventoryButtonGUI = new HashMap<Integer, GenericButton>();
+	public static Map<Integer, BITBookSpoutButton> forceBookToPlayerInventoryButtonGUI = new HashMap<Integer, BITBookSpoutButton>();
+	public static Map<Integer, BITBookSpoutButton> canBeMovedFromInventoryButtonGUI = new HashMap<Integer, BITBookSpoutButton>();
 	public static Map<Integer, Boolean> canBeMovedFromInventoryGUI = new HashMap<Integer, Boolean>();
-	public static Map<Integer, GenericButton> copyTheBookWhenMovedButtonGUI = new HashMap<Integer, GenericButton>();
+	public static Map<Integer, BITBookSpoutButton> copyTheBookWhenMovedButtonGUI = new HashMap<Integer, BITBookSpoutButton>();
 	public static Map<Integer, Boolean> copyTheBookWhenMovedGUI = new HashMap<Integer, Boolean>();
 	public static Map<Integer, GenericTextField> useCostGUI = new HashMap<Integer, GenericTextField>();
 	public static Map<Integer, GenericLabel> pageNoLabelGUI = new HashMap<Integer, GenericLabel>();
@@ -638,7 +638,7 @@ public class BITBook {
 		popupScreen.get(id).attachWidget(BIT.plugin, pageNoLabelGUI.get(id));
 
 		// + Button
-		GenericButton nextPageBookButton = new GenericButton("+");
+		BITBookSpoutButton nextPageBookButton = new BITBookSpoutButton("+");
 		nextPageBookButton.setAuto(false)
 				.setX(x + textFieldWidth - 2 * buttonHeight - 5)
 				.setY(y + 2 * itemHeight + 10 - buttonHeight - 1)
@@ -649,7 +649,7 @@ public class BITBook {
 		BITButtons.put(nextPageBookButton.getId(), "nextPageButton");
 
 		// - Button
-		GenericButton previousPageBookButton = new GenericButton("-");
+		BITBookSpoutButton previousPageBookButton = new BITBookSpoutButton("-");
 		previousPageBookButton.setAuto(false)
 				.setX(x + textFieldWidth - buttonHeight)
 				.setY(y + 2 * itemHeight + 10 - buttonHeight - 1)
@@ -684,7 +684,7 @@ public class BITBook {
 
 		// SaveButton
 		if (writeable) { //READ_WRITE
-			GenericButton saveButton = new GenericButton("Save");
+			BITBookSpoutButton saveButton = new BITBookSpoutButton("Save");
 			saveButton.setAuto(false)
 					.setX(x + textFieldWidth - 2 * (buttonWidth - 20) - 5)
 					.setY(y).setHeight(buttonHeight).setWidth(buttonWidth - 20);
@@ -692,14 +692,14 @@ public class BITBook {
 			popupScreen.get(id).attachWidget(BIT.plugin, saveButton);
 
 			// cancelButton
-			GenericButton cancelBookButton = new GenericButton("Cancel");
+			BITBookSpoutButton cancelBookButton = new BITBookSpoutButton("Cancel");
 			cancelBookButton.setAuto(false)
 					.setX(x + textFieldWidth - buttonWidth + 20).setY(y)
 					.setHeight(buttonHeight).setWidth(buttonWidth - 20);
 			popupScreen.get(id).attachWidget(BIT.plugin, cancelBookButton);
 			BITButtons.put(cancelBookButton.getId(), "cancelBookButton");
 		} else { //READONLY
-			GenericButton returnBookButton = new GenericButton("Return");
+			BITBookSpoutButton returnBookButton = new BITBookSpoutButton("Return");
 			returnBookButton.setAuto(false)
 					.setX(x + textFieldWidth - buttonWidth + 20).setY(y)
 					.setHeight(buttonHeight).setWidth(buttonWidth - 20);
@@ -853,14 +853,14 @@ public class BITBook {
 			authorGUI.put(id, new GenericTextField());
 			coAuthorsGUI.put(id, new GenericTextField());
 			masterCopyGUI.put(id, false);
-			masterCopyButtonGUI.put(id, new GenericButton());
+			masterCopyButtonGUI.put(id, new BITBookSpoutButton());
 			masterCopyIdGUI.put(id, (short) 0);
 			forceBookToPlayerInventoryGUI.put(id, false);
-			forceBookToPlayerInventoryButtonGUI.put(id, new GenericButton());
+			forceBookToPlayerInventoryButtonGUI.put(id, new BITBookSpoutButton());
 			canBeMovedFromInventoryGUI.put(id, true);
-			canBeMovedFromInventoryButtonGUI.put(id, new GenericButton());
+			canBeMovedFromInventoryButtonGUI.put(id, new BITBookSpoutButton());
 			copyTheBookWhenMovedGUI.put(id, false);
-			copyTheBookWhenMovedButtonGUI.put(id, new GenericButton());
+			copyTheBookWhenMovedButtonGUI.put(id, new BITBookSpoutButton());
 			useCostGUI.put(id, new GenericTextField());
 			pageNoLabelGUI.put(id, new GenericLabel());
 			// currentBookId is set when the book is created.

@@ -10,27 +10,29 @@ import org.bukkit.block.Dispenser;
 import org.bukkit.block.Furnace;
 import org.bukkit.block.Jukebox;
 import org.bukkit.block.Sign;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.block.SpoutChest;
 import org.getspout.spoutapi.event.screen.ButtonClickEvent;
-import org.getspout.spoutapi.gui.Button;
+import org.getspout.spoutapi.gui.GenericButton;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
-public class BITDigiLockSpoutListener implements Listener {
-
-        @EventHandler
-	public void onCustomEvent(ButtonClickEvent event) {
+public class BITDigiLockSpoutButton extends GenericButton {
+    
+    
+    public BITDigiLockSpoutButton(String name) {
+        super(name);
+    }
+    
+        @Override
+	public void onButtonClick(ButtonClickEvent event) {
 		if (event instanceof ButtonClickEvent) {
-			Button button = event.getButton();
-			UUID uuid = button.getId();
+			UUID uuid = this.getId();
 			SpoutPlayer sPlayer = event.getPlayer();
-			int id = sPlayer.getEntityId();
+			int entId = sPlayer.getEntityId();
 			SpoutBlock sBlock;
-			sBlock = BITDigiLock.clickedBlock.get(id);
+			sBlock = BITDigiLock.clickedBlock.get(entId);
 			if (sBlock == null) {
 				sBlock = (SpoutBlock) sPlayer.getTargetBlock(null, 4);
 			}
@@ -39,11 +41,12 @@ public class BITDigiLockSpoutListener implements Listener {
 				// ************************************
 				// Buttons in getPincodeWindow
 				// ************************************
-				if ("getPincodeUnlock".equals(BITDigiLock.BITDigiLockButtons.get(uuid))) {
-					BITDigiLock.popupScreen.get(id).close();
+                                String buttonName = BITDigiLock.BITDigiLockButtons.get(uuid);
+				if (buttonName.equals("getPincodeUnlock")) {
+					BITDigiLock.popupScreen.get(entId).close();
 					BITDigiLock.cleanupPopupScreen(sPlayer);
 					if ((digilock.getPincode().equals(
-							BITDigiLock.pincodeGUI.get(id).getText()) && BITPermissions
+							BITDigiLock.pincodeGUI.get(entId).getText()) && BITPermissions
 							.hasPerm(sPlayer, "digilock.use",
 									BITPermissions.QUIET))
 							|| BITPermissions.hasPerm(sPlayer,
@@ -157,7 +160,7 @@ public class BITDigiLockSpoutListener implements Listener {
 					BITDigiLock.cleanupPopupScreen(sPlayer);
 					BITDigiLock.BITDigiLockButtons.remove(uuid);
 
-				} else if (BITDigiLock.BITDigiLockButtons.get(uuid).equals("getPincodeCancel")) {
+				} else if (buttonName.equals("getPincodeCancel")) {
 					sPlayer.closeActiveWindow();
 					BITDigiLock.cleanupPopupScreen(sPlayer);
 					BITDigiLock.BITDigiLockButtons.remove(uuid);
@@ -166,35 +169,35 @@ public class BITDigiLockSpoutListener implements Listener {
 				// ************************************
 				// Buttons in sPlayer.setPincode
 				// ************************************
-				else if ("setPincodeLock".equals(BITDigiLock.BITDigiLockButtons.get(uuid))
+				else if (buttonName.equals("setPincodeLock")
 						&& BITPermissions.hasPerm(sPlayer, "digilock.create",
 								BITPermissions.QUIET)) {
 					if (validateSetPincodeFields(sPlayer)) {
 						sPlayer.closeActiveWindow();
-						String digiString2 = BITDigiLock.closetimerGUI.get(id).getText();
+						String digiString2 = BITDigiLock.closetimerGUI.get(entId).getText();
 						digiString2 = digiString2.replaceAll("[^0-9]+", "");
 						
-						String digiString3 = BITDigiLock.closetimerGUI.get(id).getText();
+						String digiString3 = BITDigiLock.closetimerGUI.get(entId).getText();
 						digiString3 = digiString3.replaceAll("[^0-9]+", "");
 						
 						BITDigiLock.SaveDigiLock(sPlayer, sBlock,
-								BITDigiLock.pincodeGUI.get(id).getText(),
-								BITDigiLock.ownerGUI.get(id).getText(), 
+								BITDigiLock.pincodeGUI.get(entId).getText(),
+								BITDigiLock.ownerGUI.get(entId).getText(), 
 								Integer.valueOf(digiString2),
-								BITDigiLock.coOwnersGUI.get(id).getText(),
-								BITDigiLock.usersGUI.get(id).getText(), sBlock
+								BITDigiLock.coOwnersGUI.get(entId).getText(),
+								BITDigiLock.usersGUI.get(entId).getText(), sBlock
 										.getTypeId(), "", 
 										Integer.valueOf(digiString3));
 						BITDigiLock.cleanupPopupScreen(sPlayer);
 						BITDigiLock.BITDigiLockButtons.remove(uuid);
 					}
 
-				} else if ((BITDigiLock.BITDigiLockButtons.get(uuid).equals("setPincodeCancel"))) {
+				} else if (buttonName.equals("setPincodeCancel")) {
 					sPlayer.closeActiveWindow();
 					BITDigiLock.cleanupPopupScreen(sPlayer);
 					BITDigiLock.BITDigiLockButtons.remove(uuid);
 
-				} else if (("setPincodeRemove".equals(BITDigiLock.BITDigiLockButtons.get(uuid)))) {
+				} else if (buttonName.equals("setPincodeRemove")) {
 					sPlayer.closeActiveWindow();
 					BITDigiLock.cleanupPopupScreen(sPlayer);
 					BITDigiLock.BITDigiLockButtons.remove(uuid);
@@ -204,8 +207,8 @@ public class BITDigiLockSpoutListener implements Listener {
 					}
 					
 					// Dockter 12/27/11 to add AdminOpen Button to User Interface.
-				} else if (("AdminOpen".equals(BITDigiLock.BITDigiLockButtons.get(uuid)))) {
-					BITDigiLock.popupScreen.get(id).close();
+				} else if (buttonName.equals("AdminOpen")) {
+					BITDigiLock.popupScreen.get(entId).close();
 					BITDigiLock.cleanupPopupScreen(sPlayer);
 					BITDigiLock.BITDigiLockButtons.remove(uuid);
 					if (BITDigiLock.isLocked(sBlock)) {
@@ -218,23 +221,23 @@ public class BITDigiLockSpoutListener implements Listener {
 					}
 					
 
-				} else if (("OwnerButton".equals(BITDigiLock.BITDigiLockButtons.get(uuid)))) {
+				} else if (buttonName.equals("OwnerButton")) {
 					if (validateSetPincodeFields(sPlayer)) {
 					}
 
-				} else if ((BITDigiLock.BITDigiLockButtons.get(uuid).equals("CoOwnerButton"))) {
+				} else if (buttonName.equals("CoOwnerButton")) {
 					if (validateSetPincodeFields(sPlayer)) {
 					}
 
-				} else if ((BITDigiLock.BITDigiLockButtons.get(uuid).equals("usersButton"))) {
+				} else if (buttonName.equals("usersButton")) {
 					if (validateSetPincodeFields(sPlayer)) {
 					}
 
-				} else if ((BITDigiLock.BITDigiLockButtons.get(uuid).equals("UseCostButton"))) {
+				} else if (buttonName.equals("UseCostButton")) {
 					if (validateSetPincodeFields(sPlayer)) {
 					}
 
-				} else if ((BITDigiLock.BITDigiLockButtons.get(uuid).equals("ClosetimerButton"))) {
+				} else if (buttonName.equals("ClosetimerButton")) {
 					if (validateSetPincodeFields(sPlayer)) {
 					}
 
@@ -246,27 +249,27 @@ public class BITDigiLockSpoutListener implements Listener {
 				else {
 					if (BITConfig.DEBUG_GUI)
 						sPlayer.sendMessage("BITDigiLockListener: Unknow button:"
-								+ BITDigiLock.BITDigiLockButtons.get(uuid));
+								+ buttonName);
 				}
 			}
 		}
 	}
 
 	private boolean validateSetPincodeFields(SpoutPlayer sPlayer) {
-		int id = sPlayer.getEntityId();
-		if (BITDigiLock.closetimerGUI.get(id).getText().equals("")) {
-			BITDigiLock.closetimerGUI.get(id).setText("0");
-			BITDigiLock.popupScreen.get(id).setDirty(true);
+		int entId = sPlayer.getEntityId();
+		if (BITDigiLock.closetimerGUI.get(entId).getText().equals("")) {
+			BITDigiLock.closetimerGUI.get(entId).setText("0");
+			BITDigiLock.popupScreen.get(entId).setDirty(true);
 		}
-		if (BITDigiLock.useCostGUI.get(id).getText().equals("")) {
-			BITDigiLock.useCostGUI.get(id).setText("0");
-			BITDigiLock.popupScreen.get(id).setDirty(true);
+		if (BITDigiLock.useCostGUI.get(entId).getText().equals("")) {
+			BITDigiLock.useCostGUI.get(entId).setText("0");
+			BITDigiLock.popupScreen.get(entId).setDirty(true);
 		}
 		
-		String digiString = BITDigiLock.closetimerGUI.get(id).getText();
+		String digiString = BITDigiLock.closetimerGUI.get(entId).getText();
 		digiString = digiString.replaceAll("[^0-9]+", "");
 		 
-		String digiString1 = BITDigiLock.useCostGUI.get(id).getText();
+		String digiString1 = BITDigiLock.useCostGUI.get(entId).getText();
 		digiString1 = digiString1.replaceAll("[^0-9]+", "");
 		
 		//int closetimer = Integer.valueOf(BITDigiLock.closetimerGUI.get(id).getText());
@@ -277,25 +280,25 @@ public class BITDigiLockSpoutListener implements Listener {
 		
 		if (closetimer < 0) {
 			BITMessages.sendNotification(sPlayer, "Closetimer must be > 0");
-			BITDigiLock.closetimerGUI.get(id).setText("0");
-			BITDigiLock.popupScreen.get(id).setDirty(true);
+			BITDigiLock.closetimerGUI.get(entId).setText("0");
+			BITDigiLock.popupScreen.get(entId).setDirty(true);
 			return false;
 		} else if (closetimer > 3600) {
 			BITMessages.sendNotification(sPlayer, "Closetim. must be<3600");
-			BITDigiLock.closetimerGUI.get(id).setText("3600");
-			BITDigiLock.popupScreen.get(id).setDirty(true);
+			BITDigiLock.closetimerGUI.get(entId).setText("3600");
+			BITDigiLock.popupScreen.get(entId).setDirty(true);
 			return false;
 		} else if (useCost > BITConfig.DIGILOCK_USEMAXCOST) {
 			BITMessages.sendNotification(sPlayer, "Cost must be less "
 					+ BITConfig.DIGILOCK_USEMAXCOST);
-			BITDigiLock.useCostGUI.get(id).setText(
+			BITDigiLock.useCostGUI.get(entId).setText(
 					String.valueOf(BITConfig.DIGILOCK_USEMAXCOST));
-			BITDigiLock.popupScreen.get(id).setDirty(true);
+			BITDigiLock.popupScreen.get(entId).setDirty(true);
 			return false;
 		} else if (useCost < 0) {
 			BITMessages.sendNotification(sPlayer, "Cost must be >= 0");
-			BITDigiLock.useCostGUI.get(id).setText("0");
-			BITDigiLock.popupScreen.get(id).setDirty(true);
+			BITDigiLock.useCostGUI.get(entId).setText("0");
+			BITDigiLock.popupScreen.get(entId).setDirty(true);
 			return false;
 		}
 

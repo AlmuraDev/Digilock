@@ -790,13 +790,13 @@ public class BITDigiLock {
 		y = y + height;
 
                 // Unlock Button
-		GenericButton unlockButton = new GenericButton("Unlock");
+		BITDigiLockSpoutButton unlockButton = new BITDigiLockSpoutButton("Unlock");
                 unlockButton.setAuto(false).setX(x).setY(y).setHeight(height).setWidth(width);
 		BITDigiLockButtons.put(unlockButton.getId(), "getPincodeUnlock");
 		popupScreen.get(id).attachWidget(BIT.plugin, unlockButton);
 
                 // Cancel Button
-		GenericButton cancelButton = new GenericButton("Cancel");
+		BITDigiLockSpoutButton cancelButton = new BITDigiLockSpoutButton("Cancel");
                 cancelButton.setAuto(false).setX(x + width + 10).setY(y).setHeight(height).setWidth(width);
                 popupScreen.get(id).attachWidget(BIT.plugin, cancelButton);
 		BITDigiLockButtons.put(cancelButton.getId(), "getPincodeCancel");
@@ -854,7 +854,7 @@ public class BITDigiLock {
 		
 		// first row -------- x=20-170-------------------------------------
 		x = 10;
-		w1 = 60;
+		//w1 = 60;
 		w2 = 80;
 		w3 = 50;
 		w4 = 50;
@@ -867,7 +867,7 @@ public class BITDigiLock {
 		popupScreen.get(id).attachWidget(BIT.plugin, costToCreate);
 
                 // ownerButton
-		//GenericButton ownerButton = new GenericButton("Owner");
+		//BITDigiLockSpoutButton ownerButton = new BITDigiLockSpoutButton("Owner");
 		//ownerButton.setAuto(false).setX(x).setY(y).setHeight(height)
 		//.setWidth(w1);
 		//ownerButton.setTooltip("Set Owner");
@@ -882,7 +882,7 @@ public class BITDigiLock {
 		popupScreen.get(id).attachWidget(BIT.plugin, ownerGUI.get(id));
 
 		// closetimerButton
-		//GenericButton closetimerButton = new GenericButton("Closetimer");
+		//BITDigiLockSpoutButton closetimerButton = new BITDigiLockSpoutButton("Closetimer");
 		//closetimerButton.setAuto(false).setX(x + w1 + w2 + 10).setY(y)
 		//.setHeight(height).setWidth(w1);
 		//closetimerButton.setTooltip("Set closetimer");
@@ -896,7 +896,7 @@ public class BITDigiLock {
 		popupScreen.get(id).attachWidget(BIT.plugin, closetimerGUI.get(id));
 
 		// useCostButton
-		//GenericButton useCostButton = new GenericButton("Use cost");
+		//BITDigiLockSpoutButton useCostButton = new BITDigiLockSpoutButton("Use cost");
 		//useCostButton.setAuto(false).setX(x + w1 + w2 + 10 + w1 + w3 + 10)
 		//.setY(y).setHeight(height).setWidth(w1);
 		//useCostButton.setTooltip("Set cost");
@@ -912,7 +912,7 @@ public class BITDigiLock {
 		//y = y + height + 1;
 
 		// setCoOwnerButton
-		//GenericButton CoOwnerButton = new GenericButton("CoOwners");
+		//BITDigiLockSpoutButton CoOwnerButton = new BITDigiLockSpoutButton("CoOwners");
 		//CoOwnerButton.setAuto(false).setX(x).setY(y).setHeight(height)
 		//.setWidth(w1);
 		//CoOwnerButton.setTooltip("CoOwners must be seperated by a comma.");
@@ -927,7 +927,7 @@ public class BITDigiLock {
 		//y = y + height;
 
 		// setUsersButton
-		//GenericButton usersButton = new GenericButton("Users");
+		//BITDigiLockSpoutButton usersButton = new BITDigiLockSpoutButton("Users");
 		//usersButton.setAuto(false).setX(x).setY(y).setHeight(height)
 		//.setWidth(w1);
 		//usersButton.setTooltip("users must be seperated by a comma.");
@@ -954,24 +954,24 @@ public class BITDigiLock {
 		pincodeGUI.get(id).setPasswordField(false);
 		pincodeGUI.get(id).setFocus(true);
 		popupScreen.get(id).attachWidget(BIT.plugin, pincodeGUI.get(id));
-		y = y + height;
+		//y = y + height;
 
 		// lockButton
-		GenericButton lockButton = new GenericButton("Save");
+		BITDigiLockSpoutButton lockButton = new BITDigiLockSpoutButton("Save");
 		lockButton.setAuto(false).setX(230).setY(148).setHeight(height+5).setWidth(40);
 		lockButton.setTooltip("Enter/change the pincode and press lock.");
 		popupScreen.get(id).attachWidget(BIT.plugin, lockButton);
 		BITDigiLockButtons.put(lockButton.getId(), "setPincodeLock");
 
 		// cancelButton
-		GenericButton cancelButton2 = new GenericButton("Cancel");
+		BITDigiLockSpoutButton cancelButton2 = new BITDigiLockSpoutButton("Cancel");
 		cancelButton2.setAuto(false).setX(280).setY(148).setHeight(height+5).setWidth(40);
 		popupScreen.get(id).attachWidget(BIT.plugin, cancelButton2);
 		BITDigiLockButtons.put(cancelButton2.getId(), "setPincodeCancel");
 
 		// removeButton  //Dockter 12/27/11
 		if (BITDigiLock.isLocked(sBlock)) {
-			GenericButton removeButton = new GenericButton("Remove");
+			BITDigiLockSpoutButton removeButton = new BITDigiLockSpoutButton("Remove");
 			removeButton.setAuto(false).setX(180).setY(148).setHeight(height+5).setWidth(40);
 			removeButton.setTooltip("Press Remove to delete the lock.");
 			removeButton.setEnabled(true);
@@ -984,7 +984,7 @@ public class BITDigiLock {
 				&& BITDigiLock.isChest(sBlock) // Displays only if sBlock=Chest.
 				&& BITPermissions.hasPerm(sPlayer, "digilock.admin",
 						BITPermissions.NOT_QUIET)){
-			GenericButton AdminButton = new GenericButton("Admin Open");
+			BITDigiLockSpoutButton AdminButton = new BITDigiLockSpoutButton("Admin Open");
 			AdminButton.setAuto(false).setX(89).setY(124).setHeight(height+5).setWidth(50);
 			AdminButton.setTooltip("Administrator Open Override.");
 			AdminButton.setEnabled(true);

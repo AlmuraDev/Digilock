@@ -83,7 +83,7 @@ public class BITBlockListener implements Listener {
 		SpoutBlock blockOnTop = sBlock.getRelative(BlockFace.UP);
 		if (BITDigiLock.isBookshelf(sBlock)&&!BITDigiLock.isLocked(sBlock)) {
 			if (BITInventory.isBitInventoryCreated(sBlock)) {
-				if (BIT.plugin.economy.hasAccount(sPlayer.getName())) {
+				if (BIT.useEconomy && BIT.plugin.economy.hasAccount(sPlayer.getName())) {
 					if (BIT.plugin.economy.has(sPlayer.getName(), BITConfig.BOOKSHELF_DESTROYCOST)
 							|| BITConfig.BOOKSHELF_DESTROYCOST < 0) {
 						BITInventory.removeBookshelfAndDropItems(sPlayer, sBlock);
