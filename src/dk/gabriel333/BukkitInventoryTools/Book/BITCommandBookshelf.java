@@ -10,6 +10,7 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 
 import dk.gabriel333.BukkitInventoryTools.BIT;
 import dk.gabriel333.BukkitInventoryTools.DigiLock.BITDigiLock;
+import dk.gabriel333.BukkitInventoryTools.DigiLock.BlockTools;
 import dk.gabriel333.BukkitInventoryTools.Inventory.BITInventory;
 import dk.gabriel333.Library.*;
 
@@ -32,7 +33,7 @@ public class BITCommandBookshelf implements CommandExecutor {
 			String name = "";
 			String owner = sPlayer.getName();
 			int usecost = 0;
-			if (BITDigiLock.isBookshelf((SpoutBlock) sBlock)) {
+			if (BlockTools.isBookshelf((SpoutBlock) sBlock)) {
 				if (BITPermissions.hasPerm(sPlayer, "bookshelf.create",
 						BITPermissions.NOT_QUIET)
 						|| BITPermissions.hasPerm(sPlayer, "bookshelf.use",

@@ -41,7 +41,7 @@ public class BITPlayerListener implements Listener {
 		}
 		SpoutBlock sBlock = (SpoutBlock) event.getClickedBlock();
 		// for faster handling
-		if (!BITDigiLock.isLockable(sBlock)) {
+		if (!BlockTools.isLockable(sBlock)) {
 			return;
 		}
 		SpoutPlayer sPlayer = (SpoutPlayer) event.getPlayer();
@@ -50,7 +50,7 @@ public class BITPlayerListener implements Listener {
 		if (sBlock.getType() == Material.BOOKSHELF
 				&& sBlock.getType() == itemInHand.getType()
 				// && !BIT.holdingKey.equals("L-CONTROL"))
-				&& !(BITDigiLock.isLocked(sBlock) || BITInventory
+				&& !(BlockTools.isLocked(sBlock) || BITInventory
 						.isBitInventoryCreated(sBlock))) {
 			// This allows the user to place a new Bookshelf on a Bookshelf
 			// where the Inventory is created.
@@ -60,7 +60,7 @@ public class BITPlayerListener implements Listener {
 		if (sBlock.getType() == Material.BOOKSHELF
 				&& sBlock.getType() == itemInHand.getType()
 				&& event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
-				&& (BITDigiLock.isLocked(sBlock) || BITInventory
+				&& (BlockTools.isLocked(sBlock) || BITInventory
 						.isBitInventoryCreated(sBlock))) {
 			event.setCancelled(true);
 		}
@@ -74,7 +74,7 @@ public class BITPlayerListener implements Listener {
 
 		// Call setPincode
 		if (sPlayer.isSpoutCraftEnabled()
-				&& BITDigiLock.isLockable(sBlock)
+				&& BlockTools.isLockable(sBlock)
 				&& BIT.holdingKey.get(id).equals("KEY_LCONTROL")
 				&& event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
 				&& (BITPermissions.hasPerm(sPlayer, "digilock.create",
@@ -82,8 +82,8 @@ public class BITPlayerListener implements Listener {
 						sPlayer, "digilock.admin", BITPermissions.NOT_QUIET))) {
 
 			event.setCancelled(true);
-			if (BITDigiLock.isLocked(sBlock)) {
-				BITDigiLock digilock = BITDigiLock.loadDigiLock(sBlock);
+			if (BlockTools.isLocked(sBlock)) {
+				BITDigiLock digilock = BlockTools.loadDigiLock(sBlock);
 				if (digilock.isOwner(sPlayer)
 						|| digilock.isCoowner(sPlayer)
 						|| BITPermissions.hasPerm(sPlayer, "digilock.admin",
@@ -100,11 +100,11 @@ public class BITPlayerListener implements Listener {
 		} else
 
 		// HANDLING THAT PLAYER CLICK ON A BLOCK WITH A DIGILOCK
-		if (BITDigiLock.isLocked(sBlock)) {
-			BITDigiLock digilock = BITDigiLock.loadDigiLock(sBlock);
+		if (BlockTools.isLocked(sBlock)) {
+			BITDigiLock digilock = BlockTools.loadDigiLock(sBlock);
 
 			// HANDLING A LOCKED CHEST AND DOUBLECHEST
-			if (BITDigiLock.isChest(sBlock)) {
+			if (BlockTools.isChest(sBlock)) {
 				if ((digilock.getPincode().equals("") || digilock.getPincode()
 						.equalsIgnoreCase("fingerprint"))
 						&& event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
@@ -118,7 +118,7 @@ public class BITPlayerListener implements Listener {
 						Inventory inv = sChest.getLargestInventory();
 						BITMessages.sendNotification(sPlayer,
 								"Opened by fingerprint");
-						BITDigiLock.playDigiLockSound(sBlock);
+						BlockTools.playDigiLockSound(sBlock);
 						sPlayer.openInventoryWindow(inv);
 					} else {
 						event.setCancelled(true);
@@ -139,7 +139,7 @@ public class BITPlayerListener implements Listener {
 			}
 
 			// HANDLING A LOCKED DOUBLEDOOR
-			else if (BITDigiLock.isDoubleDoor(sBlock)) {
+			else if (BlockTools.isDoubleDoor(sBlock)) {
 				event.setCancelled(true);
 				if (digilock.getPincode().equals("")
 						|| digilock.getPincode()
@@ -152,43 +152,43 @@ public class BITPlayerListener implements Listener {
 							|| digilock.isUser(sPlayer) 
 							|| BITPermissions.hasPerm(sPlayer, "digilock.admin",
 								BITPermissions.NOT_QUIET)){
-						BITDigiLock.playDigiLockSound(sBlock);
-						if (BITDigiLock.isDoubleDoorOpen(sBlock)) {
-							BITDigiLock.closeDoubleDoor(sPlayer, sBlock, 0);
+						BlockTools.playDigiLockSound(sBlock);
+						if (BlockTools.isDoubleDoorOpen(sBlock)) {
+							BlockTools.closeDoubleDoor(sPlayer, sBlock, 0);
 						} else {
-							BITDigiLock.openDoubleDoor(sPlayer, sBlock,
+							BlockTools.openDoubleDoor(sPlayer, sBlock,
 									digilock.getUseCost());
 						}
 						BITMessages.sendNotification(sPlayer,
 								"Used with fingerprint");
 					} else {
 						sPlayer.sendMessage("Your fingerprint does not match the DigiLock");
-						if (BITDigiLock.isDoubleDoorOpen(sBlock)) {
-							BITDigiLock.playDigiLockSound(sBlock);
-							BITDigiLock.closeDoubleDoor(sPlayer, sBlock, 0);
+						if (BlockTools.isDoubleDoorOpen(sBlock)) {
+							BlockTools.playDigiLockSound(sBlock);
+							BlockTools.closeDoubleDoor(sPlayer, sBlock, 0);
 						}
 					}
 				} else {
 					// ASK FOR PINCODE
-					if (!BITDigiLock.isDoubleDoorOpen(sBlock)
+					if (!BlockTools.isDoubleDoorOpen(sBlock)
 							&& BITPermissions.hasPerm(sPlayer, "digilock.use",
 									BITPermissions.NOT_QUIET)) {
 						if (sPlayer.isSpoutCraftEnabled()) {
 							BITDigiLock.getPincode(sPlayer,
-									BITDigiLock.getLeftDoubleDoor(sBlock));
+									BlockTools.getLeftDoubleDoor(sBlock));
 						} else {
 							sPlayer.sendMessage("Digilock'ed by "
 									+ digilock.owner);
 						}
 					} else {
-						BITDigiLock.closeDoubleDoor(sPlayer, sBlock, 0);
-						BITDigiLock.playDigiLockSound(sBlock);
+						BlockTools.closeDoubleDoor(sPlayer, sBlock, 0);
+						BlockTools.playDigiLockSound(sBlock);
 					}
 				}
 			}
 
 			// HANDLING A LOCKED DOOR
-			else if (BITDigiLock.isDoor(sBlock)) {
+			else if (BlockTools.isDoor(sBlock)) {
 				event.setCancelled(true);
 				if (digilock.getPincode().equals("")
 						|| digilock.getPincode()
@@ -201,25 +201,25 @@ public class BITPlayerListener implements Listener {
 							|| digilock.isUser(sPlayer)
 							|| BITPermissions.hasPerm(sPlayer, "digilock.admin",
 								BITPermissions.NOT_QUIET)){
-						BITDigiLock.playDigiLockSound(sBlock);
-						if (BITDigiLock.isDoorOpen(sBlock)) {
-							BITDigiLock.closeDoor(sPlayer, sBlock, 0);
+						BlockTools.playDigiLockSound(sBlock);
+						if (BlockTools.isDoorOpen(sBlock)) {
+							BlockTools.closeDoor(sPlayer, sBlock, 0);
 						} else {
-							BITDigiLock.openDoor(sPlayer, sBlock,
+							BlockTools.openDoor(sPlayer, sBlock,
 									digilock.getUseCost());
 						}
 						BITMessages.sendNotification(sPlayer,
 								"Used with fingerprint");
 					} else {
 						sPlayer.sendMessage("Your fingerprint does not match the DigiLock");
-						if (BITDigiLock.isDoorOpen(sBlock)) {
-							BITDigiLock.playDigiLockSound(sBlock);
-							BITDigiLock.closeDoor(sPlayer, sBlock, 0);
+						if (BlockTools.isDoorOpen(sBlock)) {
+							BlockTools.playDigiLockSound(sBlock);
+							BlockTools.closeDoor(sPlayer, sBlock, 0);
 						}
 					}
 				} else {
 					// ASK FOR PINCODE
-					if (!BITDigiLock.isDoorOpen(sBlock)) {
+					if (!BlockTools.isDoorOpen(sBlock)) {
 						if (sPlayer.isSpoutCraftEnabled()
 								&& BITPermissions.hasPerm(sPlayer,
 										"digilock.use",
@@ -230,8 +230,8 @@ public class BITPlayerListener implements Listener {
 									+ digilock.owner);
 						}
 					} else {
-						BITDigiLock.closeDoor(sPlayer, sBlock, 0);
-						BITDigiLock.playDigiLockSound(sBlock);
+						BlockTools.closeDoor(sPlayer, sBlock, 0);
+						BlockTools.playDigiLockSound(sBlock);
 					}
 				}
 			}
@@ -248,25 +248,25 @@ public class BITPlayerListener implements Listener {
 					if (digilock.isOwner(sPlayer)
 							|| digilock.isCoowner(sPlayer)
 							|| digilock.isUser(sPlayer)) {
-						BITDigiLock.playDigiLockSound(sBlock);
-						if (BITDigiLock.isTrapdoorOpen(sPlayer, sBlock)) {
-							BITDigiLock.closeTrapdoor(sPlayer, sBlock);
+						BlockTools.playDigiLockSound(sBlock);
+						if (BlockTools.isTrapdoorOpen(sPlayer, sBlock)) {
+							BlockTools.closeTrapdoor(sPlayer, sBlock);
 						} else {
-							BITDigiLock.openTrapdoor(sPlayer, sBlock,
+							BlockTools.openTrapdoor(sPlayer, sBlock,
 									digilock.getUseCost());
 						}
 						BITMessages.sendNotification(sPlayer,
 								"Used with fingerprint");
 					} else {
 						sPlayer.sendMessage("Your fingerprint does not match the DigiLock");
-						if (BITDigiLock.isTrapdoorOpen(sPlayer, sBlock)) {
-							BITDigiLock.playDigiLockSound(sBlock);
-							BITDigiLock.closeTrapdoor(sPlayer, sBlock);
+						if (BlockTools.isTrapdoorOpen(sPlayer, sBlock)) {
+							BlockTools.playDigiLockSound(sBlock);
+							BlockTools.closeTrapdoor(sPlayer, sBlock);
 						}
 					}
 				} else {
 					// ASK FOR PINCODE
-					if (!BITDigiLock.isTrapdoorOpen(sPlayer, sBlock)) {
+					if (!BlockTools.isTrapdoorOpen(sPlayer, sBlock)) {
 						if (sPlayer.isSpoutCraftEnabled()
 								&& BITPermissions.hasPerm(sPlayer,
 										"digilock.use",
@@ -277,8 +277,8 @@ public class BITPlayerListener implements Listener {
 									+ digilock.owner);
 						}
 					} else {
-						BITDigiLock.closeTrapdoor(sPlayer, sBlock);
-						BITDigiLock.playDigiLockSound(sBlock);
+						BlockTools.closeTrapdoor(sPlayer, sBlock);
+						BlockTools.playDigiLockSound(sBlock);
 					}
 				}
 			}
@@ -295,25 +295,25 @@ public class BITPlayerListener implements Listener {
 					if (digilock.isOwner(sPlayer)
 							|| digilock.isCoowner(sPlayer)
 							|| digilock.isUser(sPlayer)) {
-						BITDigiLock.playDigiLockSound(sBlock);
-						if (BITDigiLock.isFenceGateOpen(sPlayer, sBlock)) {
-							BITDigiLock.closeFenceGate(sPlayer, sBlock);
+						BlockTools.playDigiLockSound(sBlock);
+						if (BlockTools.isFenceGateOpen(sPlayer, sBlock)) {
+							BlockTools.closeFenceGate(sPlayer, sBlock);
 						} else {
-							BITDigiLock.openFenceGate(sPlayer, sBlock,
+							BlockTools.openFenceGate(sPlayer, sBlock,
 									digilock.getUseCost());
 						}
 						BITMessages.sendNotification(sPlayer,
 								"Used with fingerprint");
 					} else {
 						sPlayer.sendMessage("Your fingerprint does not match the DigiLock");
-						if (BITDigiLock.isFenceGateOpen(sPlayer, sBlock)) {
-							BITDigiLock.playDigiLockSound(sBlock);
-							BITDigiLock.closeFenceGate(sPlayer, sBlock);
+						if (BlockTools.isFenceGateOpen(sPlayer, sBlock)) {
+							BlockTools.playDigiLockSound(sBlock);
+							BlockTools.closeFenceGate(sPlayer, sBlock);
 						}
 					}
 				} else {
 					// ASK FOR PINCODE
-					if (!BITDigiLock.isFenceGateOpen(sPlayer, sBlock)) {
+					if (!BlockTools.isFenceGateOpen(sPlayer, sBlock)) {
 						if (sPlayer.isSpoutCraftEnabled()
 								&& BITPermissions.hasPerm(sPlayer,
 										"digilock.use",
@@ -324,8 +324,8 @@ public class BITPlayerListener implements Listener {
 									+ digilock.owner);
 						}
 					} else {
-						BITDigiLock.closeFenceGate(sPlayer, sBlock);
-						BITDigiLock.playDigiLockSound(sBlock);
+						BlockTools.closeFenceGate(sPlayer, sBlock);
+						BlockTools.playDigiLockSound(sBlock);
 					}
 				}
 			}
@@ -343,7 +343,7 @@ public class BITPlayerListener implements Listener {
 							|| digilock.isUser(sPlayer)) {
 						BITMessages.sendNotification(sPlayer,
 								"Opened with fingerprint");
-						BITDigiLock.playDigiLockSound(digilock.getBlock());
+						BlockTools.playDigiLockSound(digilock.getBlock());
 						Dispenser dispenser = (Dispenser) sBlock.getState();
 						Inventory inv = dispenser.getInventory();
 						sPlayer.openInventoryWindow(inv);
@@ -379,7 +379,7 @@ public class BITPlayerListener implements Listener {
 							|| digilock.isUser(sPlayer)) {
 						BITMessages.sendNotification(sPlayer,
 								"Used with fingerprint");
-						BITDigiLock.playDigiLockSound(digilock.getBlock());
+						BlockTools.playDigiLockSound(digilock.getBlock());
 						Furnace furnace = (Furnace) sBlock.getState();
 						Inventory inv = furnace.getInventory();
 						sPlayer.openInventoryWindow(inv);
@@ -417,34 +417,32 @@ public class BITPlayerListener implements Listener {
 							|| digilock.isCoowner(sPlayer)
 							|| digilock.isUser(sPlayer)) {
 						if (nextLockableBlock != null) {
-							if (BITDigiLock.isLocked(nextLockableBlock)) {
+							if (BlockTools.isLocked(nextLockableBlock)) {
 								BITMessages.sendNotification(sPlayer,
 										"Used with fingerprint");
-								BITDigiLock.playDigiLockSound(sBlock);
+								BlockTools.playDigiLockSound(sBlock);
 								if (lever.isPowered()) {
-									BITDigiLock.leverOff(sPlayer, sBlock);
+									BlockTools.leverOff(sPlayer, sBlock);
 								} else {
-									BITDigiLock.leverOn(sPlayer, sBlock,
+									BlockTools.leverOn(sPlayer, sBlock,
 											digilock.getUseCost());
 								}
-								BITDigiLock.playDigiLockSound(sBlock);
+								BlockTools.playDigiLockSound(sBlock);
 							} else {
 								sPlayer.sendMessage("The connected block "
 										+ nextLockableBlock.getType()
 										+ " is not locked. Please lock it.");
-								if (BITDigiLock.isDoubleDoor(nextLockableBlock)) {
-									BITDigiLock.closeDoubleDoor(sPlayer,
+								if (BlockTools.isDoubleDoor(nextLockableBlock)) {
+									BlockTools.closeDoubleDoor(sPlayer,
 											nextLockableBlock, 0);
-								} else if (BITDigiLock
-										.isDoor(nextLockableBlock)) {
-									BITDigiLock.closeDoor(sPlayer,
+								} else if (BlockTools.isDoor(nextLockableBlock)) {
+									BlockTools.closeDoor(sPlayer,
 											nextLockableBlock, 0);
-								} else if (BITDigiLock
-										.isTrapdoor(nextLockableBlock)) {
-									BITDigiLock.closeTrapdoor(sPlayer,
+								} else if (BlockTools.isTrapdoor(nextLockableBlock)) {
+									BlockTools.closeTrapdoor(sPlayer,
 											nextLockableBlock);
 								}
-								BITDigiLock.leverOff(sPlayer, sBlock);
+								BlockTools.leverOff(sPlayer, sBlock);
 								event.setCancelled(true);
 
 							}
@@ -454,12 +452,12 @@ public class BITPlayerListener implements Listener {
 					} else {
 						sPlayer.sendMessage("Your fingerprint does not match the DigiLock");
 						event.setCancelled(true);
-						BITDigiLock.leverOff(sPlayer, sBlock);
+						BlockTools.leverOff(sPlayer, sBlock);
 					}
 				} else { // LEVER with pincode
 					if (nextLockableBlock != null) {
-						if (BITDigiLock.isLocked(nextLockableBlock)) {
-							if (!BITDigiLock.isLeverOn(sBlock)) {
+						if (BlockTools.isLocked(nextLockableBlock)) {
+							if (!BlockTools.isLeverOn(sBlock)) {
 								if (sPlayer.isSpoutCraftEnabled()
 										&& BITPermissions.hasPerm(sPlayer,
 												"digilock.use",
@@ -471,36 +469,33 @@ public class BITPlayerListener implements Listener {
 									event.setCancelled(true);
 								}
 							} else {
-								if (BITDigiLock.isDoubleDoor(nextLockableBlock)) {
-									BITDigiLock.closeDoubleDoor(sPlayer,
+								if (BlockTools.isDoubleDoor(nextLockableBlock)) {
+									BlockTools.closeDoubleDoor(sPlayer,
 											nextLockableBlock, 0);
-								} else if (BITDigiLock
-										.isDoor(nextLockableBlock)) {
-									BITDigiLock.closeDoor(sPlayer,
+								} else if (BlockTools.isDoor(nextLockableBlock)) {
+									BlockTools.closeDoor(sPlayer,
 											nextLockableBlock, 0);
-								} else if (BITDigiLock
-										.isTrapdoor(nextLockableBlock)) {
-									BITDigiLock.closeTrapdoor(sPlayer,
+								} else if (BlockTools.isTrapdoor(nextLockableBlock)) {
+									BlockTools.closeTrapdoor(sPlayer,
 											nextLockableBlock);
 								}
-								BITDigiLock.leverOff(sPlayer, sBlock);
+								BlockTools.leverOff(sPlayer, sBlock);
 							}
 						} else {
 							sPlayer.sendMessage("The connected block "
 									+ nextLockableBlock.getType()
 									+ " is not locked. Please lock it.");
-							if (BITDigiLock.isDoubleDoor(nextLockableBlock)) {
-								BITDigiLock.closeDoubleDoor(sPlayer,
+							if (BlockTools.isDoubleDoor(nextLockableBlock)) {
+								BlockTools.closeDoubleDoor(sPlayer,
 										nextLockableBlock, 0);
-							} else if (BITDigiLock.isDoor(nextLockableBlock)) {
-								BITDigiLock.closeDoor(sPlayer,
+							} else if (BlockTools.isDoor(nextLockableBlock)) {
+								BlockTools.closeDoor(sPlayer,
 										nextLockableBlock, 0);
-							} else if (BITDigiLock
-									.isTrapdoor(nextLockableBlock)) {
-								BITDigiLock.closeTrapdoor(sPlayer,
+							} else if (BlockTools.isTrapdoor(nextLockableBlock)) {
+								BlockTools.closeTrapdoor(sPlayer,
 										nextLockableBlock);
 							}
-							BITDigiLock.leverOff(sPlayer, sBlock);
+							BlockTools.leverOff(sPlayer, sBlock);
 							event.setCancelled(true);
 
 						}
@@ -525,9 +520,9 @@ public class BITPlayerListener implements Listener {
 							|| digilock.isUser(sPlayer)) {
 						BITMessages.sendNotification(sPlayer,
 								"Used with fingerprint");
-						BITDigiLock.playDigiLockSound(sBlock);
+						BlockTools.playDigiLockSound(sBlock);
 						if (!button.isPowered()) {
-							BITDigiLock.pressButtonOn(sPlayer, sBlock,
+							BlockTools.pressButtonOn(sPlayer, sBlock,
 									digilock.getUseCost());
 						}
 					} else {
@@ -555,7 +550,7 @@ public class BITPlayerListener implements Listener {
 			}
 
 			// HANDLING SIGN and SIGN_POST
-			else if (BITDigiLock.isSign(sBlock)) {
+			else if (BlockTools.isSign(sBlock)) {
 				if ((digilock.getPincode().equals("") || digilock.getPincode()
 						.equalsIgnoreCase("fingerprint"))
 						&& event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
@@ -642,7 +637,7 @@ public class BITPlayerListener implements Listener {
 					}
 				}
 				// JUKEBOX
-			} else if ((BITDigiLock.isJukebox(sBlock))) {
+			} else if ((BlockTools.isJukebox(sBlock))) {
 				if ((digilock.getPincode().equals("") || digilock.getPincode()
 						.equalsIgnoreCase("fingerprint"))
 						&& event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
@@ -696,7 +691,7 @@ public class BITPlayerListener implements Listener {
 							|| digilock.isUser(sPlayer)) {
 						BITMessages.sendNotification(sPlayer,
 								"Used with fingerprint");
-						BITDigiLock.playDigiLockSound(digilock.getBlock());
+						BlockTools.playDigiLockSound(digilock.getBlock());
 					} else {
 						event.setCancelled(true);
 						sPlayer.sendMessage("Your fingerprint does not match the DigiLock");
@@ -738,29 +733,29 @@ public class BITPlayerListener implements Listener {
 
 			}
 			// HANDLING THE DOUBLEDOOR
-			if (BITDigiLock.isDoubleDoor(sBlock)) {
+			if (BlockTools.isDoubleDoor(sBlock)) {
 				// if LEFT_CLICK_BLOCK is canceled the double door cant be
 				// broken.
 				if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
 					event.setCancelled(true);
-					if (BITDigiLock.isDoubleDoorOpen(sBlock)) {
-						BITDigiLock.closeDoubleDoor(sPlayer, sBlock, 0);
+					if (BlockTools.isDoubleDoorOpen(sBlock)) {
+						BlockTools.closeDoubleDoor(sPlayer, sBlock, 0);
 					} else {
-						BITDigiLock.openDoubleDoor(sPlayer, sBlock, 0);
+						BlockTools.openDoubleDoor(sPlayer, sBlock, 0);
 					}
 				}
 
 			}
 			// HANDLING THE DOOR
-			else if (BITDigiLock.isDoor(sBlock)) {
+			else if (BlockTools.isDoor(sBlock)) {
 
 			}
 			// HANDLING TRAP_DOOR
-			else if (BITDigiLock.isTrapdoor(sBlock)) {
+			else if (BlockTools.isTrapdoor(sBlock)) {
 
 			}
 			// HANDLING DISPENCER
-			else if (BITDigiLock.isDispenser(sBlock)) {
+			else if (BlockTools.isDispenser(sBlock)) {
 
 			}
 			// HANDLING FURNACE
@@ -768,23 +763,23 @@ public class BITPlayerListener implements Listener {
 
 			}
 			// HANDLING LEVER
-			else if (BITDigiLock.isLever(sBlock)) {
+			else if (BlockTools.isLever(sBlock)) {
 				Lever lever = (Lever) sBlock.getState().getData();
 				if (lever.isPowered()) {
 
-					BITDigiLock.leverOff(sPlayer, sBlock);
+					BlockTools.leverOff(sPlayer, sBlock);
 				} else {
-					BITDigiLock.leverOn(sPlayer, sBlock, 0);
+					BlockTools.leverOn(sPlayer, sBlock, 0);
 				}
 
 			}
 			// HANDLING STONE_BUTTON
-			else if (BITDigiLock.isButton(sBlock)) {
+			else if (BlockTools.isButton(sBlock)) {
 
 			}
 
 			// HANDLING SIGN and SIGN_POST
-			else if (BITDigiLock.isSign(sBlock)) {
+			else if (BlockTools.isSign(sBlock)) {
 				if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
 						&& BITConfig.LIBRARY_USESIGNEDITGUI
 						&& BIT.holdingKey.get(id).equals("KEY_LSHIFT")
@@ -797,7 +792,7 @@ public class BITPlayerListener implements Listener {
 			}
 
 			// BOOKSHELF
-			else if (BITDigiLock.isBookshelf(sBlock)
+			else if (BlockTools.isBookshelf(sBlock)
 					&& event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
 					&& !BIT.holdingKey.get(id).equals("KEY_LCONTROL")
 					&& (BITConfig.BOOKSHELF_ENABLE))   {  //  Added this option to config to prevent BOOKWORM Conflict
