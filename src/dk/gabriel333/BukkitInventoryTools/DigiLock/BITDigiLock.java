@@ -825,8 +825,7 @@ public class BITDigiLock {
 			ownerGUI.get(id).setText(digilock.getOwner());
 			coOwnersGUI.get(id).setText(digilock.getCoOwners());
 			usersGUI.get(id).setText(digilock.getUsers());
-			closetimerGUI.get(id).setText(
-					Integer.toString(digilock.getClosetimer()));
+			closetimerGUI.get(id).setText(Integer.toString(digilock.getClosetimer()));
 			useCostGUI.get(id).setText(Integer.toString(digilock.getUseCost()));
 		} else {
 			pincodeGUI.get(id).setText("");
@@ -876,8 +875,8 @@ public class BITDigiLock {
 
 		// owner text field
 		ownerGUI.get(id).setTooltip("Owner of the DigiLock");
-		ownerGUI.get(id).setCursorPosition(1).setMaximumCharacters(20);
-		ownerGUI.get(id).setX(200).setY(78);
+		ownerGUI.get(id).setCursorPosition(1).setMaximumCharacters(30);
+		ownerGUI.get(id).setX(200).setY(78);		
 		ownerGUI.get(id).setHeight(height).setWidth(80);
 		popupScreen.get(id).attachWidget(BIT.plugin, ownerGUI.get(id));
 
@@ -890,7 +889,7 @@ public class BITDigiLock {
 		//BITDigiLockButtons.put(closetimerButton.getId(), "ClosetimerButton");
 		// closetimer
 		closetimerGUI.get(id).setTooltip("Autoclosing time in sec.");
-		closetimerGUI.get(id).setCursorPosition(1).setMaximumCharacters(4);
+		closetimerGUI.get(id).setCursorPosition(3).setMaximumCharacters(4);
 		closetimerGUI.get(id).setX(215).setY(128);
 		closetimerGUI.get(id).setHeight(height).setWidth(20);
 		popupScreen.get(id).attachWidget(BIT.plugin, closetimerGUI.get(id));
@@ -905,7 +904,7 @@ public class BITDigiLock {
 		
 		// useCost Text Field
 		useCostGUI.get(id).setTooltip("This is the cost to use the DigiLock");
-		useCostGUI.get(id).setCursorPosition(1).setMaximumCharacters(4);
+		useCostGUI.get(id).setCursorPosition(2).setMaximumCharacters(4);
 		useCostGUI.get(id).setX(280).setY(128);
 		useCostGUI.get(id).setHeight(height).setWidth(20);
 		popupScreen.get(id).attachWidget(BIT.plugin, useCostGUI.get(id));
@@ -919,9 +918,9 @@ public class BITDigiLock {
 		//popupScreen.get(id).attachWidget(BIT.plugin, CoOwnerButton);
 		//BITDigiLockButtons.put(CoOwnerButton.getId(), "CoOwnerButton");
 
-                // listOfCoOwners
-                coOwnersGUI.get(id).setX(210).setY(95).setWidth(100).setHeight(height);
-                coOwnersGUI.get(id).setMaximumCharacters(200);
+        // listOfCoOwners
+        coOwnersGUI.get(id).setX(210).setY(95).setWidth(100).setHeight(height);
+        coOwnersGUI.get(id).setMaximumCharacters(200);
 		coOwnersGUI.get(id).setText(coOwnersGUI.get(id).getText());
 		popupScreen.get(id).attachWidget(BIT.plugin, coOwnersGUI.get(id));
 		//y = y + height;

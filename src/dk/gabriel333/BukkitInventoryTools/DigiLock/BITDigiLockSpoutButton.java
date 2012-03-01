@@ -177,7 +177,7 @@ public class BITDigiLockSpoutButton extends GenericButton {
 						String digiString2 = BITDigiLock.closetimerGUI.get(entId).getText();
 						digiString2 = digiString2.replaceAll("[^0-9]+", "");
 						
-						String digiString3 = BITDigiLock.closetimerGUI.get(entId).getText();
+						String digiString3 = BITDigiLock.useCostGUI.get(entId).getText();
 						digiString3 = digiString3.replaceAll("[^0-9]+", "");
 						
 						BITDigiLock.SaveDigiLock(sPlayer, sBlock,

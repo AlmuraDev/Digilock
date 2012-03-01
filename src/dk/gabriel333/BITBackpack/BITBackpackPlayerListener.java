@@ -42,8 +42,7 @@ public class BITBackpackPlayerListener implements Listener {
 					if (BITBackpack.inventories.containsKey(player.getName())) {
 						BITBackpackInventorySaveTask.saveInventory(player,
 								event.getFrom().getWorld());
-						BITBackpack.inventories.remove(player.getName());
-                                                BITBackpack.inventories.clear();
+						BITBackpack.inventories.remove(player.getName());                                           
 					}
 					BITBackpack.loadInventory(player, event.getTo().getWorld());
 				} catch (Exception e) {
@@ -63,8 +62,7 @@ public class BITBackpackPlayerListener implements Listener {
 	public void onPlayerKick(PlayerKickEvent event) {
 		try {
 			Player player = event.getPlayer();
-			BITBackpackInventorySaveTask.saveInventory(player,
-					player.getWorld());
+			BITBackpackInventorySaveTask.saveInventory(player,player.getWorld());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -74,11 +72,9 @@ public class BITBackpackPlayerListener implements Listener {
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		try {
 			Player player = event.getPlayer();
-			BITBackpackInventorySaveTask.saveInventory(player,
-					player.getWorld());
+			BITBackpackInventorySaveTask.saveInventory(player,player.getWorld());
 			if (BITBackpack.inventories.containsKey(player)) {
-				BITBackpack.inventories.remove(player);
-                                BITBackpack.inventories.clear();  // Updated line for 1/30/12
+				BITBackpack.inventories.remove(player);             
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
