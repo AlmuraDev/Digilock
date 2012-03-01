@@ -4,10 +4,12 @@ import dk.gabriel333.BukkitInventoryTools.BIT;
 import dk.gabriel333.Library.BITPermissions;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.SpoutManager;
@@ -22,8 +24,9 @@ public class BITBackpackEntityListener implements Listener {
 	@EventHandler
 	public void onEntityDeath(EntityDeathEvent event) {
 		Entity entity = event.getEntity();
+		Player player = null;
 		if (entity instanceof Player) {
-			Player player = (Player) entity;
+			player = (Player) entity;
 			if (!BITPermissions.hasPerm(player, "backpack.nodrop",
 					BITPermissions.QUIET)) {
 				if (BITBackpack.canOpenBackpack(player.getWorld(), player)) {
@@ -43,9 +46,9 @@ public class BITBackpackEntityListener implements Listener {
 								.getInventoryBuilder()
 								.construct(
 										BITBackpack
-												.allowedSize(player.getWorld(),
-														player, true),
-										BITBackpack.inventoryName);
+										.allowedSize(player.getWorld(),
+												player, true),
+												BITBackpack.inventoryName);
 						for (Integer i = 0; i < BITBackpack.allowedSize(
 								player.getWorld(), player, true); i++) {
 							ItemStack item = new ItemStack(0, 0);
@@ -59,9 +62,7 @@ public class BITBackpackEntityListener implements Listener {
 								+ ChatColor.RED + BITBackpack.inventoryName + ChatColor.WHITE
 								+ BIT.li.getMessage("hasbroken"));
 					}
-				}
-			} else {
-				
+				}		
 			}
 		}
 	}

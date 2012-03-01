@@ -875,7 +875,8 @@ public class BITDigiLock {
 
 		// owner text field
 		ownerGUI.get(id).setTooltip("Owner of the DigiLock");
-		ownerGUI.get(id).setCursorPosition(1).setMaximumCharacters(30);
+		ownerGUI.get(id).setMaximumCharacters(30);
+		ownerGUI.get(id).setFixed(false);
 		ownerGUI.get(id).setX(200).setY(78);		
 		ownerGUI.get(id).setHeight(height).setWidth(80);
 		popupScreen.get(id).attachWidget(BIT.plugin, ownerGUI.get(id));
@@ -889,7 +890,7 @@ public class BITDigiLock {
 		//BITDigiLockButtons.put(closetimerButton.getId(), "ClosetimerButton");
 		// closetimer
 		closetimerGUI.get(id).setTooltip("Autoclosing time in sec.");
-		closetimerGUI.get(id).setCursorPosition(3).setMaximumCharacters(4);
+		closetimerGUI.get(id).setMaximumCharacters(4);
 		closetimerGUI.get(id).setX(215).setY(128);
 		closetimerGUI.get(id).setHeight(height).setWidth(20);
 		popupScreen.get(id).attachWidget(BIT.plugin, closetimerGUI.get(id));
@@ -904,7 +905,8 @@ public class BITDigiLock {
 		
 		// useCost Text Field
 		useCostGUI.get(id).setTooltip("This is the cost to use the DigiLock");
-		useCostGUI.get(id).setCursorPosition(2).setMaximumCharacters(4);
+		useCostGUI.get(id).setMaximumCharacters(4);
+		useCostGUI.get(id).setFixed(true);
 		useCostGUI.get(id).setX(280).setY(128);
 		useCostGUI.get(id).setHeight(height).setWidth(20);
 		popupScreen.get(id).attachWidget(BIT.plugin, useCostGUI.get(id));
@@ -920,7 +922,7 @@ public class BITDigiLock {
 
         // listOfCoOwners
         coOwnersGUI.get(id).setX(210).setY(95).setWidth(100).setHeight(height);
-        coOwnersGUI.get(id).setMaximumCharacters(200);
+        coOwnersGUI.get(id).setMaximumCharacters(1000).setMaximumLines(1);        
 		coOwnersGUI.get(id).setText(coOwnersGUI.get(id).getText());
 		popupScreen.get(id).attachWidget(BIT.plugin, coOwnersGUI.get(id));
 		//y = y + height;
@@ -934,8 +936,8 @@ public class BITDigiLock {
 		//BITDigiLockButtons.put(usersButton.getId(), "usersButton");
 		
 		// listOfUsers
-		usersGUI.get(id).setX(198).setY(112).setWidth(100).setHeight(height);
-		usersGUI.get(id).setMaximumCharacters(200);
+		usersGUI.get(id).setX(198).setY(112).setWidth(100).setHeight(18);
+		usersGUI.get(id).setMaximumCharacters(1000).setMaximumLines(2);		
 		usersGUI.get(id).setText(usersGUI.get(id).getText());
 		popupScreen.get(id).attachWidget(BIT.plugin, usersGUI.get(id));
 		//y = y + height;

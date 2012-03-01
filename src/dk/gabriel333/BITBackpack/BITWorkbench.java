@@ -11,6 +11,7 @@ public class BITWorkbench extends ContainerWorkbench {
 		super(entityPlayer.inventory, entityPlayer.world, 0, 0, 0);
 		super.windowId = windowNumber;
 		super.a((ICrafting) entityPlayer);
+		
 	}
 
 	@Override
