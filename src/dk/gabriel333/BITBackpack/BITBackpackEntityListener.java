@@ -15,18 +15,16 @@ import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.SpoutManager;
 
 public class BITBackpackEntityListener implements Listener {
-	private BIT plugin;
+	// private BIT plugin;
 
-	public BITBackpackEntityListener(BIT plugin) {
-		this.plugin = plugin;
-	}
+	//public BITBackpackEntityListener(BIT plugin) {
+	//	this.plugin = plugin;
+	//}
 
 	@EventHandler
 	public void onEntityDeath(EntityDeathEvent event) {
-		Entity entity = event.getEntity();
-		Player player = null;
-		if (entity instanceof Player) {
-			player = (Player) entity;
+		if (event.getEntity() instanceof Player) {
+			Player player = (Player) event.getEntity();
 			if (!BITPermissions.hasPerm(player, "backpack.nodrop",
 					BITPermissions.QUIET)) {
 				if (BITBackpack.canOpenBackpack(player.getWorld(), player)) {

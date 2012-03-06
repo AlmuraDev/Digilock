@@ -841,7 +841,7 @@ public class BITDigiLock {
 	// Dockter GUI
 		
 		GenericTexture border = new GenericTexture();
-		border.setUrl("http://www.almuramc.com/images/digilock.png");
+		border.setUrl("http://www.almuramc.com/images/digilock1.png");
 		if (BITConfig.DEBUG_ADVANCEDGUI)
 			BITMessages.showInfo("The selected item:"+ sBlock.getTypeId() +" ");
 		
@@ -861,7 +861,7 @@ public class BITDigiLock {
 		y = 165;
                 
 		GenericLabel costToCreate = new GenericLabel(" "+ String.valueOf(BITConfig.DIGILOCK_COST));
-		costToCreate.setAuto(true).setX(120).setY(151).setHeight(8).setWidth(140);
+		costToCreate.setAuto(true).setX(120).setY(156).setHeight(6).setWidth(140);
 		costToCreate.setTooltip("The cost to create a new DigiLock");
 		popupScreen.get(id).attachWidget(BIT.plugin, costToCreate);
 
@@ -877,8 +877,8 @@ public class BITDigiLock {
 		ownerGUI.get(id).setTooltip("Owner of the DigiLock");
 		ownerGUI.get(id).setMaximumCharacters(30);
 		ownerGUI.get(id).setFixed(false);
-		ownerGUI.get(id).setX(200).setY(78);		
-		ownerGUI.get(id).setHeight(height).setWidth(80);
+		ownerGUI.get(id).setX(121).setY(68);		
+		ownerGUI.get(id).setHeight(height).setWidth(170);
 		popupScreen.get(id).attachWidget(BIT.plugin, ownerGUI.get(id));
 
 		// closetimerButton
@@ -890,9 +890,9 @@ public class BITDigiLock {
 		//BITDigiLockButtons.put(closetimerButton.getId(), "ClosetimerButton");
 		// closetimer
 		closetimerGUI.get(id).setTooltip("Autoclosing time in sec.");
-		closetimerGUI.get(id).setMaximumCharacters(4);
-		closetimerGUI.get(id).setX(215).setY(128);
-		closetimerGUI.get(id).setHeight(height).setWidth(20);
+		closetimerGUI.get(id).setMaximumCharacters(3);
+		closetimerGUI.get(id).setX(128).setY(137);
+		closetimerGUI.get(id).setHeight(height).setWidth(40);
 		popupScreen.get(id).attachWidget(BIT.plugin, closetimerGUI.get(id));
 
 		// useCostButton
@@ -905,10 +905,10 @@ public class BITDigiLock {
 		
 		// useCost Text Field
 		useCostGUI.get(id).setTooltip("This is the cost to use the DigiLock");
-		useCostGUI.get(id).setMaximumCharacters(4);
+		useCostGUI.get(id).setMaximumCharacters(6);
 		useCostGUI.get(id).setFixed(true);
-		useCostGUI.get(id).setX(280).setY(128);
-		useCostGUI.get(id).setHeight(height).setWidth(20);
+		useCostGUI.get(id).setX(232).setY(137);
+		useCostGUI.get(id).setHeight(height).setWidth(40);
 		popupScreen.get(id).attachWidget(BIT.plugin, useCostGUI.get(id));
 		//y = y + height + 1;
 
@@ -920,9 +920,9 @@ public class BITDigiLock {
 		//popupScreen.get(id).attachWidget(BIT.plugin, CoOwnerButton);
 		//BITDigiLockButtons.put(CoOwnerButton.getId(), "CoOwnerButton");
 
-        // listOfCoOwners
-        coOwnersGUI.get(id).setX(210).setY(95).setWidth(100).setHeight(height);
-        coOwnersGUI.get(id).setMaximumCharacters(1000).setMaximumLines(1);        
+        // listOfCoOwners8
+        coOwnersGUI.get(id).setX(121).setY(84).setWidth(170).setHeight(18);
+        coOwnersGUI.get(id).setMaximumCharacters(1000).setMaximumLines(2);        
 		coOwnersGUI.get(id).setText(coOwnersGUI.get(id).getText());
 		popupScreen.get(id).attachWidget(BIT.plugin, coOwnersGUI.get(id));
 		//y = y + height;
@@ -936,7 +936,7 @@ public class BITDigiLock {
 		//BITDigiLockButtons.put(usersButton.getId(), "usersButton");
 		
 		// listOfUsers
-		usersGUI.get(id).setX(198).setY(112).setWidth(100).setHeight(18);
+		usersGUI.get(id).setX(121).setY(108).setWidth(170).setHeight(18);
 		usersGUI.get(id).setMaximumCharacters(1000).setMaximumLines(2);		
 		usersGUI.get(id).setText(usersGUI.get(id).getText());
 		popupScreen.get(id).attachWidget(BIT.plugin, usersGUI.get(id));
@@ -947,11 +947,12 @@ public class BITDigiLock {
 		x = 180;
 		w1 = 40;
 		//w2 = 80;
-		// pincode3
+		
+		// Password Field
 		pincodeGUI.get(id).setTooltip("Enter/change the pincode...");
 		pincodeGUI.get(id).setCursorPosition(1).setMaximumCharacters(20);
-		pincodeGUI.get(id).setX(236).setY(55);
-		pincodeGUI.get(id).setHeight(height).setWidth(w1);
+		pincodeGUI.get(id).setX(155).setY(49);
+		pincodeGUI.get(id).setHeight(height).setWidth(130);
 		pincodeGUI.get(id).setPasswordField(false);
 		pincodeGUI.get(id).setFocus(true);
 		popupScreen.get(id).attachWidget(BIT.plugin, pincodeGUI.get(id));
@@ -959,14 +960,14 @@ public class BITDigiLock {
 
 		// lockButton
 		BITDigiLockSpoutButton lockButton = new BITDigiLockSpoutButton("Save");
-		lockButton.setAuto(false).setX(230).setY(148).setHeight(height+5).setWidth(40);
+		lockButton.setAuto(false).setX(230).setY(153).setHeight(height+5).setWidth(40);
 		lockButton.setTooltip("Enter/change the pincode and press lock.");
 		popupScreen.get(id).attachWidget(BIT.plugin, lockButton);
 		BITDigiLockButtons.put(lockButton.getId(), "setPincodeLock");
 
 		// cancelButton
 		BITDigiLockSpoutButton cancelButton2 = new BITDigiLockSpoutButton("Cancel");
-		cancelButton2.setAuto(false).setX(280).setY(148).setHeight(height+5).setWidth(40);
+		cancelButton2.setAuto(false).setX(280).setY(153).setHeight(height+5).setWidth(40);
 		popupScreen.get(id).attachWidget(BIT.plugin, cancelButton2);
 		BITDigiLockButtons.put(cancelButton2.getId(), "setPincodeCancel");
 

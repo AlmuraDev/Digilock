@@ -163,7 +163,7 @@ public class BIT extends JavaPlugin {
 		pm.registerEvents(new BITBackpackInputListener(this), this);
 		pm.registerEvents(new BITBackpackInventoryListener(), this);
 		pm.registerEvents(new BITBackpackPlayerListener(this), this);
-		pm.registerEvents(new BITBackpackEntityListener(this), this);
+		pm.registerEvents(new BITBackpackEntityListener(), this);
 
 	}
 
