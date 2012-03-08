@@ -3,6 +3,7 @@ package dk.gabriel333.BukkitInventoryTools.Inventory;
 import dk.gabriel333.BukkitInventoryTools.BIT;
 import dk.gabriel333.BukkitInventoryTools.Book.BITBook;
 import dk.gabriel333.BukkitInventoryTools.DigiLock.BITDigiLock;
+import dk.gabriel333.BukkitInventoryTools.DigiLock.BlockTools;
 import dk.gabriel333.Library.BITConfig;
 import dk.gabriel333.Library.BITMessages;
 import java.net.MalformedURLException;
@@ -517,7 +518,7 @@ public class BITInventory {
 		addUserData(id);
 		clickedBlock.put(id, sBlock);
 		if (BITInventory.isBitInventoryCreated(sBlock)) {
-			BITDigiLock digilock = BITDigiLock.loadDigiLock(sBlock);
+			BITDigiLock digilock = BlockTools.loadDigiLock(sBlock);
 			ownerGUI.get(id).setText(digilock.getOwner());
 			coOwnersGUI.get(id).setText(digilock.getCoOwners());
 			useCostGUI.get(id).setText(Integer.toString(digilock.getUseCost()));

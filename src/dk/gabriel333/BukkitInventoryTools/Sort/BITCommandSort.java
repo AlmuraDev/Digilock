@@ -1,23 +1,21 @@
 package dk.gabriel333.BukkitInventoryTools.Sort;
 
+import dk.gabriel333.BukkitInventoryTools.BIT;
+import dk.gabriel333.BukkitInventoryTools.DigiLock.BlockTools;
+import dk.gabriel333.BukkitInventoryTools.Inventory.BITInventory;
+import dk.gabriel333.Library.BITMessages;
+import dk.gabriel333.Library.BITPermissions;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Dispenser;
-
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.inventory.Inventory;
-
 import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.block.SpoutChest;
 import org.getspout.spoutapi.gui.ScreenType;
 import org.getspout.spoutapi.player.SpoutPlayer;
-
-import dk.gabriel333.BukkitInventoryTools.BIT;
-import dk.gabriel333.BukkitInventoryTools.DigiLock.BITDigiLock;
-import dk.gabriel333.BukkitInventoryTools.Inventory.BITInventory;
-import dk.gabriel333.Library.*;
 
 public class BITCommandSort implements CommandExecutor {
 
@@ -40,7 +38,7 @@ public class BITCommandSort implements CommandExecutor {
 							sChest.getLargestInventory());
 					BITMessages.sendNotification(sPlayer, "Chest sorted.");
 
-				} else if (BITDigiLock.isDispenser((SpoutBlock) targetblock)) {
+				} else if (BlockTools.isDispenser((SpoutBlock) targetblock)) {
 					Dispenser dispenser = (Dispenser) targetblock.getState();
 					Inventory inventory = dispenser.getInventory();
 					BITSortInventory.sortInventoryItems(sPlayer, inventory);
@@ -51,7 +49,7 @@ public class BITCommandSort implements CommandExecutor {
 					BITSortInventory.sortPlayerInventoryItems(sPlayer);
 					BITMessages.sendNotification(sPlayer, "Items sorted.");
 
-				} else if (BITDigiLock.isBookshelf((SpoutBlock) targetblock)) {
+				} else if (BlockTools.isBookshelf((SpoutBlock) targetblock)) {
 					if (BITInventory
 							.isBitInventoryCreated((SpoutBlock) targetblock)) {
 						BITInventory bInv = BITInventory.loadBitInventory(

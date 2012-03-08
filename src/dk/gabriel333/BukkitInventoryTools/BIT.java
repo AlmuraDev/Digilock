@@ -36,6 +36,9 @@ import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.getspout.spoutapi.SpoutManager;
+import org.getspout.spoutapi.keyboard.KeyBindingManager;
+import org.getspout.spoutapi.keyboard.Keyboard;
 
 public class BIT extends JavaPlugin {
 
@@ -148,23 +151,28 @@ public class BIT extends JavaPlugin {
 		// Priority.Normal, this);
 		pm.registerEvents(new BITBlockListener(), this);
 		pm.registerEvents(new BITPlayerListener(), this);
-		pm.registerEvents(new BITDigiLockInputListener(this), this);
-		///pm.registerEvents(new BITDigiLockSpoutButton(), this);
+		///pm.registerEvents(new BITDigiLockInputListener(this), this);
 
-		// BITIventory Listeners
-		///pm.registerEvents(new BITInventorySpoutButton(this), this);
 
 		// BITBook Listeners
 		pm.registerEvents(new BITInventoryListener(this), this);
 		pm.registerEvents(new BITBookInputListener(), this);
-		///pm.registerEvents(new BITBookSpoutListener(), this);
 
 		// BITBackpack Listeners
 		pm.registerEvents(new BITBackpackInputListener(this), this);
 		pm.registerEvents(new BITBackpackInventoryListener(), this);
 		pm.registerEvents(new BITBackpackPlayerListener(this), this);
-		pm.registerEvents(new BITBackpackEntityListener(), this);
+		pm.registerEvents(new BITBackpackEntityListener(this), this);
+                
+                // Register keys
+                KeyBindingManager kbm = SpoutManager.getKeyBindingManager();
+                try {
+                    kbm.registerBinding("BIT.Lock", Keyboard.KEY_L, "The key to lock chests", new BITDigiLockKeyHandler(plugin, Keyboard.KEY_L), plugin);
+                   // kbm.registerBinding("BIT.Lock", Keyboard.KEY_L, "The key to lock chests", new BITDigiLockKeyHandler(plugin, Keyboard.KEY_L), plugin);
 
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 	}
 
 	public void addCommands() {

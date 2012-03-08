@@ -19,14 +19,14 @@ public class BITBlockListener implements Listener {
 		// TODO: THERE IS AN MEMORY LEAK HERE!!!
 		/*
 		 * SpoutBlock sBlock = (SpoutBlock) event.getBlock(); if
-		 * (!BITDigiLock.isLockable(sBlock)) return; if
-		 * (BITDigiLock.isLocked(sBlock)) { if (G333Config.DEBUG_EVENTS)
+		 * (!BlockTools.isLockable(sBlock)) return; if
+		 * (BlockTools.isLocked(sBlock)) { if (G333Config.DEBUG_EVENTS)
 		 * G333Messages.showInfo("BlockRedstoneEvt:" +
 		 * event.getBlock().getType() + " getOC:" + event.getOldCurrent() +
 		 * " getNC:" + event.getNewCurrent()); if
-		 * (BITDigiLock.isDoubleDoor(sBlock)) {
+		 * (BlockTools.isDoubleDoor(sBlock)) {
 		 * 
-		 * } else if (BITDigiLock.isDoor(sBlock)) { Door door = (Door)
+		 * } else if (BlockTools.isDoor(sBlock)) { Door door = (Door)
 		 * sBlock.getState().getData(); if (!door.isOpen()) {
 		 * event.setNewCurrent(event.getOldCurrent()); } } }
 		 */
@@ -39,10 +39,10 @@ public class BITBlockListener implements Listener {
 		Block b = event.getBlock();
 		if (b != null && (event.getBlock() instanceof SpoutBlock)) {
 			
-			if (!BITDigiLock.isLockable(b))
+			if (!BlockTools.isLockable(b))
 				return;
 			SpoutBlock sBlock = (SpoutBlock) b;
-			if (BITDigiLock.isLocked(sBlock)) {
+			if (BlockTools.isLocked(sBlock)) {
 				event.setCancelled(true);
 				if (BITConfig.DEBUG_EVENTS) {
 					BITMessages.showInfo("BlockPhysicsEvt:"
@@ -59,10 +59,10 @@ public class BITBlockListener implements Listener {
 		if (event.isCancelled() || !(event.getBlock() instanceof SpoutBlock)) // hack for spout/worldborder bugs
 			return;
 		SpoutBlock block = (SpoutBlock) event.getBlock();
-		if (!BITDigiLock.isLockable(block))
+		if (!BlockTools.isLockable(block))
 			return;
-		if (BITDigiLock.isLocked(block)) {
-			if (BITDigiLock.isDoubleDoor(block)) {
+		if (BlockTools.isLocked(block)) {
+			if (BlockTools.isDoubleDoor(block)) {
 				BITMessages.showInfo("Tried to break doubledoor");
 			}
 			event.setCancelled(true);
@@ -81,7 +81,7 @@ public class BITBlockListener implements Listener {
 		SpoutPlayer sPlayer = (SpoutPlayer) event.getPlayer();
 		SpoutBlock sBlock = (SpoutBlock) event.getBlock();
 		SpoutBlock blockOnTop = sBlock.getRelative(BlockFace.UP);
-		if (BITDigiLock.isBookshelf(sBlock)&&!BITDigiLock.isLocked(sBlock)) {
+		if (BlockTools.isBookshelf(sBlock)&&!BlockTools.isLocked(sBlock)) {
 			if (BITInventory.isBitInventoryCreated(sBlock)) {
 				if (BIT.useEconomy && BIT.plugin.economy.hasAccount(sPlayer.getName())) {
 					if (BIT.plugin.economy.has(sPlayer.getName(), BITConfig.BOOKSHELF_DESTROYCOST)
@@ -100,7 +100,7 @@ public class BITBlockListener implements Listener {
 				}
 			}
 		} else
-		if (BITDigiLock.isLocked(sBlock) || BITDigiLock.isLocked(blockOnTop)) {
+		if (BlockTools.isLocked(sBlock) || BlockTools.isLocked(blockOnTop)) {
 			sPlayer.damage(5);
 			event.setCancelled(true);
 		}
@@ -111,9 +111,9 @@ public class BITBlockListener implements Listener {
 		if (event.isCancelled())
 			return;
 		SpoutBlock sBlock = (SpoutBlock) event.getBlock();
-		if (!BITDigiLock.isLockable(sBlock))
+		if (!BlockTools.isLockable(sBlock))
 			return;
-		if (BITDigiLock.isLocked(sBlock)) {
+		if (BlockTools.isLocked(sBlock)) {
 			// sPlayer.damage(1);
 			event.setCancelled(true);
 		}
@@ -124,7 +124,7 @@ public class BITBlockListener implements Listener {
 		if (event.isCancelled())
 			return;
 		SpoutBlock sBlock = (SpoutBlock) event.getBlock();
-		if (BITDigiLock.isLocked(sBlock)) {
+		if (BlockTools.isLocked(sBlock)) {
 			event.setCancelled(true);
 		}
 	}
@@ -134,9 +134,9 @@ public class BITBlockListener implements Listener {
 		if (event.isCancelled())
 			return;
 		SpoutBlock sBlock = (SpoutBlock) event.getBlock();
-		if (!BITDigiLock.isLockable(sBlock))
+		if (!BlockTools.isLockable(sBlock))
 			return;
-		if (BITDigiLock.isLocked(sBlock)) {
+		if (BlockTools.isLocked(sBlock)) {
 			event.setCancelled(true);
 		}
 	}
@@ -146,9 +146,9 @@ public class BITBlockListener implements Listener {
 		if (event.isCancelled())
 			return;
 		SpoutBlock sBlock = (SpoutBlock) event.getBlock();
-		if (!BITDigiLock.isLockable(sBlock))
+		if (!BlockTools.isLockable(sBlock))
 			return;
-		if (BITDigiLock.isLocked(sBlock)) {
+		if (BlockTools.isLocked(sBlock)) {
 			event.setCancelled(true);
 		}
 	}
@@ -158,9 +158,9 @@ public class BITBlockListener implements Listener {
 		if (event.isCancelled())
 			return;
 		SpoutBlock sBlock = (SpoutBlock) event.getBlock();
-		if (!BITDigiLock.isLockable(sBlock))
+		if (!BlockTools.isLockable(sBlock))
 			return;
-		if (BITDigiLock.isLocked(sBlock)) {
+		if (BlockTools.isLocked(sBlock)) {
 			event.setCancelled(true);
 		}
 	}
@@ -170,10 +170,10 @@ public class BITBlockListener implements Listener {
 		if (event.isCancelled())
 			return;
 		SpoutBlock sBlock = (SpoutBlock) event.getBlock();
-		if (!BITDigiLock.isLockable(sBlock))
+		if (!BlockTools.isLockable(sBlock))
 			return;
 		SpoutPlayer sPlayer = (SpoutPlayer) event.getPlayer();
-		if (BITDigiLock.isLocked(sBlock)) {
+		if (BlockTools.isLocked(sBlock)) {
 			sPlayer.damage(10);
 			event.setCancelled(true);
 		}
@@ -184,9 +184,9 @@ public class BITBlockListener implements Listener {
 		if (event.isCancelled())
 			return;
 		SpoutBlock sBlock = (SpoutBlock) event.getBlock();
-		if (!BITDigiLock.isLockable(sBlock))
+		if (!BlockTools.isLockable(sBlock))
 			return;
-		if (BITDigiLock.isLocked(sBlock)) {
+		if (BlockTools.isLocked(sBlock)) {
 			if (!BITConfig.LIBRARY_USESIGNEDITGUI) {
 				event.setCancelled(true);
 			}
@@ -198,9 +198,9 @@ public class BITBlockListener implements Listener {
 		if (event.isCancelled())
 			return;
 		SpoutBlock sBlock = (SpoutBlock) event.getBlock();
-		if (!BITDigiLock.isLockable(sBlock))
+		if (!BlockTools.isLockable(sBlock))
 			return;
-		if (BITDigiLock.isLocked(sBlock)) {
+		if (BlockTools.isLocked(sBlock)) {
 			event.setCancelled(true);
 		}
 	}
@@ -210,9 +210,9 @@ public class BITBlockListener implements Listener {
 		if (event.isCancelled())
 			return;
 		SpoutBlock sBlock = (SpoutBlock) event.getBlock();
-		if (!BITDigiLock.isLockable(sBlock))
+		if (!BlockTools.isLockable(sBlock))
 			return;
-		if (BITDigiLock.isLocked(sBlock)) {
+		if (BlockTools.isLocked(sBlock)) {
 			event.setCancelled(true);
 		}
 	}

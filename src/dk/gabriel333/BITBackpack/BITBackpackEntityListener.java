@@ -15,11 +15,11 @@ import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.SpoutManager;
 
 public class BITBackpackEntityListener implements Listener {
-	// private BIT plugin;
+	private BIT plugin;
 
-	//public BITBackpackEntityListener(BIT plugin) {
-	//	this.plugin = plugin;
-	//}
+	public BITBackpackEntityListener(BIT plugin) {
+		this.plugin = plugin;
+	}
 
 	@EventHandler
 	public void onEntityDeath(EntityDeathEvent event) {

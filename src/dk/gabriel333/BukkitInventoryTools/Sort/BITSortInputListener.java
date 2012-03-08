@@ -3,6 +3,7 @@ package dk.gabriel333.BukkitInventoryTools.Sort;
 import dk.gabriel333.BITBackpack.BITBackpack;
 import dk.gabriel333.BukkitInventoryTools.BIT;
 import dk.gabriel333.BukkitInventoryTools.DigiLock.BITDigiLock;
+import dk.gabriel333.BukkitInventoryTools.DigiLock.BlockTools;
 import dk.gabriel333.BukkitInventoryTools.Inventory.BITInventory;
 import dk.gabriel333.Library.BITConfig;
 import dk.gabriel333.Library.BITMessages;
@@ -79,7 +80,7 @@ public class BITSortInputListener implements Listener {
 			if (keypressed.equals(BITConfig.LIBRARY_SORTKEY)
 					&& BITPermissions.hasPerm(sPlayer, "SortInventory.use",
 							BITPermissions.QUIET)
-					&& BITDigiLock.isChest(targetblock)) {
+					&& BlockTools.isChest(targetblock)) {
 				SpoutChest sChest = (SpoutChest) targetblock.getState();
 				if (targetblock.getType() == Material.CHEST) {
 					BITSortInventory.sortInventoryItems(sPlayer,
@@ -90,7 +91,7 @@ public class BITSortInputListener implements Listener {
 					}
 				}
 
-			} else if (BITDigiLock.isBookshelf(targetblock)) {
+			} else if (BlockTools.isBookshelf(targetblock)) {
 
 				// BOOKSHELF INVENTORY
 				if (keypressed.equals(BITConfig.LIBRARY_SORTKEY)

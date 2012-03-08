@@ -20,6 +20,9 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 
 public class BITDigiLockSpoutButton extends GenericButton {
     
+    public BITDigiLockSpoutButton() {
+        super();
+    }
     
     public BITDigiLockSpoutButton(String name) {
         super(name);
@@ -36,14 +39,14 @@ public class BITDigiLockSpoutButton extends GenericButton {
 			if (sBlock == null) {
 				sBlock = (SpoutBlock) sPlayer.getTargetBlock(null, 4);
 			}
-			if (BITDigiLock.isLockable(sBlock)) {
-				BITDigiLock digilock = BITDigiLock.loadDigiLock(sBlock);
+			if (BlockTools.isLockable(sBlock)) {
+				BITDigiLock digilock = BlockTools.loadDigiLock(sBlock);
 				// ************************************
 				// Buttons in getPincodeWindow
 				// ************************************
                                 String buttonName = BITDigiLock.BITDigiLockButtons.get(uuid);
 				if (buttonName.equals("getPincodeUnlock")) {
-					BITDigiLock.popupScreen.get(entId).close();
+					//BlockTools.popupScreen.get(entId).close();
 					BITDigiLock.cleanupPopupScreen(sPlayer);
 					if ((digilock.getPincode().equals(
 							BITDigiLock.pincodeGUI.get(entId).getText()) && BITPermissions
@@ -51,52 +54,51 @@ public class BITDigiLockSpoutButton extends GenericButton {
 									BITPermissions.QUIET))
 							|| BITPermissions.hasPerm(sPlayer,
 									"digilock.admin", BITPermissions.QUIET)) {
-						if (BITDigiLock.isChest(digilock.getBlock())) {
+						if (BlockTools.isChest(digilock.getBlock())) {
 							SpoutChest sChest = (SpoutChest) sBlock.getState();
 							Inventory inv = sChest.getLargestInventory();
 							sPlayer.openInventoryWindow(inv);
 
-						} else if (BITDigiLock
-								.isDoubleDoor(digilock.getBlock())) {
-							BITDigiLock.playDigiLockSound(digilock.getBlock());
-							BITDigiLock.openDoubleDoor(sPlayer,
+						} else if (BlockTools.isDoubleDoor(digilock.getBlock())) {
+							BlockTools.playDigiLockSound(digilock.getBlock());
+							BlockTools.openDoubleDoor(sPlayer,
 									digilock.getBlock(), digilock.getUseCost());
 
-						} else if (BITDigiLock.isDoor(digilock.getBlock())) {
-							BITDigiLock.playDigiLockSound(digilock.getBlock());
-							BITDigiLock.openDoor(sPlayer, digilock.getBlock(),
+						} else if (BlockTools.isDoor(digilock.getBlock())) {
+							BlockTools.playDigiLockSound(digilock.getBlock());
+							BlockTools.openDoor(sPlayer, digilock.getBlock(),
 									digilock.getUseCost());
 
-						} else if (BITDigiLock.isTrapdoor(sBlock)) {
-							BITDigiLock.playDigiLockSound(digilock.getBlock());
-							BITDigiLock.openTrapdoor(sPlayer,
+						} else if (BlockTools.isTrapdoor(sBlock)) {
+							BlockTools.playDigiLockSound(digilock.getBlock());
+							BlockTools.openTrapdoor(sPlayer,
 									digilock.getBlock(), digilock.getUseCost());
 
-						} else if (BITDigiLock.isFenceGate(sBlock)) {
-							BITDigiLock.playDigiLockSound(digilock.getBlock());
-							BITDigiLock.openFenceGate(sPlayer,
+						} else if (BlockTools.isFenceGate(sBlock)) {
+							BlockTools.playDigiLockSound(digilock.getBlock());
+							BlockTools.openFenceGate(sPlayer,
 									digilock.getBlock(), digilock.getUseCost());
 
-						} else if (BITDigiLock.isLever(sBlock)) {
-							BITDigiLock.leverOn(sPlayer, sBlock,
+						} else if (BlockTools.isLever(sBlock)) {
+							BlockTools.leverOn(sPlayer, sBlock,
 									digilock.getUseCost());
-							BITDigiLock.playDigiLockSound(sBlock);
+							BlockTools.playDigiLockSound(sBlock);
 
-						} else if (BITDigiLock.isButton(sBlock)) {
-							if (!BITDigiLock.isButtonOn(digilock.getBlock())) {
-								BITDigiLock.pressButtonOn(sPlayer,
+						} else if (BlockTools.isButton(sBlock)) {
+							if (!BlockTools.isButtonOn(digilock.getBlock())) {
+								BlockTools.pressButtonOn(sPlayer,
 										digilock.getBlock(),
 										digilock.getUseCost());
-								BITDigiLock.playDigiLockSound(sBlock);
+								BlockTools.playDigiLockSound(sBlock);
 							}
-						} else if (BITDigiLock.isDispenser(sBlock)) {
-							BITDigiLock.playDigiLockSound(digilock.getBlock());
+						} else if (BlockTools.isDispenser(sBlock)) {
+							BlockTools.playDigiLockSound(digilock.getBlock());
 							Dispenser dispenser = (Dispenser) sBlock.getState();
 							Inventory inv = dispenser.getInventory();
 							sPlayer.openInventoryWindow(inv);
 
 						} else if (digilock.getBlock().getType() == Material.FURNACE) {
-							BITDigiLock.playDigiLockSound(digilock.getBlock());
+							BlockTools.playDigiLockSound(digilock.getBlock());
 							Furnace furnace = (Furnace) sBlock.getState();
 							Inventory inv = furnace.getInventory();
 							sPlayer.openInventoryWindow(inv);
@@ -107,7 +109,7 @@ public class BITDigiLockSpoutButton extends GenericButton {
 							bitInventory
 									.openBitInventory(sPlayer, bitInventory);
 
-						} else if (BITDigiLock.isSign(sBlock)) {
+						} else if (BlockTools.isSign(sBlock)) {
 							if (sPlayer.isSpoutCraftEnabled()
 									&& BITConfig.LIBRARY_USESIGNEDITGUI
 							        && BITPermissions.hasPerm(sPlayer, "digilock.signadmin",
@@ -118,7 +120,7 @@ public class BITDigiLockSpoutButton extends GenericButton {
 
 							}
 
-						} else if (BITDigiLock.isJukebox(sBlock)) {
+						} else if (BlockTools.isJukebox(sBlock)) {
 							ItemStack is = sPlayer.getItemInHand();
 							Jukebox jukebox = (Jukebox) sBlock.getState();
 							if (jukebox.isPlaying()) {
@@ -129,7 +131,7 @@ public class BITDigiLockSpoutButton extends GenericButton {
 							}
 							
 						} else if (digilock.getBlock().getType() == Material.BREWING_STAND) {
-							BITDigiLock.playDigiLockSound(digilock.getBlock());
+							BlockTools.playDigiLockSound(digilock.getBlock());
 							//BlockBrewingStand bs = (BlockBrewingStand) digilock.getBlock();
 							sPlayer.sendMessage("Locking brewing stand with pincode is not suported yet!");
 							//TODO: open brewing stand / inventory.
@@ -137,23 +139,23 @@ public class BITDigiLockSpoutButton extends GenericButton {
 						
 					} else {
 						BITMessages.sendNotification(sPlayer, "Wrong pincode!");
-						if (BITDigiLock.isDoubleDoor(digilock.getBlock())) {
-							BITDigiLock.closeDoubleDoor(sPlayer,
+						if (BlockTools.isDoubleDoor(digilock.getBlock())) {
+							BlockTools.closeDoubleDoor(sPlayer,
 									digilock.getBlock(), 0);
-						} else if (BITDigiLock.isDoor(digilock.getBlock())) {
-							BITDigiLock.closeDoor(sPlayer, digilock.getBlock(),
+						} else if (BlockTools.isDoor(digilock.getBlock())) {
+							BlockTools.closeDoor(sPlayer, digilock.getBlock(),
 									0);
-						} else if (BITDigiLock.isTrapdoor(digilock.getBlock())) {
-							BITDigiLock.closeTrapdoor(sPlayer,
+						} else if (BlockTools.isTrapdoor(digilock.getBlock())) {
+							BlockTools.closeTrapdoor(sPlayer,
 									digilock.getBlock());
-						} else if (BITDigiLock.isChest(sBlock)
-								|| BITDigiLock.isDispenser(sBlock)
+						} else if (BlockTools.isChest(sBlock)
+								|| BlockTools.isDispenser(sBlock)
 								|| sBlock.getType() == Material.FURNACE) {
 							sPlayer.closeActiveWindow();
 							BITDigiLock.cleanupPopupScreen(sPlayer);
 							BITDigiLock.BITDigiLockButtons.remove(uuid);
-						} else if (BITDigiLock.isLever(sBlock)) {
-							BITDigiLock.leverOff(sPlayer, sBlock);
+						} else if (BlockTools.isLever(sBlock)) {
+							BlockTools.leverOff(sPlayer, sBlock);
 						}
 						sPlayer.damage(5);
 					}
@@ -202,21 +204,21 @@ public class BITDigiLockSpoutButton extends GenericButton {
 					BITDigiLock.cleanupPopupScreen(sPlayer);
 					BITDigiLock.BITDigiLockButtons.remove(uuid);
 
-					if (BITDigiLock.isLocked(sBlock)) {
+					if (BlockTools.isLocked(sBlock)) {
 						digilock.RemoveDigiLock(sPlayer);
 					}
 					
 					// Dockter 12/27/11 to add AdminOpen Button to User Interface.
 				} else if (buttonName.equals("AdminOpen")) {
-					BITDigiLock.popupScreen.get(entId).close();
+					//BlockTools.popupScreen.get(entId).close();
 					BITDigiLock.cleanupPopupScreen(sPlayer);
 					BITDigiLock.BITDigiLockButtons.remove(uuid);
-					if (BITDigiLock.isLocked(sBlock)) {
-						if (BITDigiLock.isChest(digilock.getBlock())) {
+					if (BlockTools.isLocked(sBlock)) {
+						if (BlockTools.isChest(digilock.getBlock())) {
 							SpoutChest sChest = (SpoutChest) sBlock.getState();
 							Inventory inv = sChest.getLargestInventory();
 							sPlayer.openInventoryWindow(inv);
-							BITDigiLock.playDigiLockSound(sBlock);
+							BlockTools.playDigiLockSound(sBlock);
 						}
 					}
 					
@@ -272,11 +274,11 @@ public class BITDigiLockSpoutButton extends GenericButton {
 		String digiString1 = BITDigiLock.useCostGUI.get(entId).getText();
 		digiString1 = digiString1.replaceAll("[^0-9]+", "");
 		
-		//int closetimer = Integer.valueOf(BITDigiLock.closetimerGUI.get(id).getText());
+		//int closetimer = Integer.valueOf(BlockTools.closetimerGUI.get(id).getText());
 		int closetimer = Integer.valueOf(digiString);
 		int useCost = Integer.valueOf(digiString1);
 		
-		//int useCost = Integer.valueOf(BITDigiLock.useCostGUI.get(id).getText());
+		//int useCost = Integer.valueOf(BlockTools.useCostGUI.get(id).getText());
 		
 		if (closetimer < 0) {
 			BITMessages.sendNotification(sPlayer, "Closetimer must be > 0");

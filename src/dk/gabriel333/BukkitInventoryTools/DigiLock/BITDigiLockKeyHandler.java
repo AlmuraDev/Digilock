@@ -11,34 +11,38 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.material.Lever;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.block.SpoutBlock;
+import org.getspout.spoutapi.event.input.KeyBindingEvent;
 import org.getspout.spoutapi.event.input.KeyPressedEvent;
 import org.getspout.spoutapi.gui.ScreenType;
+import org.getspout.spoutapi.keyboard.BindingExecutionDelegate;
+import org.getspout.spoutapi.keyboard.Keyboard;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
-public class BITDigiLockInputListener implements Listener {
+public class BITDigiLockKeyHandler implements BindingExecutionDelegate {
 
 	public BIT plugin;
+        public Keyboard key;
 
-	public BITDigiLockInputListener(BIT plugin) {
+	public BITDigiLockKeyHandler(BIT plugin, Keyboard key) {
 		this.plugin = plugin;
 	}
+        
+        @Override
+        public void keyPressed(KeyBindingEvent event) {
+        }
+        
 
-	@EventHandler
-	public void onKeyPressedEvent(KeyPressedEvent event) {
+	@Override
+	public void keyReleased(KeyBindingEvent event) {
 		SpoutPlayer sPlayer = event.getPlayer();
 		ScreenType screentype = event.getScreenType();
-		String keypressed = event.getKey().name();
-		if (!(keypressed.equals(BITConfig.LIBRARY_LOCKKEY)
-				|| keypressed.equals("KEY_ESCAPE") || keypressed
-					.equals("KEY_RETURN")))
-			return;
 		SpoutBlock targetblock = (SpoutBlock) sPlayer.getTargetBlock(null, 4);
 		// External SpoutBackpack
 		
 		// Remove broken DigiLocks
-		if (BITDigiLock.isLocked(targetblock)
-				&& !BITDigiLock.isLockable(targetblock)) {
-			BITDigiLock digilock = BITDigiLock.loadDigiLock(targetblock);
+		if (BlockTools.isLocked(targetblock)
+				&& !BlockTools.isLockable(targetblock)) {
+			BITDigiLock digilock = BlockTools.loadDigiLock(targetblock);
 			digilock.RemoveDigiLock(sPlayer);
 			sPlayer.sendMessage("Warning: You had an DigiLock on a illegal block. The DigiLock has been removed.");
 			sPlayer.sendMessage("Make a ticket and tell the developer how it happened on:");
@@ -46,23 +50,20 @@ public class BITDigiLockInputListener implements Listener {
 		}
 
 		// GAME_SCREEN
-		else if (BITDigiLock.isLockable(targetblock)) {
+		else if (BlockTools.isLockable(targetblock)) {
 			if (screentype == ScreenType.GAME_SCREEN) {
-				if (keypressed.equals(BITConfig.LIBRARY_LOCKKEY)
-						&& (BITPermissions.hasPerm(sPlayer, "digilock.create",
+				if ((BITPermissions.hasPerm(sPlayer, "digilock.create",
 								BITPermissions.QUIET) || BITPermissions
 								.hasPerm(sPlayer, "digilock.admin",
 										BITPermissions.QUIET))) {
-					if (BITDigiLock.isLocked(targetblock)) {
-						BITDigiLock digilock = BITDigiLock
-								.loadDigiLock(targetblock);
-						if (BITDigiLock.isDoubleDoor(targetblock)) {
-							BITDigiLock
-									.closeDoubleDoor(sPlayer, targetblock, 0);
-						} else if (BITDigiLock.isDoor(targetblock)) {
-							BITDigiLock.closeDoor(sPlayer, targetblock, 0);
-						} else if (BITDigiLock.isTrapdoor(targetblock)) {
-							BITDigiLock.closeTrapdoor(sPlayer, targetblock);
+					if (BlockTools.isLocked(targetblock)) {
+						BITDigiLock digilock = BlockTools.loadDigiLock(targetblock);
+						if (BlockTools.isDoubleDoor(targetblock)) {
+							BlockTools.closeDoubleDoor(sPlayer, targetblock, 0);
+						} else if (BlockTools.isDoor(targetblock)) {
+							BlockTools.closeDoor(sPlayer, targetblock, 0);
+						} else if (BlockTools.isTrapdoor(targetblock)) {
+							BlockTools.closeTrapdoor(sPlayer, targetblock);
 						}
 						if (sPlayer.getName().equals(digilock.getOwner())) {
 							BITMessages.sendNotification(sPlayer,
@@ -74,7 +75,7 @@ public class BITDigiLockInputListener implements Listener {
 						}
 					} else { // TARGETBLOCK IS NOT LOCKED
 						if (sPlayer.isSpoutCraftEnabled()) {
-							if (BITDigiLock.isBookshelf(targetblock)) {
+							if (BlockTools.isBookshelf(targetblock)) {
 								if (!BITInventory
 										.isBitInventoryCreated(targetblock)) {
 									String coowners = "";
@@ -89,14 +90,13 @@ public class BITDigiLockInputListener implements Listener {
 											targetblock, owner, name, coowners,
 											inventory, usecost);
 								}
-							} else if (BITDigiLock.isDoubleDoor(targetblock)) {
-								SpoutBlock leftdoor = BITDigiLock
-										.getLeftDoubleDoor(targetblock);
-								BITDigiLock.closeDoubleDoor(sPlayer, leftdoor,
+							} else if (BlockTools.isDoubleDoor(targetblock)) {
+								SpoutBlock leftdoor = BlockTools.getLeftDoubleDoor(targetblock);
+								BlockTools.closeDoubleDoor(sPlayer, leftdoor,
 										0);
 								BITDigiLock.setPincode(sPlayer, leftdoor);
-							} else if (BITDigiLock.isDoor(targetblock)) {
-								BITDigiLock.closeDoor(targetblock);
+							} else if (BlockTools.isDoor(targetblock)) {
+								BlockTools.closeDoor(targetblock);
 								BITDigiLock.setPincode(sPlayer, targetblock);
 							} else {
 								BITDigiLock.setPincode(sPlayer, targetblock);
@@ -109,29 +109,29 @@ public class BITDigiLockInputListener implements Listener {
 				}
 			}
 		}
-
+/*
 		// CUSTOM_SCREEN
 		else if (screentype == ScreenType.CUSTOM_SCREEN) {
 			if (keypressed.equals("KEY_ESCAPE") || keypressed.equals("KEY_E")) {
 				// TODO: the lever must swing back to off, when the
 				// player press ESC. Next lines does not work. :-(
-				// if (BITDigiLock.isLever(targetblock)) {
-				// if ( BITDigiLock.isLeverOn(targetblock)) {
-				// BITDigiLock.leverOff(sPlayer, targetblock);
+				// if (BlockTools.isLever(targetblock)) {
+				// if ( BlockTools.isLeverOn(targetblock)) {
+				// BlockTools.leverOff(sPlayer, targetblock);
 				// } else {
-				// BITDigiLock.leverOn(sPlayer, targetblock,0);
+				// BlockTools.leverOn(sPlayer, targetblock,0);
 				// }
 				// sPlayer.sendMessage("setting lever to off");
 				// Lever lever = (Lever) targetblock.getState().getData();
 				// lever.setPowered(false);
 				// }
-				if (BITDigiLock.isLever(targetblock)) {
+				if (BlockTools.isLever(targetblock)) {
 					Lever lever = (Lever) targetblock.getState().getData();
 					// lever.setPowered(false);
 					targetblock.setData((byte) (lever.getData() | 8));
 				}
 				sPlayer.closeActiveWindow();
-				BITDigiLock.cleanupPopupScreen(sPlayer);
+				BlockTools.cleanupPopupScreen(sPlayer);
 
 			} else if (keypressed.equals("KEY_RETURN")) {
 
@@ -141,7 +141,7 @@ public class BITDigiLockInputListener implements Listener {
 		else {
 			// UNHANDLED SCREENTYPE
 		}
-
+*/
 	}
         /*
 	@EventHandler

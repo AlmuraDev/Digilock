@@ -1,5 +1,9 @@
 package dk.gabriel333.BukkitInventoryTools.DigiLock;
 
+import dk.gabriel333.BukkitInventoryTools.BIT;
+import dk.gabriel333.BukkitInventoryTools.Inventory.BITInventory;
+import dk.gabriel333.Library.BITMessages;
+import dk.gabriel333.Library.BITPermissions;
 import org.bukkit.Material;
 import org.bukkit.block.Dispenser;
 import org.bukkit.block.Furnace;
@@ -11,11 +15,6 @@ import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.block.SpoutChest;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
-import dk.gabriel333.BukkitInventoryTools.BIT;
-import dk.gabriel333.BukkitInventoryTools.Inventory.BITInventory;
-import dk.gabriel333.Library.BITMessages;
-import dk.gabriel333.Library.BITPermissions;
-
 public class BITCommandDigiLock implements CommandExecutor {
 
 	public BITCommandDigiLock(BIT plugin) {
@@ -26,8 +25,8 @@ public class BITCommandDigiLock implements CommandExecutor {
 			String label, String[] args) {
 		SpoutPlayer sPlayer = (SpoutPlayer) sender;
 		SpoutBlock block = (SpoutBlock) sPlayer.getTargetBlock(null, 5);
-		if (BITDigiLock.isLockable(block)) {
-			block = BITDigiLock.getDigiLockBlock(block);
+		if (BlockTools.isLockable(block)) {
+			block = BlockTools.getDigiLockBlock(block);
 			String pincode = "";
 			String coowners = "";
 			String users="";
@@ -49,7 +48,7 @@ public class BITCommandDigiLock implements CommandExecutor {
 							BITPermissions.NOT_QUIET)
 					|| BITPermissions.hasPerm(sPlayer, "*",
 							BITPermissions.NOT_QUIET)) {
-				if (!BITDigiLock.isLocked(block)) {
+				if (!BlockTools.isLocked(block)) {
 					if (args.length == 0) {
 						return false;
 					} else {
@@ -106,42 +105,42 @@ public class BITCommandDigiLock implements CommandExecutor {
 
 					}
 				} else { // digilock is locked
-					BITDigiLock digilock = BITDigiLock.loadDigiLock(block);
+					BITDigiLock digilock = BlockTools.loadDigiLock(block);
 					String action = args[0];
 					// UNLOCK *************************************************
 					if (action.equalsIgnoreCase("unlock") && args.length == 2){
 						if (digilock.getPincode().equalsIgnoreCase(args[1])) {
-							if (BITDigiLock.isChest(digilock.getBlock())) {
+							if (BlockTools.isChest(digilock.getBlock())) {
 								SpoutChest sChest = (SpoutChest) block
 										.getState();
 								Inventory inv = sChest.getLargestInventory();
 								sPlayer.openInventoryWindow(inv);
-							} else if (BITDigiLock.isDoubleDoor(block)) {
-								BITDigiLock.openDoubleDoor(sPlayer, block,
+							} else if (BlockTools.isDoubleDoor(block)) {
+								BlockTools.openDoubleDoor(sPlayer, block,
 										digilock.getUseCost());
-							} else if (BITDigiLock.isDoor(digilock.getBlock())) {
-								BITDigiLock.openDoor(sPlayer, block,
+							} else if (BlockTools.isDoor(digilock.getBlock())) {
+								BlockTools.openDoor(sPlayer, block,
 										digilock.getUseCost());
 							} else if (digilock.getBlock().getType() == Material.FURNACE) {
 								Furnace furnace = (Furnace) block.getState();
 								Inventory inv = furnace.getInventory();
 								sPlayer.openInventoryWindow(inv);
-							} else if (BITDigiLock.isDispenser(block)) {
+							} else if (BlockTools.isDispenser(block)) {
 								Dispenser dispenser = (Dispenser) block
 										.getState();
 								Inventory inv = dispenser.getInventory();
 								sPlayer.openInventoryWindow(inv);
-							} else if (BITDigiLock.isTrapdoor(block)) {
-								BITDigiLock.openTrapdoor(sPlayer, block,
+							} else if (BlockTools.isTrapdoor(block)) {
+								BlockTools.openTrapdoor(sPlayer, block,
 										digilock.getUseCost());
-							} else if (BITDigiLock.isLever(block)) {
-								if (BITDigiLock.isLeverOn(block)){
-									BITDigiLock.leverOff(sPlayer, block);
+							} else if (BlockTools.isLever(block)) {
+								if (BlockTools.isLeverOn(block)){
+									BlockTools.leverOff(sPlayer, block);
 								} else {
-									if (BITDigiLock.isLeverOn(block)){
-										BITDigiLock.leverOff(sPlayer, block);
+									if (BlockTools.isLeverOn(block)){
+										BlockTools.leverOff(sPlayer, block);
 									} else {
-									BITDigiLock.leverOn(sPlayer, block, digilock.getUseCost());
+									BlockTools.leverOn(sPlayer, block, digilock.getUseCost());
 									}
 								}
 							} else if (digilock.getBlock().getType() == Material.BOOKSHELF) {
@@ -280,35 +279,34 @@ public class BITCommandDigiLock implements CommandExecutor {
 								+ digilock.getClosetimer());
 					} else if (digilock.getPincode().equalsIgnoreCase(args[0])
 							&& args.length == 1) {
-						if (BITDigiLock.isChest(digilock.getBlock())) {
+						if (BlockTools.isChest(digilock.getBlock())) {
 							SpoutChest sChest = (SpoutChest) block.getState();
 							Inventory inv = sChest.getLargestInventory();
 							sPlayer.openInventoryWindow(inv);
-						} else if (BITDigiLock
-								.isDoubleDoor(digilock.getBlock())) {
-							BITDigiLock.openDoubleDoor(sPlayer, block,
+						} else if (BlockTools.isDoubleDoor(digilock.getBlock())) {
+							BlockTools.openDoubleDoor(sPlayer, block,
 									digilock.getUseCost());
 
-						} else if (BITDigiLock.isDoor(digilock.getBlock())) {
-							BITDigiLock.openDoor(sPlayer, block,
+						} else if (BlockTools.isDoor(digilock.getBlock())) {
+							BlockTools.openDoor(sPlayer, block,
 									digilock.getUseCost());
 						}  else if (digilock.getBlock().getType() == Material.FURNACE) {
 							Furnace furnace = (Furnace) block.getState();
 							Inventory inv = furnace.getInventory();
 							sPlayer.openInventoryWindow(inv);
-						} else if (BITDigiLock.isDispenser(block)) {
+						} else if (BlockTools.isDispenser(block)) {
 							Dispenser dispenser = (Dispenser) block
 									.getState();
 							Inventory inv = dispenser.getInventory();
 							sPlayer.openInventoryWindow(inv);
-						} else if (BITDigiLock.isTrapdoor(block)) {
-							BITDigiLock.openTrapdoor(sPlayer, block,
+						} else if (BlockTools.isTrapdoor(block)) {
+							BlockTools.openTrapdoor(sPlayer, block,
 									digilock.getUseCost());
-						} else if (BITDigiLock.isLever(block)) {
-							if (BITDigiLock.isLeverOn(block)){
-								BITDigiLock.leverOff(sPlayer, block);
+						} else if (BlockTools.isLever(block)) {
+							if (BlockTools.isLeverOn(block)){
+								BlockTools.leverOff(sPlayer, block);
 							} else {
-							BITDigiLock.leverOn(sPlayer, block, digilock.getUseCost());
+							BlockTools.leverOn(sPlayer, block, digilock.getUseCost());
 							}
 						}
 					} else {
