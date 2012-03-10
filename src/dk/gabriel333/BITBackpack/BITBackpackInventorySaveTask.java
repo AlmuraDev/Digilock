@@ -68,7 +68,9 @@ public class BITBackpackInventorySaveTask implements Runnable {
 				inv.setContents(BITBackpack.inventories.get(player.getName()));
 				Integer i;
 				for (i = 0; i < size; i++) {
-					ItemStack item = inv.getItem(i);
+					//ItemStack item = inv.getItem(i);
+					ItemStack item = inv.getContents()[i]; //New Line 3-9-12
+					if (item == null) continue; //New Line 3-9-12
 					config.set(i.toString() + ".amount", item.getAmount());
 					Short durab = item.getDurability();
 					config.set(i.toString() + ".durability", durab.intValue());
