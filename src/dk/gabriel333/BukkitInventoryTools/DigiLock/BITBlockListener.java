@@ -14,207 +14,206 @@ import org.getspout.spoutapi.player.SpoutPlayer;
 
 public class BITBlockListener implements Listener {
 
-        @EventHandler
-	public void onBlockRedstoneChange(BlockRedstoneEvent event) {
-		// TODO: THERE IS AN MEMORY LEAK HERE!!!
-		/*
-		 * SpoutBlock sBlock = (SpoutBlock) event.getBlock(); if
-		 * (!BlockTools.isLockable(sBlock)) return; if
-		 * (BlockTools.isLocked(sBlock)) { if (G333Config.DEBUG_EVENTS)
-		 * G333Messages.showInfo("BlockRedstoneEvt:" +
-		 * event.getBlock().getType() + " getOC:" + event.getOldCurrent() +
-		 * " getNC:" + event.getNewCurrent()); if
-		 * (BlockTools.isDoubleDoor(sBlock)) {
-		 * 
-		 * } else if (BlockTools.isDoor(sBlock)) { Door door = (Door)
-		 * sBlock.getState().getData(); if (!door.isOpen()) {
-		 * event.setNewCurrent(event.getOldCurrent()); } } }
-		 */
-	}
-        
-        @EventHandler
-	public void onBlockPhysics(BlockPhysicsEvent event) {
-		if (event.isCancelled())
-			return;
-		Block b = event.getBlock();
-		if (b != null && (event.getBlock() instanceof SpoutBlock)) {
-			
-			if (!BlockTools.isLockable(b))
-				return;
-			SpoutBlock sBlock = (SpoutBlock) b;
-			if (BlockTools.isLocked(sBlock)) {
-				event.setCancelled(true);
-				if (BITConfig.DEBUG_EVENTS) {
-					BITMessages.showInfo("BlockPhysicsEvt:"
-							+ event.getBlock().getType() + " getCT:"
-							+ event.getChangedType());
-				}
-			}
-		}
-	}
+    @EventHandler
+    public void onBlockRedstoneChange(BlockRedstoneEvent event) {
+        // TODO: THERE IS AN MEMORY LEAK HERE!!!
+        /*
+         * SpoutBlock sBlock = (SpoutBlock) event.getBlock(); if
+         * (!BlockTools.isLockable(sBlock)) return; if
+         * (BlockTools.isLocked(sBlock)) { if (G333Config.DEBUG_EVENTS)
+         * G333Messages.showInfo("BlockRedstoneEvt:" +
+         * event.getBlock().getType() + " getOC:" + event.getOldCurrent() +
+         * " getNC:" + event.getNewCurrent()); if
+         * (BlockTools.isDoubleDoor(sBlock)) {
+         *
+         * } else if (BlockTools.isDoor(sBlock)) { Door door = (Door)
+         * sBlock.getState().getData(); if (!door.isOpen()) {
+         * event.setNewCurrent(event.getOldCurrent()); } } }
+         */
+    }
 
-	@EventHandler
-	public void onBlockFromTo(BlockFromToEvent event) {
-		// super.onBlockFromTo(event);
-		if (event.isCancelled() || !(event.getBlock() instanceof SpoutBlock)) // hack for spout/worldborder bugs
-			return;
-		SpoutBlock block = (SpoutBlock) event.getBlock();
-		if (!BlockTools.isLockable(block))
-			return;
-		if (BlockTools.isLocked(block)) {
-			if (BlockTools.isDoubleDoor(block)) {
-				BITMessages.showInfo("Tried to break doubledoor");
-			}
-			event.setCancelled(true);
-			if (BITConfig.DEBUG_EVENTS) {
-				BITMessages.showInfo("BlockFromTo:"
-						+ event.getBlock().getType() + " ToBlk:"
-						+ event.getToBlock().getType());
-			}
-		}
-	}
+    @EventHandler
+    public void onBlockPhysics(BlockPhysicsEvent event) {
+        if (event.isCancelled())
+            return;
+        Block b = event.getBlock();
+        if (b != null && (event.getBlock() instanceof SpoutBlock)) {
 
-        @EventHandler
-	public void onBlockBreak(BlockBreakEvent event) {
-		if (event.isCancelled())
-			return;
-		SpoutPlayer sPlayer = (SpoutPlayer) event.getPlayer();
-		SpoutBlock sBlock = (SpoutBlock) event.getBlock();
-		SpoutBlock blockOnTop = sBlock.getRelative(BlockFace.UP);
-		if (BlockTools.isBookshelf(sBlock)&&!BlockTools.isLocked(sBlock)) {
-			if (BITInventory.isBitInventoryCreated(sBlock)) {
-				if (BIT.useEconomy && BIT.plugin.economy.hasAccount(sPlayer.getName())) {
-					if (BIT.plugin.economy.has(sPlayer.getName(), BITConfig.BOOKSHELF_DESTROYCOST)
-							|| BITConfig.BOOKSHELF_DESTROYCOST < 0) {
-						BITInventory.removeBookshelfAndDropItems(sPlayer, sBlock);
-					} else {
-						sPlayer.sendMessage("You dont have enough money ("
-								+ BIT.plugin.economy.getBalance(sPlayer.getName())
-								+ "). Cost is:"
-								+ BIT.plugin.economy
-										.format(BITConfig.BOOKSHELF_DESTROYCOST));
-						event.setCancelled(true);
-					}
-				} else {
-					BITInventory.removeBookshelfAndDropItems(sPlayer, sBlock);
-				}
-			}
-		} else
-		if (BlockTools.isLocked(sBlock) || BlockTools.isLocked(blockOnTop)) {
-			sPlayer.damage(5);
-			event.setCancelled(true);
-		}
-	}
-        
-        @EventHandler
-	public void onBlockDamage(BlockDamageEvent event) {
-		if (event.isCancelled())
-			return;
-		SpoutBlock sBlock = (SpoutBlock) event.getBlock();
-		if (!BlockTools.isLockable(sBlock))
-			return;
-		if (BlockTools.isLocked(sBlock)) {
-			// sPlayer.damage(1);
-			event.setCancelled(true);
-		}
-	}
+            if (!BlockTools.isLockable(b))
+                return;
+            SpoutBlock sBlock = (SpoutBlock) b;
+            if (BlockTools.isLocked(sBlock)) {
+                event.setCancelled(true);
+                if (BITConfig.DEBUG_EVENTS) {
+                    BITMessages.showInfo("BlockPhysicsEvt:"
+                                         + event.getBlock().getType() + " getCT:"
+                                         + event.getChangedType());
+                }
+            }
+        }
+    }
 
-        @EventHandler
-	public void onBlockBurn(BlockBurnEvent event) {
-		if (event.isCancelled())
-			return;
-		SpoutBlock sBlock = (SpoutBlock) event.getBlock();
-		if (BlockTools.isLocked(sBlock)) {
-			event.setCancelled(true);
-		}
-	}
+    @EventHandler
+    public void onBlockFromTo(BlockFromToEvent event) {
+        // super.onBlockFromTo(event);
+        if (event.isCancelled() || !(event.getBlock() instanceof SpoutBlock)) // hack for spout/worldborder bugs
+            return;
+        SpoutBlock block = (SpoutBlock) event.getBlock();
+        if (!BlockTools.isLockable(block))
+            return;
+        if (BlockTools.isLocked(block)) {
+            if (BlockTools.isDoubleDoor(block)) {
+                BITMessages.showInfo("Tried to break doubledoor");
+            }
+            event.setCancelled(true);
+            if (BITConfig.DEBUG_EVENTS) {
+                BITMessages.showInfo("BlockFromTo:"
+                                     + event.getBlock().getType() + " ToBlk:"
+                                     + event.getToBlock().getType());
+            }
+        }
+    }
 
-	@EventHandler
-	public void onBlockFade(BlockFadeEvent event) {
-		if (event.isCancelled())
-			return;
-		SpoutBlock sBlock = (SpoutBlock) event.getBlock();
-		if (!BlockTools.isLockable(sBlock))
-			return;
-		if (BlockTools.isLocked(sBlock)) {
-			event.setCancelled(true);
-		}
-	}
+    @EventHandler
+    public void onBlockBreak(BlockBreakEvent event) {
+        if (event.isCancelled())
+            return;
+        SpoutPlayer sPlayer = (SpoutPlayer) event.getPlayer();
+        SpoutBlock sBlock = (SpoutBlock) event.getBlock();
+        SpoutBlock blockOnTop = sBlock.getRelative(BlockFace.UP);
+        if (BlockTools.isBookshelf(sBlock)&&!BlockTools.isLocked(sBlock)) {
+            if (BITInventory.isBitInventoryCreated(sBlock)) {
+                if (BIT.useEconomy && BIT.plugin.economy.hasAccount(sPlayer.getName())) {
+                    if (BIT.plugin.economy.has(sPlayer.getName(), BITConfig.BOOKSHELF_DESTROYCOST)
+                            || BITConfig.BOOKSHELF_DESTROYCOST < 0) {
+                        BITInventory.removeBookshelfAndDropItems(sPlayer, sBlock);
+                    } else {
+                        sPlayer.sendMessage("You dont have enough money ("
+                                            + BIT.plugin.economy.getBalance(sPlayer.getName())
+                                            + "). Cost is:"
+                                            + BIT.plugin.economy
+                                            .format(BITConfig.BOOKSHELF_DESTROYCOST));
+                        event.setCancelled(true);
+                    }
+                } else {
+                    BITInventory.removeBookshelfAndDropItems(sPlayer, sBlock);
+                }
+            }
+        } else if (BlockTools.isLocked(sBlock) || BlockTools.isLocked(blockOnTop)) {
+            sPlayer.damage(5);
+            event.setCancelled(true);
+        }
+    }
 
-	@EventHandler
-	public void onBlockForm(BlockFormEvent event) {
-		if (event.isCancelled())
-			return;
-		SpoutBlock sBlock = (SpoutBlock) event.getBlock();
-		if (!BlockTools.isLockable(sBlock))
-			return;
-		if (BlockTools.isLocked(sBlock)) {
-			event.setCancelled(true);
-		}
-	}
+    @EventHandler
+    public void onBlockDamage(BlockDamageEvent event) {
+        if (event.isCancelled())
+            return;
+        SpoutBlock sBlock = (SpoutBlock) event.getBlock();
+        if (!BlockTools.isLockable(sBlock))
+            return;
+        if (BlockTools.isLocked(sBlock)) {
+            // sPlayer.damage(1);
+            event.setCancelled(true);
+        }
+    }
 
-	@EventHandler
-	public void onBlockSpread(BlockSpreadEvent event) {
-		if (event.isCancelled())
-			return;
-		SpoutBlock sBlock = (SpoutBlock) event.getBlock();
-		if (!BlockTools.isLockable(sBlock))
-			return;
-		if (BlockTools.isLocked(sBlock)) {
-			event.setCancelled(true);
-		}
-	}
+    @EventHandler
+    public void onBlockBurn(BlockBurnEvent event) {
+        if (event.isCancelled())
+            return;
+        SpoutBlock sBlock = (SpoutBlock) event.getBlock();
+        if (BlockTools.isLocked(sBlock)) {
+            event.setCancelled(true);
+        }
+    }
 
-	@EventHandler
-	public void onBlockIgnite(BlockIgniteEvent event) {
-		if (event.isCancelled())
-			return;
-		SpoutBlock sBlock = (SpoutBlock) event.getBlock();
-		if (!BlockTools.isLockable(sBlock))
-			return;
-		SpoutPlayer sPlayer = (SpoutPlayer) event.getPlayer();
-		if (BlockTools.isLocked(sBlock)) {
-			sPlayer.damage(10);
-			event.setCancelled(true);
-		}
-	}
+    @EventHandler
+    public void onBlockFade(BlockFadeEvent event) {
+        if (event.isCancelled())
+            return;
+        SpoutBlock sBlock = (SpoutBlock) event.getBlock();
+        if (!BlockTools.isLockable(sBlock))
+            return;
+        if (BlockTools.isLocked(sBlock)) {
+            event.setCancelled(true);
+        }
+    }
 
-	@EventHandler
-	public void onSignChange(SignChangeEvent event) {
-		if (event.isCancelled())
-			return;
-		SpoutBlock sBlock = (SpoutBlock) event.getBlock();
-		if (!BlockTools.isLockable(sBlock))
-			return;
-		if (BlockTools.isLocked(sBlock)) {
-			if (!BITConfig.LIBRARY_USESIGNEDITGUI) {
-				event.setCancelled(true);
-			}
-		}
-	}
+    @EventHandler
+    public void onBlockForm(BlockFormEvent event) {
+        if (event.isCancelled())
+            return;
+        SpoutBlock sBlock = (SpoutBlock) event.getBlock();
+        if (!BlockTools.isLockable(sBlock))
+            return;
+        if (BlockTools.isLocked(sBlock)) {
+            event.setCancelled(true);
+        }
+    }
 
-	@EventHandler
-	public void onBlockPistonExtend(BlockPistonExtendEvent event) {
-		if (event.isCancelled())
-			return;
-		SpoutBlock sBlock = (SpoutBlock) event.getBlock();
-		if (!BlockTools.isLockable(sBlock))
-			return;
-		if (BlockTools.isLocked(sBlock)) {
-			event.setCancelled(true);
-		}
-	}
+    @EventHandler
+    public void onBlockSpread(BlockSpreadEvent event) {
+        if (event.isCancelled())
+            return;
+        SpoutBlock sBlock = (SpoutBlock) event.getBlock();
+        if (!BlockTools.isLockable(sBlock))
+            return;
+        if (BlockTools.isLocked(sBlock)) {
+            event.setCancelled(true);
+        }
+    }
 
-	@EventHandler
-	public void onBlockPistonRetract(BlockPistonRetractEvent event) {
-		if (event.isCancelled())
-			return;
-		SpoutBlock sBlock = (SpoutBlock) event.getBlock();
-		if (!BlockTools.isLockable(sBlock))
-			return;
-		if (BlockTools.isLocked(sBlock)) {
-			event.setCancelled(true);
-		}
-	}
+    @EventHandler
+    public void onBlockIgnite(BlockIgniteEvent event) {
+        if (event.isCancelled())
+            return;
+        SpoutBlock sBlock = (SpoutBlock) event.getBlock();
+        if (!BlockTools.isLockable(sBlock))
+            return;
+        SpoutPlayer sPlayer = (SpoutPlayer) event.getPlayer();
+        if (BlockTools.isLocked(sBlock)) {
+            sPlayer.damage(10);
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onSignChange(SignChangeEvent event) {
+        if (event.isCancelled())
+            return;
+        SpoutBlock sBlock = (SpoutBlock) event.getBlock();
+        if (!BlockTools.isLockable(sBlock))
+            return;
+        if (BlockTools.isLocked(sBlock)) {
+            if (!BITConfig.LIBRARY_USESIGNEDITGUI) {
+                event.setCancelled(true);
+            }
+        }
+    }
+
+    @EventHandler
+    public void onBlockPistonExtend(BlockPistonExtendEvent event) {
+        if (event.isCancelled())
+            return;
+        SpoutBlock sBlock = (SpoutBlock) event.getBlock();
+        if (!BlockTools.isLockable(sBlock))
+            return;
+        if (BlockTools.isLocked(sBlock)) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onBlockPistonRetract(BlockPistonRetractEvent event) {
+        if (event.isCancelled())
+            return;
+        SpoutBlock sBlock = (SpoutBlock) event.getBlock();
+        if (!BlockTools.isLockable(sBlock))
+            return;
+        if (BlockTools.isLocked(sBlock)) {
+            event.setCancelled(true);
+        }
+    }
 
 }

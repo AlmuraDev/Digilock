@@ -7,43 +7,43 @@ import dk.gabriel333.BukkitInventoryTools.BIT;
 
 
 public class BITPlayer {
-	
-	private BIT plugin;
-	
-	public BITPlayer(){
-		super();
-	}
-	
-	public BITPlayer(Plugin plugin) {
-		plugin = this.plugin;
-	}
 
-	protected SpoutPlayer sPlayer;
+    private BIT plugin;
 
-	/**
-	 * 
-	 * Constructs a new BITPlayer
-	 * 
-	 */
-	public BITPlayer(SpoutPlayer sPlayer) {
-		this.sPlayer = sPlayer;
-	}
+    public BITPlayer() {
+        super();
+    }
 
-	/**
-	 * @return the SpoutPlayer
-	 * 
-	 */
-	public void getPlayer(SpoutPlayer sPlayer) {
-		this.sPlayer = sPlayer;
-	}
+    public BITPlayer(Plugin plugin) {
+        plugin = this.plugin;
+    }
 
-	/**
-	 * @return the SpoutPlayers name
-	 * 
-	 */
-	public String getName() {
-		return sPlayer.getName();
-	}
+    protected SpoutPlayer sPlayer;
+
+    /**
+     *
+     * Constructs a new BITPlayer
+     *
+     */
+    public BITPlayer(SpoutPlayer sPlayer) {
+        this.sPlayer = sPlayer;
+    }
+
+    /**
+     * @return the SpoutPlayer
+     *
+     */
+    public void getPlayer(SpoutPlayer sPlayer) {
+        this.sPlayer = sPlayer;
+    }
+
+    /**
+     * @return the SpoutPlayers name
+     *
+     */
+    public String getName() {
+        return sPlayer.getName();
+    }
 
 
 

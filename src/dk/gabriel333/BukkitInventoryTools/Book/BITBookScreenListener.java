@@ -5,9 +5,9 @@ import org.bukkit.event.Listener;
 import org.getspout.spoutapi.event.screen.TextFieldChangeEvent;
 
 public class BITBookScreenListener implements Listener {
-	
-        @EventHandler
-	public void onTextFieldChangeEvent(TextFieldChangeEvent event) {
-		//event.getPlayer().
-	}
+
+    @EventHandler
+    public void onTextFieldChangeEvent(TextFieldChangeEvent event) {
+        //event.getPlayer().
+    }
 }
