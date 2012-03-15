@@ -7,11 +7,11 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.getspout.spoutapi.event.inventory.InventoryClickEvent;
-import org.getspout.spoutapi.event.inventory.InventoryCloseEvent;
-import org.getspout.spoutapi.event.inventory.InventorySlotType;
 
 public class BITBackpackInventoryListener implements Listener {
 	
@@ -23,7 +23,7 @@ public class BITBackpackInventoryListener implements Listener {
 
 	@EventHandler
 	public void onInventoryClose(InventoryCloseEvent event) {
-		Player player = event.getPlayer();
+		Player player = (Player) event.getPlayer();
 		if (!BITBackpack.openedInventoriesOthers.containsKey(player.getName())) {
 			if (BITBackpack.openedInventories.containsKey(player.getName())) {
                             BITBackpackInventorySaveTask.saveInventory(player, player.getWorld()); //New Line
@@ -67,13 +67,11 @@ public class BITBackpackInventoryListener implements Listener {
 
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event) {
-		Player player = event.getPlayer();
-		if (BITBackpack.openedInventoriesOthers
-				.containsKey(event.getPlayer().getName())) {
-			player = Bukkit.getServer().getPlayer(
-					BITBackpack.openedInventoriesOthers.get(event.getPlayer()));
+		Player player = (Player) event.getWhoClicked();
+		if (BITBackpack.openedInventoriesOthers.containsKey(player.getName())) {
+			player = Bukkit.getServer().getPlayer(BITBackpack.openedInventoriesOthers.get(player));
 		}
-		InventorySlotType clickedSlotType = event.getSlotType();
+		SlotType clickedSlotType = event.getSlotType();
 		Inventory inv = event.getInventory();
 		String invName = inv.getName();
 		// ItemStack clickedItem = event.getItem();
@@ -81,7 +79,7 @@ public class BITBackpackInventoryListener implements Listener {
 		// int slot = event.getSlot();
 		// try {
 		if (invName.equals("Backpack")
-				&& clickedSlotType == InventorySlotType.CONTAINER
+				&& clickedSlotType == SlotType.CONTAINER
 				&& (BITBackpack.openedInventories.containsKey(player.getName()) || BITBackpack.openedInventoriesOthers
 						.containsKey(player.getName()))) {
 			// 1=blacklist

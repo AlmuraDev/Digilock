@@ -8,13 +8,13 @@ import dk.gabriel333.Library.BITPermissions;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.SpoutManager;
-import org.getspout.spoutapi.event.inventory.InventoryClickEvent;
-import org.getspout.spoutapi.event.inventory.InventoryCloseEvent;
-import org.getspout.spoutapi.event.inventory.InventoryCraftEvent;
-import org.getspout.spoutapi.event.inventory.InventoryOpenEvent;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 public class BITInventoryListener implements Listener {
@@ -93,8 +93,8 @@ public class BITInventoryListener implements Listener {
         @EventHandler
 	public void onInventoryClick(InventoryClickEvent event) {
 
-		SpoutPlayer sPlayer = (SpoutPlayer) event.getPlayer();
-		ItemStack itemClicked = event.getItem();
+		SpoutPlayer sPlayer = (SpoutPlayer) event.getWhoClicked();
+		ItemStack itemClicked = event.getCurrentItem();
 		ItemStack itemPlaced = event.getCursor();
 		if (itemClicked != null) {
 			if (itemClicked.getType().equals(Material.BOOK)
@@ -159,7 +159,7 @@ public class BITInventoryListener implements Listener {
 		}
 	}
         @EventHandler
-	public void onInventoryCraft(InventoryCraftEvent event) {
+	public void onInventoryCraft(CraftItemEvent event) {
 	}
 /*
         @EventHandler(priority = EventPriority.LOW)

@@ -19,32 +19,32 @@
 		<dependency>
 			<groupId>org.bukkit</groupId>
 			<artifactId>bukkit</artifactId>
-			<version>1.1-R5-SNAPSHOT</version>
+			<version>1.2.3-R0.3-SNAPSHOT</version>
 		</dependency>
 		<dependency>
-				<groupId>org.bukkit</groupId>
-				<artifactId>craftbukkit</artifactId>
-				<version>1.1-R5-SNAPSHOT</version>
+			<groupId>org.bukkit</groupId>
+			<artifactId>craftbukkit</artifactId>
+			<version>1.2.3-R0.3-SNAPSHOT</version>
 			</dependency>
 		<dependency>
-					<groupId>org.getspout</groupId>
-					<artifactId>spoutplugin</artifactId>
-					<version>dev-SNAPSHOT</version>
-			</dependency>
+			<groupId>org.getspout</groupId>
+			<artifactId>spoutplugin</artifactId>
+			<version>dev-SNAPSHOT</version>
+		</dependency>
 		<dependency>
-				<groupId>org.getspout</groupId>
-				<artifactId>spoutpluginapi</artifactId>
-				<version>dev-SNAPSHOT</version>
+			<groupId>org.getspout</groupId>
+			<artifactId>spoutpluginapi</artifactId>
+			<version>dev-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>net.milkbowl</groupId>
 			<artifactId>vault</artifactId>
-			<version>1.2.9</version>
+			<version>1.2.12</version>
 		</dependency>
 		<dependency>
-					<groupId>com.sk89q</groupId>
-					<artifactId>worldguard</artifactId>
-					<version>5.5</version>
+			<groupId>com.sk89q</groupId>
+			<artifactId>worldguard</artifactId>
+			<version>5.5</version>
 		</dependency>
 
 		<!-- local deps -->
@@ -56,25 +56,25 @@
 			<systemPath>${basedir}/lib/MobArena.jar</systemPath>
 		</dependency>
 		<dependency>
-				<groupId>de.Keyle</groupId>
-				<artifactId>mywolf</artifactId>
-				<version>0.5.4</version>
-				<scope>system</scope>
-				<systemPath>${basedir}/lib/MyWolf.jar</systemPath>
+			<groupId>de.Keyle</groupId>
+			<artifactId>mywolf</artifactId>
+			<version>0.5.4</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/MyWolf.jar</systemPath>
 		</dependency>
 		<dependency>
-				<groupId>com.tommytony</groupId>
-				<artifactId>war</artifactId>
-				<version>1.7</version>
-				<scope>system</scope>
-				<systemPath>${basedir}/lib/War.jar</systemPath>
+			<groupId>com.tommytony</groupId>
+			<artifactId>war</artifactId>
+			<version>1.7</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/War.jar</systemPath>
 		</dependency>
 		<dependency>
-				<groupId>com.matejdro.bukkit</groupId>
-				<artifactId>jail</artifactId>
-				<version>2.1.1</version>
-				<scope>system</scope>
-				<systemPath>${basedir}/lib/Jail.jar</systemPath>
+			<groupId>com.matejdro.bukkit</groupId>
+			<artifactId>jail</artifactId>
+			<version>2.1.1</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/lib/Jail.jar</systemPath>
 		</dependency>
 
 	</dependencies>
