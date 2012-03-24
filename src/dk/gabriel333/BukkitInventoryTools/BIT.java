@@ -7,7 +7,7 @@ import com.matejdro.bukkit.jail.Jail;
 import com.matejdro.bukkit.jail.JailAPI;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.tommytony.war.War;
-import de.Keyle.MyWolf.MyWolfPlugin;
+//import de.Keyle.MyWolf.MyWolfPlugin;
 import dk.gabriel333.BITBackpack.*;
 import dk.gabriel333.BukkitInventoryTools.Book.BITBookInputListener;
 import dk.gabriel333.BukkitInventoryTools.Book.BITCommandBookshelf;
@@ -60,8 +60,8 @@ public class BIT extends JavaPlugin {
     public static int saveTaskId;
 
     // Hook into MyWolf
-    public static Boolean mywolf = false;
-    public static MyWolfPlugin myWolfPlugin;
+//    public static Boolean mywolf = false;
+//    public static MyWolfPlugin myWolfPlugin;
 
     // Hook into WAR 1.6
     public static Boolean warIsEnabled;
@@ -77,7 +77,7 @@ public class BIT extends JavaPlugin {
             BITConfig.bitSetupConfig();
             setupSpout();
             setupSQL();
-            setupMyWolf();
+//            setupMyWolf();
             registerEvents();
             addCommands();
             setupBook();
@@ -217,7 +217,7 @@ public class BIT extends JavaPlugin {
             return true;
         return false;
     }
-
+/*
     private void setupMyWolf() {
         if (myWolfPlugin == null) {
             myWolfPlugin = (MyWolfPlugin) this.getServer().getPluginManager()
@@ -236,7 +236,7 @@ public class BIT extends JavaPlugin {
         // you get access to MyWolf inventory with:
         // CustomMCInventory inv = myWolfPlugin.getMyWolf(sPlayer).inv;
     }
-
+*/
     // SQLITE-MYSQL settings
     public static mysqlCore manageMySQL; // MySQL handler
     public static sqlCore manageSQLite; // SQLite handler

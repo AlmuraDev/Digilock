@@ -1,6 +1,6 @@
 package dk.gabriel333.BukkitInventoryTools.Sort;
 
-import de.Keyle.MyWolf.MyWolfPlugin;
+// import de.Keyle.MyWolf.MyWolfPlugin;
 import dk.gabriel333.BITBackpack.BITBackpack;
 import dk.gabriel333.BITBackpack.BITBackpackAPI;
 import dk.gabriel333.BukkitInventoryTools.BIT;
@@ -59,7 +59,7 @@ public class BITSortInventory {
             BITBackpack.inventories.put(sPlayer.getName(), inv.getContents());
         }
 
-
+/*
         if (BIT.mywolf) {
 
             CustomMCInventory inv = MyWolfPlugin.getMyWolf(sPlayer).inv;
@@ -69,6 +69,8 @@ public class BITSortInventory {
 
             }
         }
+        
+*/
     }
 
     private static void stackInventoryItems(SpoutPlayer sPlayer,
