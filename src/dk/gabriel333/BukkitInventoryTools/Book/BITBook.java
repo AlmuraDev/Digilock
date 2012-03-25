@@ -925,7 +925,7 @@ public class BITBook {
         ItemStack itemStack;
         for (int i = 0; i < inventory.getSize(); i++) {
             itemStack = inventory.getItem(i);
-            if (itemStack.getType() == Material.BOOK) {
+            if (itemStack != null && itemStack.getType() == Material.BOOK) {
                 Item item = (Item) itemStack;
                 item.setName("BBBBoook");
 

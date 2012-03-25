@@ -54,7 +54,7 @@ public class BITInventoryListener implements Listener {
             short bookId;
             BITBook bitBook;
             for (int i = 0; i < inv.getSize(); i++) {
-                if (inv.getItem(i).getType() == Material.BOOK) {
+                if (inv.getItem(i) != null && inv.getItem(i).getType() == Material.BOOK) {
                     bookId = inv.getItem(i).getDurability();
                     if (bookId > 1000) {
                         if (BITBook.isWritten(sPlayer, bookId)) {
@@ -70,7 +70,7 @@ public class BITInventoryListener implements Listener {
                                       + i + " (Id:" + bookId
                                       + ") in inventory:" + inv.getName());
                             ItemStack is = inv.getItem(i);
-                            is.setDurability((short) 0);
+                            if(is != null) is.setDurability((short) 0);
                         }
 
                     }

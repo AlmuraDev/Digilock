@@ -26,6 +26,7 @@ public class BITBookInputListener implements Listener {
                 .equals("KEY_ESCAPE")))
             return;
         ItemStack itemInHand = sPlayer.getInventory().getItemInHand();
+        if (itemInHand == null) return;
         int id = sPlayer.getEntityId();
         if (BITBook.isWriteable(itemInHand.getType())) {
             if (keypressed.equals(BITConfig.LIBRARY_READKEY)
@@ -48,7 +49,7 @@ public class BITBookInputListener implements Listener {
 
     private void handleItemInHand(SpoutPlayer sPlayer) {
         ItemStack itemInHand = sPlayer.getItemInHand();
-        if (BITBook.isWriteable(itemInHand.getType())
+        if (itemInHand != null && BITBook.isWriteable(itemInHand.getType())
                 && itemInHand.getAmount() == 1) {
             short bookId = itemInHand.getDurability();
             BITBook bitBook = new BITBook();

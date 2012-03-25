@@ -125,14 +125,18 @@ public class BITInventory {
         int cost = BITConfig.BOOKSHELF_COST;
         if (isBitInventoryCreated(block)) {
             for (int i = 0; i < inventory.getSize(); i++) {
+                int itemid = inventory.getItem(i) != null ? 0 : inventory.getItem(i).getTypeId();
+                int itemamount = inventory.getItem(i) != null ? 0 : inventory.getItem(i).getAmount();
+                int itemdurability = inventory.getItem(i) != null ? 0 : inventory.getItem(i).getDurability();
+
                 query = "UPDATE " + BIT.bitInventoryTable + " SET owner='"
                         + owner + "', coowners='" + coowners + "', usecost="
                         + useCost + ", slotNo=" + i + ", itemstack_type="
-                        + inventory.getItem(i).getTypeId()
+                        + itemid
                         + ", itemstack_amount="
-                        + inventory.getItem(i).getAmount()
+                        + itemamount
                         + ", itemstack_durability="
-                        + inventory.getItem(i).getDurability() + " WHERE x = "
+                        + itemdurability + " WHERE x = "
                         + block.getX() + " AND y = " + block.getY()
                         + " AND z = " + block.getZ() + " AND world='"
                         + block.getWorld().getName() + "' AND slotno=" + i
@@ -176,6 +180,9 @@ public class BITInventory {
             }
             if (createBookshelf) {
                 for (int i = 0; i < inventory.getSize(); i++) {
+                    int itemid = inventory.getItem(i) != null ? 0 : inventory.getItem(i).getTypeId();
+                    int itemamount = inventory.getItem(i) != null ? 0 : inventory.getItem(i).getAmount();
+                    int itemdurability = inventory.getItem(i) != null ? 0 : inventory.getItem(i).getDurability();
                     query = "INSERT INTO "
                             + BIT.bitInventoryTable
                             + " (x, y, z, world, owner, name, coowners, usecost, "
@@ -185,9 +192,9 @@ public class BITInventory {
                             + block.getWorld().getName() + "', '" + owner
                             + "', '" + name + "', '" + coowners + "', "
                             + useCost + ", " + i + ", "
-                            + inventory.getItem(i).getTypeId() + ","
-                            + inventory.getItem(i).getAmount() + ","
-                            + inventory.getItem(i).getDurability() + " );";
+                            + itemid + ","
+                            + itemamount + ","
+                            + itemdurability + " );";
                     // sPlayer.sendMessage("Insert:" + query);
                     if (BITConfig.DEBUG_SQL)
                         sPlayer.sendMessage(ChatColor.YELLOW
@@ -309,12 +316,12 @@ public class BITInventory {
         if (inventory.contains(Material.BOOK)) {
             BITBook bitBook;
             for (int j = 0; j < inventory.getSize(); j++) {
-                if (inventory.getItem(j).getType() == Material.BOOK) {
+                if (inventory.getItem(j) != null && inventory.getItem(j).getType() == Material.BOOK) {
                     bookId = inventory.getItem(j).getDurability();
                     if (bookId > 1000) {
                         bitBook = BITBook.loadBook(sPlayer, bookId);
                         Item item = (Item) inventory.getItem(j); //BUG > ITEMStack from SpoutAPI Invalid
-                        item.setName(bitBook.getTitle()+" written by "+bitBook.getAuthor());
+                        if(item != null) item.setName(bitBook.getTitle()+" written by "+bitBook.getAuthor());
                         //BITBook.setBookName(bookId, bitBook.getTitle(),
                         //		bitBook.getAuthor());
                     }
@@ -487,7 +494,7 @@ public class BITInventory {
             for (int i = 0; i < bitInventory.getSize(); i++) {
                 ItemStack itemstack = bitInventory.getInventory()
                                       .getItem(i);
-                if (itemstack.getAmount() != 0) {
+                if (itemstack != null && itemstack.getAmount() != 0) {
                     world.dropItemNaturally(location, itemstack);
                 }
             }
