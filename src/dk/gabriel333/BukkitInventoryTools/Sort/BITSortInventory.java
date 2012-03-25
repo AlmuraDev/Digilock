@@ -3,14 +3,12 @@ package dk.gabriel333.BukkitInventoryTools.Sort;
 // import de.Keyle.MyWolf.MyWolfPlugin;
 import dk.gabriel333.BITBackpack.BITBackpack;
 import dk.gabriel333.BITBackpack.BITBackpackAPI;
-import dk.gabriel333.BukkitInventoryTools.BIT;
 import dk.gabriel333.Library.BITConfig;
 import dk.gabriel333.Library.BITMessages;
 import dk.gabriel333.Library.BITPermissions;
 import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.getspout.spout.inventory.CustomMCInventory;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.gui.ScreenType;
 import org.getspout.spoutapi.player.SpoutPlayer;
@@ -29,7 +27,7 @@ public class BITSortInventory {
         int i, j;
         for (i = 0; i < inventory.getSize(); i++) {
             ItemStack item1 = inventory.getItem(i);
-
+            if(item1 == null) continue;
             if ((item1.getAmount() == 64)
                     // Food must be alone in slot 0-8 so you can eat it.
                     || (i < 9 && (item1.getAmount() == 0 || isTool(item1)
@@ -89,12 +87,17 @@ public class BITSortInventory {
         ItemStack fromitem, toitem;
         fromitem = inventory.getItem(fromslot);
         toitem = inventory.getItem(toslot);
-        from_amt = fromitem.getAmount();
-        to_amt = toitem.getAmount();
+        if(fromitem == null)
+            from_amt = 0;
+        else
+            from_amt = fromitem.getAmount();
+        if(toitem == null)
+            to_amt = 0;
+        else
+            to_amt = toitem.getAmount();
         total_amt = from_amt + to_amt;
         if ((from_amt == 0 && to_amt == 0) || from_amt == 0) {
             // Dont do anything
-            return;
         } else if (to_amt == 0 && from_amt > 0) {
             to_amt = total_amt;
             from_amt = 0;
@@ -106,7 +109,6 @@ public class BITSortInventory {
             inventory.setItem(toslot, fromitem);
             inventory.getItem(toslot).setAmount(to_amt);
             inventory.clear(fromslot);
-            return;
         } else {
             // Here is to_amt > and from_amt>0 so move all what's possible if
             // it is the same kind of item.
@@ -157,7 +159,6 @@ public class BITSortInventory {
                     }
                     fromitem.setAmount(from_amt);
                     toitem.setAmount(to_amt);
-                    return;
                 } else {
                     // total_amt is <= 64 so everything goes to toslot
                     if (BITConfig.DEBUG_SORTINVENTORY) {
@@ -168,7 +169,6 @@ public class BITSortInventory {
                     inventory.setItem(toslot, fromitem);
                     inventory.getItem(toslot).setAmount(total_amt);
                     inventory.clear(fromslot);
-                    return;
                 }
             }
         }
@@ -184,12 +184,13 @@ public class BITSortInventory {
                                       + BITConfig.SORTSEQ[m]);
             } else if (inventory.contains(mat)) {
                 for (int i = n; i < inventory.getSize(); i++) {
-                    if (inventory.getItem(i).getType() == mat) {
+                    if (inventory.getItem(i) == null || inventory.getItem(i).getType() == mat) {
                         n++;
                         continue;
                     } else {
                         for (int j = i + 1; j < inventory.getSize(); j++) {
-                            if (inventory.getItem(j).getType() == mat) {
+                            if(inventory.getItem(j) == null) continue;
+                            else if (inventory.getItem(j).getType() == mat) {
                                 switchInventoryItems(inventory, i, j);
                                 n++;
                                 break;

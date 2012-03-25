@@ -6,10 +6,7 @@ import dk.gabriel333.Library.BITConfig;
 import dk.gabriel333.Library.BITMessages;
 import dk.gabriel333.Library.BITPermissions;
 import org.bukkit.Material;
-import org.bukkit.block.Dispenser;
-import org.bukkit.block.Furnace;
-import org.bukkit.block.Jukebox;
-import org.bukkit.block.Sign;
+import org.bukkit.block.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -19,7 +16,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Button;
 import org.bukkit.material.Lever;
 import org.getspout.spoutapi.block.SpoutBlock;
-import org.getspout.spoutapi.block.SpoutChest;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 public class BITPlayerListener implements Listener {
@@ -114,15 +110,17 @@ public class BITPlayerListener implements Listener {
                         if (digilock.isOwner(sPlayer)
                                 || digilock.isCoowner(sPlayer)
                                 || digilock.isUser(sPlayer)) {
-                            SpoutChest sChest = (SpoutChest) sBlock.getState();
-                            Inventory inv = sChest.getLargestInventory();
-                            BITMessages.sendNotification(sPlayer,
+                            if(sBlock.getState() instanceof Chest) {
+                                Chest sChest = (Chest)(sBlock.getState());
+                                Inventory inv = sChest.getInventory();
+                                BITMessages.sendNotification(sPlayer,
                                                          "Opened by fingerprint");
-                            BlockTools.playDigiLockSound(sBlock);
-                            sPlayer.openInventoryWindow(inv);
-                        } else {
-                            event.setCancelled(true);
-                            sPlayer.sendMessage("Your fingerprint does not match the DigiLock");
+                                BlockTools.playDigiLockSound(sBlock);
+                                sPlayer.openInventory(inv);
+                            } else {
+                                event.setCancelled(true);
+                                sPlayer.sendMessage("Your fingerprint does not match the DigiLock");
+                            }
                         }
                     } else {
                         event.setCancelled(true);

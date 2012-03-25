@@ -2,19 +2,18 @@ package dk.gabriel333.BukkitInventoryTools.Sort;
 
 import dk.gabriel333.BITBackpack.BITBackpack;
 import dk.gabriel333.BukkitInventoryTools.BIT;
-import dk.gabriel333.BukkitInventoryTools.DigiLock.BITDigiLock;
 import dk.gabriel333.BukkitInventoryTools.DigiLock.BlockTools;
 import dk.gabriel333.BukkitInventoryTools.Inventory.BITInventory;
 import dk.gabriel333.Library.BITConfig;
 import dk.gabriel333.Library.BITMessages;
 import dk.gabriel333.Library.BITPermissions;
 import org.bukkit.Material;
+import org.bukkit.block.Chest;
 import org.bukkit.block.Dispenser;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
 import org.getspout.spoutapi.block.SpoutBlock;
-import org.getspout.spoutapi.block.SpoutChest;
 import org.getspout.spoutapi.event.input.KeyPressedEvent;
 import org.getspout.spoutapi.event.input.KeyReleasedEvent;
 import org.getspout.spoutapi.event.input.RenderDistanceChangeEvent;
@@ -81,10 +80,10 @@ public class BITSortInputListener implements Listener {
                     && BITPermissions.hasPerm(sPlayer, "SortInventory.use",
                                               BITPermissions.QUIET)
                     && BlockTools.isChest(targetblock)) {
-                SpoutChest sChest = (SpoutChest) targetblock.getState();
+                Chest sChest = (Chest) targetblock.getState();
                 if (targetblock.getType() == Material.CHEST) {
                     BITSortInventory.sortInventoryItems(sPlayer,
-                                                        sChest.getLargestInventory());
+                                                        sChest.getInventory());
                     BITSortInventory.sortPlayerInventoryItems(sPlayer);
                     if (BITConfig.SORT_DISPLAYSORTARCHIEVEMENT) {
                         BITMessages.sendNotification(sPlayer, "Chest sorted.");

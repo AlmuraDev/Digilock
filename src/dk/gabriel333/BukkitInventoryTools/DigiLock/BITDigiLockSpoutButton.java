@@ -6,14 +6,10 @@ import dk.gabriel333.Library.BITMessages;
 import dk.gabriel333.Library.BITPermissions;
 import java.util.UUID;
 import org.bukkit.Material;
-import org.bukkit.block.Dispenser;
-import org.bukkit.block.Furnace;
-import org.bukkit.block.Jukebox;
-import org.bukkit.block.Sign;
+import org.bukkit.block.*;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.getspout.spoutapi.block.SpoutBlock;
-import org.getspout.spoutapi.block.SpoutChest;
 import org.getspout.spoutapi.event.screen.ButtonClickEvent;
 import org.getspout.spoutapi.gui.GenericButton;
 import org.getspout.spoutapi.player.SpoutPlayer;
@@ -55,9 +51,9 @@ public class BITDigiLockSpoutButton extends GenericButton {
                             || BITPermissions.hasPerm(sPlayer,
                                                       "digilock.admin", BITPermissions.QUIET)) {
                         if (BlockTools.isChest(digilock.getBlock())) {
-                            SpoutChest sChest = (SpoutChest) sBlock.getState();
-                            Inventory inv = sChest.getLargestInventory();
-                            sPlayer.openInventoryWindow(inv);
+                            Chest sChest = (Chest)sBlock.getState();
+                            Inventory inv = sChest.getInventory();
+                            sPlayer.openInventory(inv);
 
                         } else if (BlockTools.isDoubleDoor(digilock.getBlock())) {
                             BlockTools.playDigiLockSound(digilock.getBlock());
@@ -215,9 +211,9 @@ public class BITDigiLockSpoutButton extends GenericButton {
                     BITDigiLock.BITDigiLockButtons.remove(uuid);
                     if (BlockTools.isLocked(sBlock)) {
                         if (BlockTools.isChest(digilock.getBlock())) {
-                            SpoutChest sChest = (SpoutChest) sBlock.getState();
-                            Inventory inv = sChest.getLargestInventory();
-                            sPlayer.openInventoryWindow(inv);
+                            Chest sChest =  (Chest)sBlock.getState();
+                            Inventory inv = sChest.getInventory();
+                            sPlayer.openInventory(inv);
                             BlockTools.playDigiLockSound(sBlock);
                         }
                     }

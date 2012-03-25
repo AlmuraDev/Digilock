@@ -7,13 +7,13 @@ import dk.gabriel333.Library.BITMessages;
 import dk.gabriel333.Library.BITPermissions;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.Chest;
 import org.bukkit.block.Dispenser;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.inventory.Inventory;
 import org.getspout.spoutapi.block.SpoutBlock;
-import org.getspout.spoutapi.block.SpoutChest;
 import org.getspout.spoutapi.gui.ScreenType;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
@@ -33,9 +33,9 @@ public class BITCommandSort implements CommandExecutor {
                                        BITPermissions.NOT_QUIET)) {
 
                 if (targetblock.getType() == Material.CHEST) {
-                    SpoutChest sChest = (SpoutChest) targetblock.getState();
+                    Chest sChest = (Chest)targetblock.getState();
                     BITSortInventory.sortInventoryItems(sPlayer,
-                                                        sChest.getLargestInventory());
+                                                        sChest.getInventory());
                     BITMessages.sendNotification(sPlayer, "Chest sorted.");
 
                 } else if (BlockTools.isDispenser((SpoutBlock) targetblock)) {

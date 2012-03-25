@@ -5,6 +5,7 @@ import dk.gabriel333.BukkitInventoryTools.Inventory.BITInventory;
 import dk.gabriel333.Library.BITMessages;
 import dk.gabriel333.Library.BITPermissions;
 import org.bukkit.Material;
+import org.bukkit.block.Chest;
 import org.bukkit.block.Dispenser;
 import org.bukkit.block.Furnace;
 import org.bukkit.command.Command;
@@ -12,7 +13,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.inventory.Inventory;
 import org.getspout.spoutapi.block.SpoutBlock;
-import org.getspout.spoutapi.block.SpoutChest;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 public class BITCommandDigiLock implements CommandExecutor {
@@ -111,10 +111,9 @@ public class BITCommandDigiLock implements CommandExecutor {
                     if (action.equalsIgnoreCase("unlock") && args.length == 2) {
                         if (digilock.getPincode().equalsIgnoreCase(args[1])) {
                             if (BlockTools.isChest(digilock.getBlock())) {
-                                SpoutChest sChest = (SpoutChest) block
-                                                    .getState();
-                                Inventory inv = sChest.getLargestInventory();
-                                sPlayer.openInventoryWindow(inv);
+                                Chest sChest = (Chest)block.getState();
+                                Inventory inv = sChest.getInventory();
+                                sPlayer.openInventory(inv);
                             } else if (BlockTools.isDoubleDoor(block)) {
                                 BlockTools.openDoubleDoor(sPlayer, block,
                                                           digilock.getUseCost());
@@ -124,12 +123,12 @@ public class BITCommandDigiLock implements CommandExecutor {
                             } else if (digilock.getBlock().getType() == Material.FURNACE) {
                                 Furnace furnace = (Furnace) block.getState();
                                 Inventory inv = furnace.getInventory();
-                                sPlayer.openInventoryWindow(inv);
+                                sPlayer.openInventory(inv);
                             } else if (BlockTools.isDispenser(block)) {
                                 Dispenser dispenser = (Dispenser) block
                                                       .getState();
                                 Inventory inv = dispenser.getInventory();
-                                sPlayer.openInventoryWindow(inv);
+                                sPlayer.openInventory(inv);
                             } else if (BlockTools.isTrapdoor(block)) {
                                 BlockTools.openTrapdoor(sPlayer, block,
                                                         digilock.getUseCost());
@@ -280,9 +279,9 @@ public class BITCommandDigiLock implements CommandExecutor {
                     } else if (digilock.getPincode().equalsIgnoreCase(args[0])
                                && args.length == 1) {
                         if (BlockTools.isChest(digilock.getBlock())) {
-                            SpoutChest sChest = (SpoutChest) block.getState();
-                            Inventory inv = sChest.getLargestInventory();
-                            sPlayer.openInventoryWindow(inv);
+                            Chest sChest =  (Chest)block.getState();
+                            Inventory inv = sChest.getInventory();
+                            sPlayer.openInventory(inv);
                         } else if (BlockTools.isDoubleDoor(digilock.getBlock())) {
                             BlockTools.openDoubleDoor(sPlayer, block,
                                                       digilock.getUseCost());
@@ -293,12 +292,12 @@ public class BITCommandDigiLock implements CommandExecutor {
                         }  else if (digilock.getBlock().getType() == Material.FURNACE) {
                             Furnace furnace = (Furnace) block.getState();
                             Inventory inv = furnace.getInventory();
-                            sPlayer.openInventoryWindow(inv);
+                            sPlayer.openInventory(inv);
                         } else if (BlockTools.isDispenser(block)) {
                             Dispenser dispenser = (Dispenser) block
                                                   .getState();
                             Inventory inv = dispenser.getInventory();
-                            sPlayer.openInventoryWindow(inv);
+                            sPlayer.openInventory(inv);
                         } else if (BlockTools.isTrapdoor(block)) {
                             BlockTools.openTrapdoor(sPlayer, block,
                                                     digilock.getUseCost());

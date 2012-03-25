@@ -11,15 +11,13 @@ import java.net.MalformedURLException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.Dispenser;
+import org.bukkit.block.*;
+import org.bukkit.inventory.DoubleChestInventory;
 import org.bukkit.material.Button;
 import org.bukkit.material.Door;
 import org.bukkit.material.Lever;
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.block.SpoutBlock;
-import org.getspout.spoutapi.block.SpoutChest;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 public class BlockTools {
@@ -168,11 +166,17 @@ public class BlockTools {
             if (door.isTopHalf()) {
                 sBlock = sBlock.getRelative(BlockFace.DOWN);
             }
-        } else if (isChest(sBlock)) {
-            SpoutChest sChest1 = (SpoutChest) sBlock.getState();
-            if (sChest1.isDoubleChest()) {
-                SpoutChest sChest2 = sChest1.getOtherSide();
+        } else if (isChest(sBlock) && (sBlock.getState() instanceof Chest)) {
+            Chest sChest1 = (Chest) sBlock.getState();
+            if (sChest1.getInventory() instanceof DoubleChestInventory) {
+                Chest sChest2;
+                DoubleChestInventory di = (DoubleChestInventory) sChest1.getInventory();
+                if(sChest1.getBlockInventory().equals(di.getLeftSide()))
+                    sChest2 = (Chest) di.getRightSide().getHolder();
+                else
+                    sChest2 = (Chest) di.getLeftSide().getHolder();
                 SpoutBlock sBlock2 = (SpoutBlock) sChest2.getBlock();
+                
                 if (sChest1.getX() == sChest2.getX()) {
                     if (sChest1.getZ() < sChest2.getZ()) {
                         return sBlock;
