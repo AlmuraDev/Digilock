@@ -116,7 +116,7 @@ public class BITPlayerListener implements Listener {
                                 BITMessages.sendNotification(sPlayer,
                                                          "Opened by fingerprint");
                                 BlockTools.playDigiLockSound(sBlock);
-                                sPlayer.openInventory(inv);
+                                sPlayer.openInventory(inv);                                
                             } else {
                                 event.setCancelled(true);
                                 sPlayer.sendMessage("Your fingerprint does not match the DigiLock");

@@ -58,29 +58,29 @@ public class BITDigiLock {
         this.useCost = useCost;
     }
 
-
-    /**
-     * Saves the DigiLock to the database.
-     *
-     * @param sPlayer
-     *            the player who is interactions with the lock.
-     * @param block
-     *            The block of the DigiLock.
-     * @param pincode
-     *            of the DigiLock. "fingerprint" or "" or a 10 digits code.
-     * @param owner
-     *            is the owner of the DigiLock
-     * @param closetimer
-     *            is number of seconds before the door closes.
-     * @param coowners
-     *            is the list of co - owners of the DigiLock.
-     * @param typeId
-     *            is the type of the block.
-     * @param connectedTo
-     *            - not used yet.
-     * @param useCost
-     *            is the cost to use the block.
-     */
+        /**
+         * Saves the DigiLock to the database.
+         *
+         * @param sPlayer
+         *            the player who is interactions with the lock.
+         * @param block
+         *            The block of the DigiLock.
+         * @param pincode
+         *            of the DigiLock. "fingerprint" or "" or a 10 digits code.
+         * @param owner
+         *            is the owner of the DigiLock
+         * @param closetimer
+         *            is number of seconds before the door closes.
+         * @param coowners
+         *            is the list of co - owners of the DigiLock.
+         * @param typeId
+         *            is the type of the block.
+         * @param connectedTo
+         *            - not used yet.
+         * @param useCost
+         *            is the cost to use the block.
+         */
+    
     public static void SaveDigiLock(SpoutPlayer sPlayer, SpoutBlock block,
                                     String pincode, String owner, Integer closetimer, String coowners,
                                     String users, int typeId, String connectedTo, int useCost) {
@@ -436,6 +436,7 @@ public class BITDigiLock {
             popupScreen.get(playerId).removeWidgets(BIT.plugin);
             popupScreen.get(playerId).setDirty(true);
             sPlayer.getMainScreen().removeWidgets(BIT.plugin);
+            popupScreen.get(playerId).close();
             clickedBlock.remove(sPlayer.getEntityId());
         }
     }
@@ -556,10 +557,7 @@ public class BITDigiLock {
         cleanupPopupScreen(sPlayer);
         addUserData(id);
         clickedBlock.put(id, sBlock);
-
-        // New Dockter Code
-
-
+       
         GenericTexture border = new GenericTexture();
         border.setUrl(getTextureUrl(sBlock));
         if (BITConfig.DEBUG_ADVANCEDGUI)
@@ -753,9 +751,9 @@ public class BITDigiLock {
         popupScreen.get(id).attachWidget(BIT.plugin, pincodeGUI.get(id));
         //y = y + height;
 
-        // lockButton
+        // SaveButton
         BITDigiLockSpoutButton lockButton = new BITDigiLockSpoutButton("Save");
-        lockButton.setAuto(false).setX(230).setY(153).setHeight(height+5).setWidth(40);
+        lockButton.setAuto(false).setX(240).setY(153).setHeight(height+5).setWidth(35);
         lockButton.setTooltip("Enter/change the pincode and press lock.");
         popupScreen.get(id).attachWidget(BIT.plugin, lockButton);
         BITDigiLockButtons.put(lockButton.getId(), "setPincodeLock");
@@ -766,23 +764,23 @@ public class BITDigiLock {
         popupScreen.get(id).attachWidget(BIT.plugin, cancelButton2);
         BITDigiLockButtons.put(cancelButton2.getId(), "setPincodeCancel");
 
-        // removeButton  //Dockter 12/27/11
+        // removeButton  
         if (BlockTools.isLocked(sBlock)) {
             BITDigiLockSpoutButton removeButton = new BITDigiLockSpoutButton("Remove");
-            removeButton.setAuto(false).setX(180).setY(148).setHeight(height+5).setWidth(40);
+            removeButton.setAuto(false).setX(195).setY(153).setHeight(height+5).setWidth(40);
             removeButton.setTooltip("Press Remove to delete the lock.");
             removeButton.setEnabled(true);
             BITDigiLockButtons.put(removeButton.getId(), "setPincodeRemove");
             popupScreen.get(id).attachWidget(BIT.plugin, removeButton);
         }
 
-        // AdminButton //Dockter 12/27/11, updated 1/1/12 to only display button if .admin.
+        // AdminButton 
         if (BlockTools.isLocked(sBlock)
                 && BlockTools.isChest(sBlock) // Displays only if sBlock=Chest.
                 && BITPermissions.hasPerm(sPlayer, "digilock.admin",
                                           BITPermissions.NOT_QUIET)) {
-            BITDigiLockSpoutButton AdminButton = new BITDigiLockSpoutButton("Admin Open");
-            AdminButton.setAuto(false).setX(89).setY(124).setHeight(height+5).setWidth(50);
+            BITDigiLockSpoutButton AdminButton = new BITDigiLockSpoutButton("Open");
+            AdminButton.setAuto(false).setX(155).setY(153).setHeight(height+5).setWidth(35);
             AdminButton.setTooltip("Administrator Open Override.");
             AdminButton.setEnabled(true);
             BITDigiLockButtons.put(AdminButton.getId(), "AdminOpen");
@@ -792,8 +790,8 @@ public class BITDigiLock {
 
 
         // Open Window
-        // popupScreen.get(id).setDirty(true);
-        popupScreen.get(id).setTransparent(true);
+        //popupScreen.get(id).setDirty(true)
+        popupScreen.get(id).setTransparent(true).setDirty(true);
         sPlayer.getMainScreen().attachPopupScreen(popupScreen.get(id));
 
     }

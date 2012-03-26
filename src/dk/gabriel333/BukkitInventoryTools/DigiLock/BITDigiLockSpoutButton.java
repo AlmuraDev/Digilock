@@ -1,6 +1,7 @@
 package dk.gabriel333.BukkitInventoryTools.DigiLock;
 
 import dk.gabriel333.BukkitInventoryTools.Inventory.BITInventory;
+import dk.gabriel333.BukkitInventoryTools.DigiLock.BITDigiLock;
 import dk.gabriel333.Library.BITConfig;
 import dk.gabriel333.Library.BITMessages;
 import dk.gabriel333.Library.BITPermissions;
@@ -158,6 +159,7 @@ public class BITDigiLockSpoutButton extends GenericButton {
                     BITDigiLock.cleanupPopupScreen(sPlayer);
                     BITDigiLock.BITDigiLockButtons.remove(uuid);
 
+
                 } else if (buttonName.equals("getPincodeCancel")) {
                     sPlayer.closeActiveWindow();
                     BITDigiLock.cleanupPopupScreen(sPlayer);
@@ -206,15 +208,17 @@ public class BITDigiLockSpoutButton extends GenericButton {
 
                     // Dockter 12/27/11 to add AdminOpen Button to User Interface.
                 } else if (buttonName.equals("AdminOpen")) {
-                    //BlockTools.popupScreen.get(entId).close();
                     BITDigiLock.cleanupPopupScreen(sPlayer);
                     BITDigiLock.BITDigiLockButtons.remove(uuid);
+                    
                     if (BlockTools.isLocked(sBlock)) {
-                        if (BlockTools.isChest(digilock.getBlock())) {
-                            Chest sChest =  (Chest)sBlock.getState();
+                        if (BlockTools.isChest(digilock.getBlock())) {                        	 
+                        	if(sBlock.getState() instanceof Chest) {
+                        	Chest sChest =  (Chest) (sBlock.getState());
                             Inventory inv = sChest.getInventory();
                             sPlayer.openInventory(inv);
-                            BlockTools.playDigiLockSound(sBlock);
+                            BlockTools.playDigiLockSound(sBlock);                            
+                        	}
                         }
                     }
 
