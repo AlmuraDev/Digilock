@@ -1,12 +1,6 @@
 package dk.gabriel333.BukkitInventoryTools.Sort;
 
 // import de.Keyle.MyWolf.MyWolfPlugin;
-import org.bukkit.Material;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.getspout.spoutapi.SpoutManager;
-import org.getspout.spoutapi.gui.ScreenType;
-import org.getspout.spoutapi.player.SpoutPlayer;
 
 import dk.gabriel333.BITBackpack.BITBackpack;
 import dk.gabriel333.BITBackpack.BITBackpackAPI;
@@ -14,11 +8,18 @@ import dk.gabriel333.Library.BITConfig;
 import dk.gabriel333.Library.BITMessages;
 import dk.gabriel333.Library.BITPermissions;
 
-public class BITSortInventory {
+import org.bukkit.Material;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
+import org.getspout.spoutapi.SpoutManager;
+import org.getspout.spoutapi.gui.ScreenType;
+import org.getspout.spoutapi.player.SpoutPlayer;
+
+public class BITSortInventory {
 	// TODO: code should be moved to BITInventory
 	public static void sortInventoryItems(SpoutPlayer sPlayer,
-			Inventory inventory) {
+										  Inventory inventory) {
 		stackInventoryItems(sPlayer, inventory);
 		orderInventoryItems(inventory, 0);
 	}
@@ -28,7 +29,9 @@ public class BITSortInventory {
 		int i, j;
 		for (i = 0; i < inventory.getSize(); i++) {
 			ItemStack item1 = inventory.getItem(i);
-			if(item1 == null) continue;
+			if (item1 == null) {
+				continue;
+			}
 			if ((item1.getAmount() == 64)
 					// Food must be alone in slot 0-8 so you can eat it.
 					|| (i < 9 && (item1.getAmount() == 0 || isTool(item1)
@@ -74,7 +77,7 @@ public class BITSortInventory {
 	}
 
 	private static void stackInventoryItems(SpoutPlayer sPlayer,
-			Inventory inventory) {
+											Inventory inventory) {
 		int i, j;
 		for (i = 0; i < inventory.getSize(); i++) {
 			for (j = i + 1; j < inventory.getSize(); j++) {
@@ -84,20 +87,22 @@ public class BITSortInventory {
 	}
 
 	private static void moveitemInventory(SpoutPlayer p, Inventory inventory,
-			int fromslot, int toslot) {
+										  int fromslot, int toslot) {
 
 		int from_amt, to_amt, total_amt;
 		ItemStack fromitem, toitem;
 		fromitem = inventory.getItem(fromslot);
 		toitem = inventory.getItem(toslot);
-		if(fromitem == null)
+		if (fromitem == null) {
 			from_amt = 0;
-		else
+		} else {
 			from_amt = fromitem.getAmount();
-		if(toitem == null)
+		}
+		if (toitem == null) {
 			to_amt = 0;
-		else
+		} else {
 			to_amt = toitem.getAmount();
+		}
 		total_amt = from_amt + to_amt;
 		if ((from_amt == 0 && to_amt == 0) || from_amt == 0) {
 			// Dont do anything
@@ -118,26 +123,28 @@ public class BITSortInventory {
 			if (BITPermissions.hasPerm(p, "sortinventory.stack.*",
 					BITPermissions.QUIET)) {
 				// okay...
-				if (BITConfig.DEBUG_PERMISSIONS)
+				if (BITConfig.DEBUG_PERMISSIONS) {
 					p.sendMessage("You have permission to stack all items!");
+				}
 			} else if ((isTool(fromitem) && !BITPermissions.hasPerm(p,
 					"sortinventory.stack.tools", BITPermissions.QUIET))
 					|| (isWeapon(fromitem) && !BITPermissions.hasPerm(p,
-							"sortinventory.stack.weapons",
-							BITPermissions.QUIET))
-							|| (isBucket(fromitem) && !BITPermissions.hasPerm(p,
-									"sortinventory.stack.buckets",
-									BITPermissions.QUIET))
-									|| (isArmor(fromitem) && !BITPermissions.hasPerm(p,
-											"sortinventory.stack.armor", BITPermissions.QUIET))
-											|| (isFood(fromitem) && !BITPermissions.hasPerm(p,
-													"sortinventory.stack.food", BITPermissions.QUIET))
-													|| (isVehicle(fromitem) && !BITPermissions.hasPerm(p,
-															"sortinventory.stack.vehicles",
-															BITPermissions.QUIET))) {
-				if (BITConfig.DEBUG_PERMISSIONS)
+					"sortinventory.stack.weapons",
+					BITPermissions.QUIET))
+					|| (isBucket(fromitem) && !BITPermissions.hasPerm(p,
+					"sortinventory.stack.buckets",
+					BITPermissions.QUIET))
+					|| (isArmor(fromitem) && !BITPermissions.hasPerm(p,
+					"sortinventory.stack.armor", BITPermissions.QUIET))
+					|| (isFood(fromitem) && !BITPermissions.hasPerm(p,
+					"sortinventory.stack.food", BITPermissions.QUIET))
+					|| (isVehicle(fromitem) && !BITPermissions.hasPerm(p,
+					"sortinventory.stack.vehicles",
+					BITPermissions.QUIET))) {
+				if (BITConfig.DEBUG_PERMISSIONS) {
 					p.sendMessage("You dont have permission to stack:"
 							+ fromitem.getType());
+				}
 				return;
 			}
 			if (fromitem.getTypeId() == toitem.getTypeId()
@@ -185,7 +192,6 @@ public class BITSortInventory {
 				BITMessages.showError("Configuration error i config.yml.");
 				BITMessages.showError(" Unknown material in SORTSEQ:"
 						+ BITConfig.SORTSEQ[m]);
-
 			} else if (inventory.contains(mat)) {
 				for (int i = n; i < inventory.getSize(); i++) {
 					if (inventory.getItem(i) != null && inventory.getItem(i).getType() == mat) {
@@ -201,13 +207,12 @@ public class BITSortInventory {
 						}
 					}
 				}
-
 			}
 		}
 	}
 
 	private static void switchInventoryItems(Inventory inventory, int slot1,
-			int slot2) {
+											 int slot2) {
 		ItemStack item = inventory.getItem(slot1);
 		inventory.setItem(slot1, inventory.getItem(slot2));
 		inventory.setItem(slot2, item);
@@ -278,5 +283,4 @@ public class BITSortInventory {
 		}
 		return false;
 	}
-
 }

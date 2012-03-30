@@ -5,26 +5,37 @@ import dk.gabriel333.BukkitInventoryTools.Inventory.BITInventory;
 import dk.gabriel333.Library.BITConfig;
 import dk.gabriel333.Library.BITMessages;
 import dk.gabriel333.Library.BITPermissions;
+
 import org.bukkit.Material;
-import org.bukkit.block.*;
+import org.bukkit.block.Chest;
+import org.bukkit.block.Dispenser;
+import org.bukkit.block.Furnace;
+import org.bukkit.block.Jukebox;
+import org.bukkit.block.Sign;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.player.*;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemHeldEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerKickEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Button;
 import org.bukkit.material.Lever;
+
 import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 public class BITPlayerListener implements Listener {
-
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event) {
 
-		if (event.isCancelled())
+		if (event.isCancelled()) {
 			return;
+		}
 		if (BITConfig.DEBUG_ONENABLE) {
 			event.getPlayer().sendMessage("BITPlayerListener - return(1)");
 			return;
@@ -47,7 +58,7 @@ public class BITPlayerListener implements Listener {
 				&& sBlock.getType() == itemInHand.getType()
 				// && !BIT.holdingKey.equals("L-CONTROL"))
 				&& !(BlockTools.isLocked(sBlock) || BITInventory
-						.isBitInventoryCreated(sBlock))) {
+				.isBitInventoryCreated(sBlock))) {
 			// This allows the user to place a new Bookshelf on a Bookshelf
 			// where the Inventory is created.
 
@@ -57,26 +68,27 @@ public class BITPlayerListener implements Listener {
 				&& sBlock.getType() == itemInHand.getType()
 				&& event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
 				&& (BlockTools.isLocked(sBlock) || BITInventory
-						.isBitInventoryCreated(sBlock))) {
+				.isBitInventoryCreated(sBlock))) {
 			event.setCancelled(true);
 		}
 		int id = sPlayer.getEntityId();
 
-		if (BITConfig.DEBUG_GUI)
+		if (BITConfig.DEBUG_GUI) {
 			sPlayer.sendMessage("BITPlayerListener:" + " Your action was:"
 					+ event.getAction() + " on sBlock:" + sBlock.getType()
 					+ " with:" + itemInHand.getType() + " while holding:"
 					+ BIT.holdingKey.get(id));
+		}
 
 		// Call setPincode
-	
+
 		if (sPlayer.isSpoutCraftEnabled()
 				&& BlockTools.isLockable(sBlock)
 				&& BIT.holdingKey.get(id).equals("KEY_LCONTROL")
 				&& event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
 				&& (BITPermissions.hasPerm(sPlayer, "digilock.create",
-						BITPermissions.NOT_QUIET) || BITPermissions.hasPerm(
-								sPlayer, "digilock.admin", BITPermissions.NOT_QUIET))) {
+				BITPermissions.NOT_QUIET) || BITPermissions.hasPerm(
+				sPlayer, "digilock.admin", BITPermissions.NOT_QUIET))) {
 
 			event.setCancelled(true);
 			if (BlockTools.isLocked(sBlock)) {
@@ -84,7 +96,7 @@ public class BITPlayerListener implements Listener {
 				if (digilock.isOwner(sPlayer)
 						|| digilock.isCoowner(sPlayer)
 						|| BITPermissions.hasPerm(sPlayer, "digilock.admin",
-								BITPermissions.NOT_QUIET)) {
+						BITPermissions.NOT_QUIET)) {
 					BITDigiLock.setPincode(sPlayer, sBlock);
 				} else {
 					sPlayer.sendMessage("You are not the owner or coowner");
@@ -106,18 +118,18 @@ public class BITPlayerListener implements Listener {
 							.equalsIgnoreCase("fingerprint"))
 							&& event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
 							&& BITPermissions.hasPerm(sPlayer, "digilock.use",
-									BITPermissions.NOT_QUIET)) {
+							BITPermissions.NOT_QUIET)) {
 						// OPEN CHEST BY FINGERPRINT / NAME
 						if (digilock.isOwner(sPlayer)
 								|| digilock.isCoowner(sPlayer)
 								|| digilock.isUser(sPlayer)) {
-							if(sBlock.getState() instanceof Chest) {
-								Chest sChest = (Chest)(sBlock.getState());
+							if (sBlock.getState() instanceof Chest) {
+								Chest sChest = (Chest) (sBlock.getState());
 								Inventory inv = sChest.getInventory();
 								BITMessages.sendNotification(sPlayer,
 										"Opened by fingerprint");
 								BlockTools.playDigiLockSound(sBlock);
-								sPlayer.openInventory(inv);                                
+								sPlayer.openInventory(inv);
 							} else {
 								event.setCancelled(true);
 								sPlayer.sendMessage("Your fingerprint does not match the DigiLock");
@@ -127,12 +139,12 @@ public class BITPlayerListener implements Listener {
 						event.setCancelled(true);
 						if (sPlayer.isSpoutCraftEnabled()
 								&& event.getAction().equals(
-										Action.RIGHT_CLICK_BLOCK)
-										&& BITPermissions.hasPerm(sPlayer, "digilock.use",
-												BITPermissions.NOT_QUIET)) {
+								Action.RIGHT_CLICK_BLOCK)
+								&& BITPermissions.hasPerm(sPlayer, "digilock.use",
+								BITPermissions.NOT_QUIET)) {
 							BITDigiLock.getPincode(sPlayer, sBlock);
 						} else {
-							sPlayer.sendMessage("Locked with Digilock by "+digilock.owner);
+							sPlayer.sendMessage("Locked with Digilock by " + digilock.owner);
 						}
 					}
 				}
@@ -144,13 +156,13 @@ public class BITPlayerListener implements Listener {
 							|| digilock.getPincode()
 							.equalsIgnoreCase("fingerprint")
 							&& BITPermissions.hasPerm(sPlayer, "digilock.use",
-									BITPermissions.NOT_QUIET)) {
+							BITPermissions.NOT_QUIET)) {
 						// TOGGLE DOOR BY FINGERPRINT / NAME
 						if (digilock.isOwner(sPlayer)
 								|| digilock.isCoowner(sPlayer)
 								|| digilock.isUser(sPlayer)
 								|| BITPermissions.hasPerm(sPlayer, "digilock.admin",
-										BITPermissions.NOT_QUIET)) {
+								BITPermissions.NOT_QUIET)) {
 							BlockTools.playDigiLockSound(sBlock);
 							if (BlockTools.isDoubleDoorOpen(sBlock)) {
 								BlockTools.closeDoubleDoor(sPlayer, sBlock, 0);
@@ -171,7 +183,7 @@ public class BITPlayerListener implements Listener {
 						// ASK FOR PINCODE
 						if (!BlockTools.isDoubleDoorOpen(sBlock)
 								&& BITPermissions.hasPerm(sPlayer, "digilock.use",
-										BITPermissions.NOT_QUIET)) {
+								BITPermissions.NOT_QUIET)) {
 							if (sPlayer.isSpoutCraftEnabled()) {
 								BITDigiLock.getPincode(sPlayer,
 										BlockTools.getLeftDoubleDoor(sBlock));
@@ -193,13 +205,13 @@ public class BITPlayerListener implements Listener {
 							|| digilock.getPincode()
 							.equalsIgnoreCase("fingerprint")
 							&& BITPermissions.hasPerm(sPlayer, "digilock.use",
-									BITPermissions.NOT_QUIET)) {
+							BITPermissions.NOT_QUIET)) {
 						// TOGGLE DOOR BY FINGERPRINT / NAME
 						if (digilock.isOwner(sPlayer)
 								|| digilock.isCoowner(sPlayer)
 								|| digilock.isUser(sPlayer)
 								|| BITPermissions.hasPerm(sPlayer, "digilock.admin",
-										BITPermissions.NOT_QUIET)) {
+								BITPermissions.NOT_QUIET)) {
 							BlockTools.playDigiLockSound(sBlock);
 							if (BlockTools.isDoorOpen(sBlock)) {
 								BlockTools.closeDoor(sPlayer, sBlock, 0);
@@ -221,8 +233,8 @@ public class BITPlayerListener implements Listener {
 						if (!BlockTools.isDoorOpen(sBlock)) {
 							if (sPlayer.isSpoutCraftEnabled()
 									&& BITPermissions.hasPerm(sPlayer,
-											"digilock.use",
-											BITPermissions.NOT_QUIET)) {
+									"digilock.use",
+									BITPermissions.NOT_QUIET)) {
 								BITDigiLock.getPincode(sPlayer, sBlock);
 							} else {
 								sPlayer.sendMessage("Digilock'ed by "
@@ -242,7 +254,7 @@ public class BITPlayerListener implements Listener {
 							|| digilock.getPincode()
 							.equalsIgnoreCase("fingerprint")
 							&& BITPermissions.hasPerm(sPlayer, "digilock.use",
-									BITPermissions.NOT_QUIET)) {
+							BITPermissions.NOT_QUIET)) {
 						// TOGGLE DOOR BY FINGERPRINT / NAME
 						if (digilock.isOwner(sPlayer)
 								|| digilock.isCoowner(sPlayer)
@@ -268,8 +280,8 @@ public class BITPlayerListener implements Listener {
 						if (!BlockTools.isTrapdoorOpen(sPlayer, sBlock)) {
 							if (sPlayer.isSpoutCraftEnabled()
 									&& BITPermissions.hasPerm(sPlayer,
-											"digilock.use",
-											BITPermissions.NOT_QUIET)) {
+									"digilock.use",
+									BITPermissions.NOT_QUIET)) {
 								BITDigiLock.getPincode(sPlayer, sBlock);
 							} else {
 								sPlayer.sendMessage("Digilock'ed by "
@@ -289,7 +301,7 @@ public class BITPlayerListener implements Listener {
 							|| digilock.getPincode()
 							.equalsIgnoreCase("fingerprint")
 							&& BITPermissions.hasPerm(sPlayer, "digilock.use",
-									BITPermissions.NOT_QUIET)) {
+							BITPermissions.NOT_QUIET)) {
 						// TOGGLE DOOR BY FINGERPRINT / NAME
 						if (digilock.isOwner(sPlayer)
 								|| digilock.isCoowner(sPlayer)
@@ -315,8 +327,8 @@ public class BITPlayerListener implements Listener {
 						if (!BlockTools.isFenceGateOpen(sPlayer, sBlock)) {
 							if (sPlayer.isSpoutCraftEnabled()
 									&& BITPermissions.hasPerm(sPlayer,
-											"digilock.use",
-											BITPermissions.NOT_QUIET)) {
+									"digilock.use",
+									BITPermissions.NOT_QUIET)) {
 								BITDigiLock.getPincode(sPlayer, sBlock);
 							} else {
 								sPlayer.sendMessage("Digilock'ed by "
@@ -335,7 +347,7 @@ public class BITPlayerListener implements Listener {
 							.equalsIgnoreCase("fingerprint"))
 							&& event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
 							&& BITPermissions.hasPerm(sPlayer, "digilock.use",
-									BITPermissions.NOT_QUIET)) {
+							BITPermissions.NOT_QUIET)) {
 						// USE DISPENSER BY FINGERPRINT (playername)
 						if (digilock.isOwner(sPlayer)
 								|| digilock.isCoowner(sPlayer)
@@ -354,9 +366,9 @@ public class BITPlayerListener implements Listener {
 						event.setCancelled(true);
 						if (sPlayer.isSpoutCraftEnabled()
 								&& event.getAction().equals(
-										Action.RIGHT_CLICK_BLOCK)
-										&& BITPermissions.hasPerm(sPlayer, "digilock.use",
-												BITPermissions.NOT_QUIET)) {
+								Action.RIGHT_CLICK_BLOCK)
+								&& BITPermissions.hasPerm(sPlayer, "digilock.use",
+								BITPermissions.NOT_QUIET)) {
 							BITDigiLock.getPincode(sPlayer, sBlock);
 						} else {
 							sPlayer.sendMessage("Digilock'ed by "
@@ -370,8 +382,8 @@ public class BITPlayerListener implements Listener {
 					if ((digilock.getPincode().equals("") || digilock.getPincode()
 							.equalsIgnoreCase("fingerprint")
 							&& BITPermissions.hasPerm(sPlayer, "digilock.use",
-									BITPermissions.NOT_QUIET))
-									&& event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+							BITPermissions.NOT_QUIET))
+							&& event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
 						// USE FURNACE BY FINGERPRINT (playername)
 						if (digilock.isOwner(sPlayer)
 								|| digilock.isCoowner(sPlayer)
@@ -390,9 +402,9 @@ public class BITPlayerListener implements Listener {
 						event.setCancelled(true);
 						if (sPlayer.isSpoutCraftEnabled()
 								&& event.getAction().equals(
-										Action.RIGHT_CLICK_BLOCK)
-										&& BITPermissions.hasPerm(sPlayer, "digilock.use",
-												BITPermissions.NOT_QUIET)) {
+								Action.RIGHT_CLICK_BLOCK)
+								&& BITPermissions.hasPerm(sPlayer, "digilock.use",
+								BITPermissions.NOT_QUIET)) {
 							BITDigiLock.getPincode(sPlayer, sBlock);
 						} else {
 							sPlayer.sendMessage("Digilock'ed by "
@@ -410,7 +422,7 @@ public class BITPlayerListener implements Listener {
 							|| digilock.getPincode()
 							.equalsIgnoreCase("fingerprint")
 							&& BITPermissions.hasPerm(sPlayer, "digilock.use",
-									BITPermissions.NOT_QUIET)) {
+							BITPermissions.NOT_QUIET)) {
 						// USE LEVER BY FINGERPRINT
 						if (digilock.isOwner(sPlayer)
 								|| digilock.isCoowner(sPlayer)
@@ -443,7 +455,6 @@ public class BITPlayerListener implements Listener {
 									}
 									BlockTools.leverOff(sPlayer, sBlock);
 									event.setCancelled(true);
-
 								}
 							} else {
 								sPlayer.sendMessage("The lever is not connected to anything.");
@@ -459,8 +470,8 @@ public class BITPlayerListener implements Listener {
 								if (!BlockTools.isLeverOn(sBlock)) {
 									if (sPlayer.isSpoutCraftEnabled()
 											&& BITPermissions.hasPerm(sPlayer,
-													"digilock.use",
-													BITPermissions.NOT_QUIET)) {
+											"digilock.use",
+											BITPermissions.NOT_QUIET)) {
 										BITDigiLock.getPincode(sPlayer, sBlock);
 									} else {
 										sPlayer.sendMessage("Digilock'ed by "
@@ -496,7 +507,6 @@ public class BITPlayerListener implements Listener {
 								}
 								BlockTools.leverOff(sPlayer, sBlock);
 								event.setCancelled(true);
-
 							}
 						} else {
 							sPlayer.sendMessage("The lever is not connected to anything.");
@@ -510,7 +520,7 @@ public class BITPlayerListener implements Listener {
 							|| digilock.getPincode()
 							.equalsIgnoreCase("fingerprint")
 							&& BITPermissions.hasPerm(sPlayer, "digilock.use",
-									BITPermissions.NOT_QUIET)) {
+							BITPermissions.NOT_QUIET)) {
 						// PRESS STONE_BUTTON BY FINGERPRINT
 						// (playername)
 						Button button = (Button) sBlock.getState().getData();
@@ -532,7 +542,7 @@ public class BITPlayerListener implements Listener {
 						event.setCancelled(true);
 						if (sPlayer.isSpoutCraftEnabled()
 								&& BITPermissions.hasPerm(sPlayer, "digilock.use",
-										BITPermissions.NOT_QUIET)) {
+								BITPermissions.NOT_QUIET)) {
 							BITDigiLock.getPincode(sPlayer, sBlock);
 							if (digilock.getPincode().equals(
 									BITDigiLock.pincodeGUI.get(id).getText())) {
@@ -554,7 +564,7 @@ public class BITPlayerListener implements Listener {
 							.equalsIgnoreCase("fingerprint"))
 							&& event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
 							&& BITPermissions.hasPerm(sPlayer, "digilock.use",
-									BITPermissions.NOT_QUIET)) {
+							BITPermissions.NOT_QUIET)) {
 						// USE SIGN BY FINGERPRINT (playername)
 						if (digilock.isOwner(sPlayer)
 								|| digilock.isCoowner(sPlayer)
@@ -565,8 +575,8 @@ public class BITPlayerListener implements Listener {
 									&& BITConfig.LIBRARY_USESIGNEDITGUI
 									&& BIT.holdingKey.get(id).equals("KEY_LSHIFT")
 									&& BITPermissions.hasPerm(sPlayer,
-											"digilock.signadmin",
-											BITPermissions.NOT_QUIET)) {
+									"digilock.signadmin",
+									BITPermissions.NOT_QUIET)) {
 								Sign sign = (Sign) sBlock.getState();
 								sPlayer.openSignEditGUI(sign);
 							}
@@ -577,9 +587,9 @@ public class BITPlayerListener implements Listener {
 					} else {
 						if (sPlayer.isSpoutCraftEnabled()
 								&& event.getAction().equals(
-										Action.RIGHT_CLICK_BLOCK)
-										&& BITPermissions.hasPerm(sPlayer, "digilock.use",
-												BITPermissions.NOT_QUIET)) {
+								Action.RIGHT_CLICK_BLOCK)
+								&& BITPermissions.hasPerm(sPlayer, "digilock.use",
+								BITPermissions.NOT_QUIET)) {
 							BITDigiLock.getPincode(sPlayer, sBlock);
 							if (digilock.getPincode().equals(
 									BITDigiLock.pincodeGUI.get(id).getText())) {
@@ -602,9 +612,9 @@ public class BITPlayerListener implements Listener {
 							.equalsIgnoreCase("fingerprint"))
 							&& event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
 							&& BITPermissions.hasPerm(sPlayer, "digilock.use",
-									BITPermissions.NOT_QUIET)
-									&& BITPermissions.hasPerm(sPlayer, "bookshelf.use",
-											BITPermissions.NOT_QUIET)) {
+							BITPermissions.NOT_QUIET)
+							&& BITPermissions.hasPerm(sPlayer, "bookshelf.use",
+							BITPermissions.NOT_QUIET)) {
 						// USE SIGN BY FINGERPRINT (playername)
 						if (digilock.isOwner(sPlayer)
 								|| digilock.isCoowner(sPlayer)
@@ -620,9 +630,9 @@ public class BITPlayerListener implements Listener {
 					} else {
 						if (sPlayer.isSpoutCraftEnabled()
 								&& event.getAction().equals(
-										Action.RIGHT_CLICK_BLOCK)
-										&& BITPermissions.hasPerm(sPlayer, "digilock.use",
-												BITPermissions.NOT_QUIET)) {
+								Action.RIGHT_CLICK_BLOCK)
+								&& BITPermissions.hasPerm(sPlayer, "digilock.use",
+								BITPermissions.NOT_QUIET)) {
 							BITDigiLock.getPincode(sPlayer, sBlock);
 							if (digilock.getPincode().equals(
 									BITDigiLock.pincodeGUI.get(id).getText())) {
@@ -641,7 +651,7 @@ public class BITPlayerListener implements Listener {
 							.equalsIgnoreCase("fingerprint"))
 							&& event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
 							&& BITPermissions.hasPerm(sPlayer, "digilock.use",
-									BITPermissions.NOT_QUIET)) {
+							BITPermissions.NOT_QUIET)) {
 						// USE SIGN BY FINGERPRINT (playername)
 						if (digilock.isOwner(sPlayer)
 								|| digilock.isCoowner(sPlayer)
@@ -649,7 +659,7 @@ public class BITPlayerListener implements Listener {
 							BITMessages.sendNotification(sPlayer,
 									"Used with fingerprint");
 							// BITInventory bitInventory = BITInventory
-									// .loadBitInventory(sPlayer, sBlock);
+							// .loadBitInventory(sPlayer, sBlock);
 							// bitInventory.openBitInventory(sPlayer, bitInventory);
 						} else {
 							sPlayer.sendMessage("Your fingerprint does not match the DigiLock");
@@ -659,12 +669,12 @@ public class BITPlayerListener implements Listener {
 						Jukebox jukebox = (Jukebox) sBlock.getState();
 						if (sPlayer.isSpoutCraftEnabled()
 								&& event.getAction().equals(
-										Action.RIGHT_CLICK_BLOCK)
-										&& BITPermissions.hasPerm(sPlayer, "digilock.use",
-												BITPermissions.NOT_QUIET)
-												&& ((itemInHand.getTypeId() >= 2256 && itemInHand
-												.getTypeId() <= 2266) || jukebox
-												.isPlaying())) {
+								Action.RIGHT_CLICK_BLOCK)
+								&& BITPermissions.hasPerm(sPlayer, "digilock.use",
+								BITPermissions.NOT_QUIET)
+								&& ((itemInHand.getTypeId() >= 2256 && itemInHand
+								.getTypeId() <= 2266) || jukebox
+								.isPlaying())) {
 							BITDigiLock.getPincode(sPlayer, sBlock);
 							if (digilock.getPincode().equals(
 									BITDigiLock.pincodeGUI.get(id).getText())) {
@@ -682,8 +692,8 @@ public class BITPlayerListener implements Listener {
 					if ((digilock.getPincode().equals("") || digilock.getPincode()
 							.equalsIgnoreCase("fingerprint")
 							&& BITPermissions.hasPerm(sPlayer, "digilock.use",
-									BITPermissions.NOT_QUIET))
-									&& event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+							BITPermissions.NOT_QUIET))
+							&& event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
 						// USE BREWING STAND BY FINGERPRINT (playername)
 						if (digilock.isOwner(sPlayer)
 								|| digilock.isCoowner(sPlayer)
@@ -699,9 +709,9 @@ public class BITPlayerListener implements Listener {
 						event.setCancelled(true);
 						if (sPlayer.isSpoutCraftEnabled()
 								&& event.getAction().equals(
-										Action.RIGHT_CLICK_BLOCK)
-										&& BITPermissions.hasPerm(sPlayer, "digilock.use",
-												BITPermissions.NOT_QUIET)) {
+								Action.RIGHT_CLICK_BLOCK)
+								&& BITPermissions.hasPerm(sPlayer, "digilock.use",
+								BITPermissions.NOT_QUIET)) {
 							BITDigiLock.getPincode(sPlayer, sBlock);
 							sPlayer.sendMessage("Locking brewing stand with pincode is not suported yet!");
 							//BlockBrewingStand bs = (BlockBrewingStand) digilock.getBlock();
@@ -711,9 +721,7 @@ public class BITPlayerListener implements Listener {
 									+ digilock.owner);
 						}
 					}
-				}
-
-				else {
+				} else {
 					sPlayer.sendMessage("ERROR: BITPlayerListener. Cant handle block:"
 							+ sBlock.getType());
 				}
@@ -729,7 +737,6 @@ public class BITPlayerListener implements Listener {
 
 				if (BITConfig.DEBUG_GUI) {
 					sPlayer.sendMessage("There is no digilock on this block");
-
 				}
 				// HANDLING THE DOUBLEDOOR
 				if (BlockTools.isDoubleDoor(sBlock)) {
@@ -743,7 +750,6 @@ public class BITPlayerListener implements Listener {
 							BlockTools.openDoubleDoor(sPlayer, sBlock, 0);
 						}
 					}
-
 				}
 				// HANDLING THE DOOR
 				else if (BlockTools.isDoor(sBlock)) {
@@ -770,7 +776,6 @@ public class BITPlayerListener implements Listener {
 					} else {
 						BlockTools.leverOn(sPlayer, sBlock, 0);
 					}
-
 				}
 				// HANDLING STONE_BUTTON
 				else if (BlockTools.isButton(sBlock)) {
@@ -783,8 +788,8 @@ public class BITPlayerListener implements Listener {
 							&& BITConfig.LIBRARY_USESIGNEDITGUI
 							&& BIT.holdingKey.get(id).equals("KEY_LSHIFT")
 							&& BITPermissions.hasPerm(sPlayer,
-									"digilock.signadmin",
-									BITPermissions.NOT_QUIET)) {
+							"digilock.signadmin",
+							BITPermissions.NOT_QUIET)) {
 						Sign sign = (Sign) sBlock.getState();
 						sPlayer.openSignEditGUI(sign);
 					}
@@ -794,20 +799,19 @@ public class BITPlayerListener implements Listener {
 				else if (BlockTools.isBookshelf(sBlock)
 						&& event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
 						&& !BIT.holdingKey.get(id).equals("KEY_LCONTROL")
-						&& (BITConfig.BOOKSHELF_ENABLE))   {  //  Added this option to config to prevent BOOKWORM Conflict
+						&& (BITConfig.BOOKSHELF_ENABLE)) {  //  Added this option to config to prevent BOOKWORM Conflict
 
 					if (BITInventory.isBitInventoryCreated(sBlock)
 							&& BITPermissions.hasPerm(sPlayer, "bookshelf.use",
-									BITPermissions.NOT_QUIET)) {
+							BITPermissions.NOT_QUIET)) {
 						BITInventory bitInventory = BITInventory.loadBitInventory(
 								sPlayer, sBlock);
 						bitInventory.openBitInventory(sPlayer, bitInventory);
 					} else if (!BITInventory.isBitInventoryCreated(sBlock)
 							&& BITPermissions.hasPerm(sPlayer, "bookshelf.create",
-									BITPermissions.NOT_QUIET)) {
+							BITPermissions.NOT_QUIET)) {
 						BITInventory.setBookshelfInventory(sPlayer, sBlock);
 					}
-
 				}
 				// BREWING STAND
 				else if (sBlock.getType().equals(Material.BREWING_STAND)) {
@@ -820,7 +824,7 @@ public class BITPlayerListener implements Listener {
 	public void onItemHeldChange(PlayerItemHeldEvent event) {
 		if (BITConfig.DEBUG_GUI) {
 			SpoutPlayer sPlayer = (SpoutPlayer) event.getPlayer();
-			sPlayer.sendMessage("Event:" + event.getEventName() );
+			sPlayer.sendMessage("Event:" + event.getEventName());
 		}
 
 		// ItemStack item =
@@ -855,5 +859,4 @@ public class BITPlayerListener implements Listener {
 		int id = event.getPlayer().getEntityId();
 		BIT.removeUserData(id);
 	}
-
 }
