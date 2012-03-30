@@ -23,8 +23,6 @@ import dk.gabriel333.BITBackpack.BITBackpackInventoryListener;
 import dk.gabriel333.BITBackpack.BITBackpackInventorySaveTask;
 import dk.gabriel333.BITBackpack.BITBackpackLanguageInterface;
 import dk.gabriel333.BITBackpack.BITBackpackPlayerListener;
-import dk.gabriel333.BukkitInventoryTools.Book.BITBookInputListener;
-import dk.gabriel333.BukkitInventoryTools.Book.BITCommandBookshelf;
 import dk.gabriel333.BukkitInventoryTools.DigiLock.BITBlockListener;
 import dk.gabriel333.BukkitInventoryTools.DigiLock.BITCommandDigiLock;
 import dk.gabriel333.BukkitInventoryTools.DigiLock.BITDigiLockKeyHandler;
@@ -158,7 +156,6 @@ public class BIT extends JavaPlugin {
 
 		// BITBook Listeners
 		pm.registerEvents(new BITInventoryListener(this), this);
-		pm.registerEvents(new BITBookInputListener(), this);
 
 		// BITBackpack Listeners
 		pm.registerEvents(new BITBackpackInputListener(this), this);
@@ -181,8 +178,7 @@ public class BIT extends JavaPlugin {
 		// Register commands
 		getCommand("Bit").setExecutor(new BITCommand(this));
 		getCommand("Sort").setExecutor(new BITCommandSort(this));
-		getCommand("Digilock").setExecutor(new BITCommandDigiLock(this));
-		getCommand("Bookshelf").setExecutor(new BITCommandBookshelf(this));
+		getCommand("Digilock").setExecutor(new BITCommandDigiLock());
 		getCommand("Backpack").setExecutor(new BITBackpack(this));
 	}
 

@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.UUID;
 
 import dk.gabriel333.BukkitInventoryTools.BIT;
-import dk.gabriel333.BukkitInventoryTools.Book.BITBook;
 import dk.gabriel333.BukkitInventoryTools.DigiLock.BITDigiLock;
 import dk.gabriel333.BukkitInventoryTools.DigiLock.BlockTools;
 import dk.gabriel333.Library.BITConfig;
@@ -315,25 +314,6 @@ public class BITInventory {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}
-
-		short bookId;
-		if (inventory.contains(Material.BOOK)) {
-			BITBook bitBook;
-			for (int j = 0; j < inventory.getSize(); j++) {
-				if (inventory.getItem(j) != null && inventory.getItem(j).getType() == Material.BOOK) {
-					bookId = inventory.getItem(j).getDurability();
-					if (bookId > 1000) {
-						bitBook = BITBook.loadBook(sPlayer, bookId);
-						Item item = (Item) inventory.getItem(j); //BUG > ITEMStack from SpoutAPI Invalid
-						if (item != null) {
-							item.setName(bitBook.getTitle() + " written by " + bitBook.getAuthor());
-						}
-						//BITBook.setBookName(bookId, bitBook.getTitle(),
-						//		bitBook.getAuthor());
-					}
-				}
-			}
 		}
 		BITInventory inv = new BITInventory(sBlock, owner, name, coOwners,
 				inventory, useCost);
