@@ -32,9 +32,9 @@ groups:
             bukkitinventorytools.sortinventory.stack.food: true
             bukkitinventorytools.sortinventory.stack.vehicles: true
             bukkitinventorytools.sortinventory.stack.buckets: true
-            bukkitinventorytools.digilock.create
-            bukkitinventorytools.digilock.use
-            bukkitinventorytools.digilock.admin
+            bukkitinventorytools.lock.create
+            bukkitinventorytools.lock.use
+            bukkitinventorytools.lock.admin
             worlds:
                 oceanworld:
                     smartplugin.tool: true

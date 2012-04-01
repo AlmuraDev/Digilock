@@ -2,10 +2,10 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>dk.gabriel333</groupId>
-	<artifactId>bukkitinventorytools</artifactId>
-	<version>3.4.0</version>
+	<artifactId>digilock</artifactId>
+	<version>dev-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<name>BukkitInventoryTools</name>
+	<name>Digilock</name>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
@@ -20,16 +20,6 @@
 			<groupId>org.bukkit</groupId>
 			<artifactId>bukkit</artifactId>
 			<version>1.2.4-R0.1-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>org.bukkit</groupId>
-			<artifactId>craftbukkit</artifactId>
-			<version>1.2.4-R0.1-SNAPSHOT</version>
-			</dependency>
-		<dependency>
-			<groupId>org.getspout</groupId>
-			<artifactId>spoutplugin</artifactId>
-			<version>dev-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.getspout</groupId>
@@ -56,13 +46,6 @@
 			<systemPath>${basedir}/lib/MobArena.jar</systemPath>
 		</dependency>
 		<dependency>
-			<groupId>de.Keyle</groupId>
-			<artifactId>mywolf</artifactId>
-			<version>0.5.4</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/lib/MyWolf.jar</systemPath>
-		</dependency>
-		<dependency>
 			<groupId>com.tommytony</groupId>
 			<artifactId>war</artifactId>
 			<version>1.7</version>
@@ -76,8 +59,8 @@
 			<scope>system</scope>
 			<systemPath>${basedir}/lib/Jail.jar</systemPath>
 		</dependency>
-
 	</dependencies>
+
 	<repositories>
 		<repository>
 			<id>bukkit-repo</id>
@@ -134,7 +117,7 @@
 						<archive>
 							<addMavenDescriptor>false</addMavenDescriptor>
 						</archive>
-						<finalName>BukkitInventoryTools</finalName>
+						<finalName>Digilock</finalName>
 					</configuration>
 				</plugin>
 				<plugin>

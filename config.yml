@@ -1,6 +1,6 @@
 ############################################################
 # +------------------------------------------------------+ #
-# |  Plugin configuration file for BukkitInventoryTools  | #
+# |  Plugin configuration file for lock  | #
 # |                                                      | #
 # |                                                      | #
 # +------------------------------------------------------+ #
@@ -78,10 +78,10 @@ Sort:
 # |                  Properties for Digilock             | #
 # +------------------------------------------------------+ #
 ############################################################
-# Cost:        Is the cost of creating a new DigiLock
+# Cost:        Is the cost of creating a new lock
 # UseMaxCost:  Is the limit of the cost the PLAYER can
-#              charge anotherplayer, to use his DigiLock. 
-# DestroyCost: Is the cost for destroying a DigiLock. If the
+#              charge anotherplayer, to use his lock.
+# DestroyCost: Is the cost for destroying a lock. If the
 #              cost is negative, the player will gain money.
 DigiLock:
     Cost: 100

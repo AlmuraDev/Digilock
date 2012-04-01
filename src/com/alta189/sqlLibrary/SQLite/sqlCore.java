@@ -6,11 +6,10 @@ import java.sql.ResultSet;
 import java.util.logging.Logger;
 
 public class sqlCore {
-
 	/*
-		 *  @author: alta189
-		 *
-		 */
+			 *  @author: alta189
+			 *
+			 */
 	private Logger log;
 	private String logPrefix;
 	public String dbLocation;

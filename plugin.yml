@@ -1,10 +1,9 @@
-name: BukkitInventoryTools
-main: dk.gabriel333.BukkitInventoryTools.BIT
-version: 3.4.2
+name: lock
+main: dk.gabriel333.lock: 3.4.2
 author: Rocologo / Dockter
 authors: [Gabriel333]
 website: http://dev.bukkit.org/server-mods/bukkitinventorytools/
-dev-url: https://github.com/BukkitInventoryTools
+dev-url: https://github.com/lock
 description: Shop, Digital lock, sort and stack inventories
 depend: [Spout]
 softdepend: [Vault, WorldGuard, MobArena, Jail, War]
@@ -18,11 +17,11 @@ commands:
         usage: /sort
         aliases: si 
         permission: bukkitinventorytools.sortinventory.use
-    digilock:
+    lock:
         description: Lock the item with a digital pincode.
-        usage: /digilock [pincode]|[unlock pincode]|[lock pincode]|[owner playername]|[closetimer seconds]|[usecost cost]|[remove]|[addcoowner name]|[remcoowner name]|[adduser name]|[remuser name]|[info]
+        usage: /lock [pincode]|[unlock pincode]|[lock pincode]|[owner playername]|[closetimer seconds]|[usecost cost]|[remove]|[addcoowner name]|[remcoowner name]|[adduser name]|[remuser name]|[info]
         aliases: dlock
-        permission: bukkitinventorytools.digilock.use
+        permission: bukkitinventorytools.lock.use
     bookshelf:
         description: Create and use a Bookshelf inventory.
         usage: /bookshelf []|[create inventoryname]|[owner playername]|[usecost cost]|[remove]|[addcoowner name]|[remcoowner name]|[info]
@@ -36,7 +35,7 @@ commands:
 permissions:
     bukkitinventorytools.admin:
         default: op
-    bukkitinventorytools.digilock.signadmin:
+    bukkitinventorytools.lock.signadmin:
         default: op
     bukkitinventorytools.sortinventory.use:
         default: op
@@ -52,11 +51,11 @@ permissions:
         default: op
     bukkitinventorytools.sortinventory.stack.buckets:
         default: op
-    bukkitinventorytools.digilock.create:
+    bukkitinventorytools.lock.create:
         default: op
-    bukkitinventorytools.digilock.use:
+    bukkitinventorytools.lock.use:
         default: op
-    bukkitinventorytools.digilock.admin:
+    bukkitinventorytools.lock.admin:
         default: op
     bukkitinventorytools.bookshelf.create:
         default: op
