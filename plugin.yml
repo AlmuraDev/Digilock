@@ -1,113 +1,31 @@
-name: lock
-main: dk.gabriel333.lock: 3.4.2
-author: Rocologo / Dockter
-authors: [Gabriel333]
-website: http://dev.bukkit.org/server-mods/bukkitinventorytools/
-dev-url: https://github.com/lock
-description: Shop, Digital lock, sort and stack inventories
+name: Digilock
+main: com.almuramc.digilock.Digilock
+author: Rocologo
+authors: [Rocologo, Dockter]
+website: http://dev.bukkit.org/server-mods/digilock/
+description: Protection of blocks using the digilock system including Spout GUI support.
 depend: [Spout]
 softdepend: [Vault, WorldGuard, MobArena, Jail, War]
 commands:
-    bit:
+    digilock:
         description: Admin commands.
-        usage: /bit [reload]
-        permission: bukkitinventorytools.admin
-    sort:
-        description: Rebuild all item stack in your inventory.
-        usage: /sort
-        aliases: si 
-        permission: bukkitinventorytools.sortinventory.use
+        usage: /digilock [reload]
+        permission: digilock.admin
     lock:
         description: Lock the item with a digital pincode.
         usage: /lock [pincode]|[unlock pincode]|[lock pincode]|[owner playername]|[closetimer seconds]|[usecost cost]|[remove]|[addcoowner name]|[remcoowner name]|[adduser name]|[remuser name]|[info]
         aliases: dlock
-        permission: bukkitinventorytools.lock.use
-    bookshelf:
-        description: Create and use a Bookshelf inventory.
-        usage: /bookshelf []|[create inventoryname]|[owner playername]|[usecost cost]|[remove]|[addcoowner name]|[remcoowner name]|[info]
-        aliases: bs
-        permission: bukkitinventorytools.bookshelf.use
-    backpack:
-        description: Wear a backpack.
-        usage: /backpack
-        aliases: bpack
-        permission: bukkitinventorytools.backpack.use
+        permission: digilock.lock.use
 permissions:
-    bukkitinventorytools.admin:
+    digilock.admin:
         default: op
-    bukkitinventorytools.lock.signadmin:
+    digilock.lock.signadmin:
         default: op
-    bukkitinventorytools.sortinventory.use:
+    digilock.lock.create:
         default: op
-    bukkitinventorytools.sortinventory.stack.tools:
+    digilock.lock.use:
         default: op
-    bukkitinventorytools.sortinventory.stack.armor:
-        default: op
-    bukkitinventorytools.sortinventory.stack.weapons:
-        default: op
-    bukkitinventorytools.sortinventory.stack.food: 
-        default: op
-    bukkitinventorytools.sortinventory.stack.vehicles:
-        default: op
-    bukkitinventorytools.sortinventory.stack.buckets:
-        default: op
-    bukkitinventorytools.lock.create:
-        default: op
-    bukkitinventorytools.lock.use:
-        default: op
-    bukkitinventorytools.lock.admin:
-        default: op
-    bukkitinventorytools.bookshelf.create:
-        default: op
-    bukkitinventorytools.bookshelf.use:
-        default: op
-    bukkitinventorytools.bookshelf.admin:
-        default: op
-    bukkitinventorytools.book.create:
-        default: op
-    bukkitinventorytools.book.use:
-        default: op
-    bukkitinventorytools.book.admin:
-        default: op
-    bukkitinventorytools.backpack.use:
-        default: op
-    bukkitinventorytools.backpack.size9:
-        default: op
-    bukkitinventorytools.backpack.size18:
-        default: op
-    bukkitinventorytools.backpack.size27:
-        default: op
-    bukkitinventorytools.backpack.size36:
-        default: op
-    bukkitinventorytools.backpack.size45:
-        default: op
-    bukkitinventorytools.backpack.size54:
-        default: op
-    bukkitinventorytools.backpack.upgrade18:
-        default: op
-    bukkitinventorytools.backpack.upgrade27:
-        default: op
-    bukkitinventorytools.backpack.upgrade36:
-        default: op
-    bukkitinventorytools.backpack.upgrade45:
-        default: op
-    bukkitinventorytools.backpack.upgrade54:
-        default: op
-    bukkitinventorytools.backpack.creative:
-        default: op        
-    bukkitinventorytools.backpack.clear:
-        default: op
-    bukkitinventorytools.backpack.workbench:
-        default: op
-    bukkitinventorytools.backpack.reload:
-        default: op
-    bukkitinventorytools.backpack.nodrop:
-        default: op
-    bukkitinventorytools.backpack.info.other:
-        default: op
-    bukkitinventorytools.backpack.clear.other:
-        default: op
-    bukkitinventorytools.backpack.open.other:
+    digilock.lock.admin:
         default: op
 
 
