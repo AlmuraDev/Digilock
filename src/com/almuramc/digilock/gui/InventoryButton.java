@@ -3,7 +3,6 @@ package com.almuramc.digilock.gui;
 import java.util.UUID;
 
 import com.almuramc.digilock.LockCore;
-import com.almuramc.digilock.util.Config;
 import com.almuramc.digilock.util.LockInventory;
 import com.almuramc.digilock.util.Messages;
 

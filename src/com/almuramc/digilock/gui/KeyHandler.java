@@ -30,25 +30,19 @@ public class KeyHandler implements BindingExecutionDelegate {
 		SpoutPlayer sPlayer = event.getPlayer();
 		ScreenType screentype = event.getScreenType();
 		SpoutBlock targetblock = (SpoutBlock) sPlayer.getTargetBlock(null, 4);
-		// External SpoutBackpack
 
 		// Remove broken DigiLocks
-		if (BlockTools.isLocked(targetblock)
-				&& !BlockTools.isLockable(targetblock)) {
+		if (BlockTools.isLocked(targetblock) && !BlockTools.isLockable(targetblock)) {
 			LockCore lock = BlockTools.loadDigiLock(targetblock);
 			lock.RemoveDigiLock(sPlayer);
 			sPlayer.sendMessage("Warning: You had an DigiLock on a illegal block. The DigiLock has been removed.");
-			sPlayer.sendMessage("Make a ticket and tell the developer how it happened on:");
-			sPlayer.sendMessage("http://dev.bukkit.org/server-mods/bukkitinventorytools/tickets/");
 		}
 
 		// GAME_SCREEN
 		else if (BlockTools.isLockable(targetblock)) {
 			if (screentype == ScreenType.GAME_SCREEN) {
 				if ((Permissions.hasPerm(sPlayer, "lock.create",
-						Permissions.QUIET) || Permissions
-						.hasPerm(sPlayer, "lock.admin",
-								Permissions.QUIET))) {
+						Permissions.QUIET) || Permissions.hasPerm(sPlayer, "lock.admin", Permissions.QUIET))) {
 					if (BlockTools.isLocked(targetblock)) {
 						LockCore lock = BlockTools.loadDigiLock(targetblock);
 						if (BlockTools.isDoubleDoor(targetblock)) {
@@ -59,14 +53,12 @@ public class KeyHandler implements BindingExecutionDelegate {
 							BlockTools.closeTrapdoor(sPlayer, targetblock);
 						}
 						if (sPlayer.getName().equals(lock.getOwner())) {
-							Messages.sendNotification(sPlayer,
-									"You are the owner");
+							Messages.sendNotification(sPlayer, "You are the owner");
 							LockCore.setPincode(sPlayer, targetblock);
 						} else {
-							Messages.sendNotification(sPlayer,
-									"Locked with Digilock");
+							Messages.sendNotification(sPlayer, "Locked with Digilock");
 						}
-					} else { // TARGETBLOCK IS NOT LOCKED
+					} else {
 						if (sPlayer.isSpoutCraftEnabled()) {
 							if (BlockTools.isDoubleDoor(targetblock)) {
 								SpoutBlock leftdoor = BlockTools.getLeftDoubleDoor(targetblock);

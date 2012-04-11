@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
+<module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" version="4">
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/target/classes" />
     <output-test url="file://$MODULE_DIR$/target/test-classes" />
@@ -10,12 +10,7 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Maven: org.bukkit:bukkit:1.2.4-R0.1-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="Maven: org.bukkit:craftbukkit:1.2.4-R0.1-SNAPSHOT" level="project" />
-    <orderEntry type="module" module-name="SpoutPlugin" />
-    <orderEntry type="module" module-name="SpoutPluginAPI" />
-    <orderEntry type="library" name="Maven: org.getspout:commons:dev-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="Maven: commons-io:commons-io:2.1" level="project" />
-    <orderEntry type="library" name="Maven: net.sf.trove4j:trove4j:3.0.2" level="project" />
+    <orderEntry type="library" name="Maven: org.getspout:spoutpluginapi:dev-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: net.milkbowl:vault:1.2.12" level="project" />
     <orderEntry type="library" name="Maven: com.sk89q:worldguard:5.5" level="project" />
     <orderEntry type="library" name="Maven: com.sk89q:worldedit:5.2" level="project" />
@@ -24,16 +19,7 @@
     <orderEntry type="library" name="Maven: rhino:js:1.7R2" level="project" />
     <orderEntry type="library" name="Maven: com.sk89q:jchronic:0.2.4a" level="project" />
     <orderEntry type="library" name="Maven: junit:junit:4.8.1" level="project" />
-    <orderEntry type="module" module-name="SpoutAPI" />
-    <orderEntry type="library" name="Maven: org.spout:spoutnbt:1.0.1-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="Maven: io.netty:netty:3.3.0.Final" level="project" />
-    <orderEntry type="library" name="Maven: org.javassist:javassist:3.15.0-GA" level="project" />
-    <orderEntry type="library" name="Maven: net.royawesome:jlibnoise:dev-SNAPSHOT" level="project" />
-    <orderEntry type="library" name="Maven: com.google.guava:guava:11.0.1" level="project" />
-    <orderEntry type="library" name="Maven: com.google.code.findbugs:jsr305:1.3.9" level="project" />
-    <orderEntry type="library" name="Maven: org.apache.commons:commons-lang3:3.1" level="project" />
-    <orderEntry type="library" name="Maven: org.yaml:snakeyaml:1.9" level="project" />
-    <orderEntry type="library" name="Maven: com.h2database:h2:1.3.163" level="project" />
+    <orderEntry type="library" name="Maven: org.spout:spoutapi:dev-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: com.sk89q:commandbook:2.0" level="project" />
     <orderEntry type="library" name="Maven: com.zachsthings.libcomponents:libcomponents-bukkit:1.0" level="project" />
     <orderEntry type="library" name="Maven: com.zachsthings.libcomponents:libcomponents-core:1.0" level="project" />
@@ -41,9 +27,9 @@
     <orderEntry type="library" name="Maven: com.nijikokun:iconomy:5.0" level="project" />
     <orderEntry type="library" name="Maven: org.khelekore:prtree:1.4" level="project" />
     <orderEntry type="library" name="Maven: com.garbagemule:mobarena:0.94.3.24" level="project" />
-    <orderEntry type="library" name="Maven: de.Keyle:mywolf:0.5.4" level="project" />
     <orderEntry type="library" name="Maven: com.tommytony:war:1.7" level="project" />
     <orderEntry type="library" name="Maven: com.matejdro.bukkit:jail:2.1.1" level="project" />
+    <orderEntry type="library" name="Maven: lib.PatPeter:SQLibrary:3.0a" level="project" />
   </component>
 </module>
 

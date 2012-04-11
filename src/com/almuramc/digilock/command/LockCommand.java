@@ -1,6 +1,5 @@
 package com.almuramc.digilock.command;
 
-import com.almuramc.digilock.Digilock;
 import com.almuramc.digilock.LockCore;
 import com.almuramc.digilock.util.BlockTools;
 import com.almuramc.digilock.util.Messages;
@@ -13,12 +12,18 @@ import org.bukkit.block.Furnace;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 public class LockCommand implements CommandExecutor {
+	public LockCommand(JavaPlugin instance) {
+		instance.getCommand("lock").setExecutor(this);
+	}
+
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		SpoutPlayer sPlayer = (SpoutPlayer) sender;
@@ -32,7 +37,7 @@ public class LockCommand implements CommandExecutor {
 			String owner = sPlayer.getName();
 			Integer closetimer = 0; // never closes automatically
 			int usecost = 0;
-			if (!Digilock.isPlayer(sPlayer)) {
+			if (sender instanceof Player) {
 				Messages.showError("You cant use this command in the console.");
 				return false;
 			} else if (Permissions.hasPerm(sPlayer, "lock.create", Permissions.NOT_QUIET) || Permissions.hasPerm(sPlayer, "lock.use", Permissions.NOT_QUIET) || Permissions.hasPerm(sPlayer, "lock.admin", Permissions.NOT_QUIET) || Permissions.hasPerm(sPlayer, "lock.*", Permissions.NOT_QUIET) || Permissions.hasPerm(sPlayer, "*", Permissions.NOT_QUIET)) {
@@ -76,20 +81,10 @@ public class LockCommand implements CommandExecutor {
 									connectedto = args[n + 1];
 								}
 								n++;
-							} else if (action.equalsIgnoreCase("remove")) {
-								sPlayer.sendMessage("No Digilock is created on this bookshelf");
-								return false;
-							} else if (action.equalsIgnoreCase("info")) {
-								sPlayer.sendMessage("No Digilock is created on this bookshelf");
-								return false;
 							}
 						}
-						if (Permissions.hasPerm(sPlayer, "lock.create",
-								Permissions.NOT_QUIET)
-								&& args[0].equalsIgnoreCase("lock")) {
-							LockCore.SaveDigiLock(sPlayer, block, pincode,
-									owner, closetimer, coowners, users,
-									block.getTypeId(), connectedto, usecost);
+						if (Permissions.hasPerm(sPlayer, "lock.create", Permissions.NOT_QUIET) && args[0].equalsIgnoreCase("lock")) {
+							LockCore.SaveDigiLock(sPlayer, block, pincode, owner, closetimer, coowners, users, block.getTypeId(), connectedto, usecost);
 							return true;
 						} else {
 							return false;
@@ -106,23 +101,19 @@ public class LockCommand implements CommandExecutor {
 								Inventory inv = sChest.getInventory();
 								sPlayer.openInventory(inv);
 							} else if (BlockTools.isDoubleDoor(block)) {
-								BlockTools.openDoubleDoor(sPlayer, block,
-										lock.getUseCost());
+								BlockTools.openDoubleDoor(sPlayer, block, lock.getUseCost());
 							} else if (BlockTools.isDoor(lock.getBlock())) {
-								BlockTools.openDoor(sPlayer, block,
-										lock.getUseCost());
+								BlockTools.openDoor(sPlayer, block, lock.getUseCost());
 							} else if (lock.getBlock().getType() == Material.FURNACE) {
 								Furnace furnace = (Furnace) block.getState();
 								Inventory inv = furnace.getInventory();
 								sPlayer.openInventory(inv);
 							} else if (BlockTools.isDispenser(block)) {
-								Dispenser dispenser = (Dispenser) block
-										.getState();
+								Dispenser dispenser = (Dispenser) block .getState();
 								Inventory inv = dispenser.getInventory();
 								sPlayer.openInventory(inv);
 							} else if (BlockTools.isTrapdoor(block)) {
-								BlockTools.openTrapdoor(sPlayer, block,
-										lock.getUseCost());
+								BlockTools.openTrapdoor(sPlayer, block, lock.getUseCost());
 							} else if (BlockTools.isLever(block)) {
 								if (BlockTools.isLeverOn(block)) {
 									BlockTools.leverOff(sPlayer, block);
@@ -139,43 +130,16 @@ public class LockCommand implements CommandExecutor {
 							sPlayer.damage(5);
 						}
 						// REMOVE ***************************************
-					} else if (action.equalsIgnoreCase("remove")
-							&& (lock.getOwner().equalsIgnoreCase(
-							sPlayer.getName()) || Permissions
-							.hasPerm(sPlayer, "lock.admin",
-									Permissions.NOT_QUIET))
-							&& args.length == 1) {
+					} else if (action.equalsIgnoreCase("remove") && (lock.getOwner().equalsIgnoreCase(sPlayer.getName()) || Permissions.hasPerm(sPlayer, "lock.admin", Permissions.NOT_QUIET)) && args.length == 1) {
 						lock.RemoveDigiLock(sPlayer);
 						// closetimer ***************************************
-					} else if (action.equalsIgnoreCase("closetimer")
-							&& (lock.getOwner().equalsIgnoreCase(
-							sPlayer.getName()) || Permissions
-							.hasPerm(sPlayer, "lock.admin",
-									Permissions.NOT_QUIET))
-							&& args.length == 2) {
+					} else if (action.equalsIgnoreCase("closetimer") && (lock.getOwner().equalsIgnoreCase(sPlayer.getName()) || Permissions.hasPerm(sPlayer, "lock.admin", Permissions.NOT_QUIET)) && args.length == 2) {
 						lock.setClosetimer(Integer.getInteger(args[1], 0));
-						LockCore.SaveDigiLock(sPlayer, lock.getBlock(),
-								lock.getPincode(), lock.getOwner(),
-								lock.getClosetimer(),
-								lock.getCoOwners(), lock.getUsers(),
-								lock.getBlock().getTypeId(),
-								lock.getConnectedTo(),
-								lock.getUseCost());
+						LockCore.SaveDigiLock(sPlayer, lock.getBlock(), lock.getPincode(), lock.getOwner(), lock.getClosetimer(), lock.getCoOwners(), lock.getUsers(), lock.getBlock().getTypeId(), lock.getConnectedTo(), lock.getUseCost());
 						// addcoowner ***************************************
-					} else if (action.equalsIgnoreCase("addcoowner")
-							&& (lock.getOwner().equalsIgnoreCase(
-							sPlayer.getName()) || Permissions
-							.hasPerm(sPlayer, "lock.admin",
-									Permissions.NOT_QUIET))
-							&& args.length == 2) {
+					} else if (action.equalsIgnoreCase("addcoowner") && (lock.getOwner().equalsIgnoreCase(sPlayer.getName()) || Permissions.hasPerm(sPlayer, "lock.admin", Permissions.NOT_QUIET)) && args.length == 2) {
 						lock.addCoowner(args[1]);
-						LockCore.SaveDigiLock(sPlayer, lock.getBlock(),
-								lock.getPincode(), lock.getOwner(),
-								lock.getClosetimer(),
-								lock.getCoOwners(), lock.getUsers(),
-								lock.getBlock().getTypeId(),
-								lock.getConnectedTo(),
-								lock.getUseCost());
+						LockCore.SaveDigiLock(sPlayer, lock.getBlock(), lock.getPincode(), lock.getOwner(), lock.getClosetimer(), lock.getCoOwners(), lock.getUsers(), lock.getBlock().getTypeId(), lock.getConnectedTo(), lock.getUseCost());
 						// remcoowner ***************************************
 					} else if (action.equalsIgnoreCase("remcoowner")
 							&& (lock.getOwner().equalsIgnoreCase(
@@ -307,8 +271,7 @@ public class LockCommand implements CommandExecutor {
 			return false;
 		} else {
 			//Not lockable
-			Messages.sendNotification(sPlayer,
-					"You can't lock a " + block.getType());
+			Messages.sendNotification(sPlayer, "You can't lock a " + block.getType());
 			return false;
 		}
 	}

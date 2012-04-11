@@ -305,20 +305,13 @@ public class LockInventory {
 
 	public void RemoveBitInventory(SpoutPlayer sPlayer, int destroycost) {
 		boolean deleteInventory = true;
-		if (Digilock.useEconomy) {
-			if (Digilock.plugin.economy.hasAccount(sPlayer.getName())) {
-				if (Digilock.plugin.economy.has(sPlayer.getName(), destroycost)
-						|| destroycost < 0) {
-					Digilock.plugin.economy.withdrawPlayer(sPlayer.getName(), destroycost);
-					sPlayer.sendMessage("Your account ("
-							+ Digilock.plugin.economy.getBalance(sPlayer.getName())
-							+ ") has been deducted "
-							+ Digilock.plugin.economy.format(destroycost) + ".");
+		if (Digilock.getHandler().useEconomy()) {
+			if (Digilock.getHooks().getEconHook().hasAccount(sPlayer.getName())) {
+				if (Digilock.getHooks().getEconHook().has(sPlayer.getName(), destroycost) || destroycost < 0) {
+					Digilock.getHooks().getEconHook().withdrawPlayer(sPlayer.getName(), destroycost);
+					sPlayer.sendMessage("Your account (" + Digilock.getHooks().getEconHook().getBalance(sPlayer.getName()) + ") has been deducted " + Digilock.getHooks().getEconHook().format(destroycost) + ".");
 				} else {
-					sPlayer.sendMessage("You dont have enough money ("
-							+ Digilock.plugin.economy.getBalance(sPlayer.getName())
-							+ "). Cost is:"
-							+ Digilock.plugin.economy.format(destroycost));
+					sPlayer.sendMessage("You dont have enough money (" + Digilock.getHooks().getEconHook().getBalance(sPlayer.getName()) + "). Cost is:" + Digilock.getHooks().getEconHook().format(destroycost));
 					deleteInventory = false;
 				}
 			}
@@ -450,9 +443,9 @@ public class LockInventory {
 	public static void cleanupPopupScreen(SpoutPlayer sPlayer) {
 		int id = sPlayer.getEntityId();
 		if (popupScreen.containsKey(id)) {
-			popupScreen.get(id).removeWidgets(Digilock.plugin);
+			popupScreen.get(id).removeWidgets(Digilock.getInstance());
 			popupScreen.get(id).setDirty(true);
-			sPlayer.getMainScreen().removeWidgets(Digilock.plugin);
+			sPlayer.getMainScreen().removeWidgets(Digilock.getInstance());
 			clickedBlock.remove(id);
 		}
 	}

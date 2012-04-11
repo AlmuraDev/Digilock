@@ -3,7 +3,6 @@ package com.almuramc.digilock.listener;
 import com.almuramc.digilock.Digilock;
 import com.almuramc.digilock.LockCore;
 import com.almuramc.digilock.util.BlockTools;
-import com.almuramc.digilock.util.Config;
 import com.almuramc.digilock.util.LockInventory;
 import com.almuramc.digilock.util.Messages;
 import com.almuramc.digilock.util.Permissions;
@@ -56,7 +55,7 @@ public class PlayerListener implements Listener {
 
 		if (sPlayer.isSpoutCraftEnabled()
 				&& BlockTools.isLockable(sBlock)
-				&& Digilock.holdingKey.get(id).equals("KEY_LCONTROL")
+				&& LockCore.holdingKey.get(id).equals("KEY_LCONTROL")
 				&& event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
 				&& (Permissions.hasPerm(sPlayer, "lock.create",
 				Permissions.NOT_QUIET) || Permissions.hasPerm(
@@ -545,7 +544,7 @@ public class PlayerListener implements Listener {
 									"Used with fingerprint");
 							if (sPlayer.isSpoutCraftEnabled()
 									&& Config.LIBRARY_USESIGNEDITGUI
-									&& Digilock.holdingKey.get(id).equals("KEY_LSHIFT")
+									&& LockCore.holdingKey.get(id).equals("KEY_LSHIFT")
 									&& Permissions.hasPerm(sPlayer,
 									"lock.signadmin",
 									Permissions.NOT_QUIET)) {
@@ -754,7 +753,7 @@ public class PlayerListener implements Listener {
 				else if (BlockTools.isSign(sBlock)) {
 					if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
 							&& Config.LIBRARY_USESIGNEDITGUI
-							&& Digilock.holdingKey.get(id).equals("KEY_LSHIFT")
+							&& LockCore.holdingKey.get(id).equals("KEY_LSHIFT")
 							&& Permissions.hasPerm(sPlayer,
 							"lock.signadmin",
 							Permissions.NOT_QUIET)) {
@@ -767,21 +766,21 @@ public class PlayerListener implements Listener {
 
 	public void onPlayerLogin(PlayerLoginEvent event) {
 		int id = event.getPlayer().getEntityId();
-		Digilock.addUserData(id);
+		LockCore.addUserData(id);
 	}
 
 	public void onPlayerKick(PlayerKickEvent event) {
 		int id = event.getPlayer().getEntityId();
-		Digilock.removeUserData(id);
+		LockCore.removeUserData(id);
 	}
 
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		int id = event.getPlayer().getEntityId();
-		Digilock.addUserData(id);
+		LockCore.addUserData(id);
 	}
 
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		int id = event.getPlayer().getEntityId();
-		Digilock.removeUserData(id);
+		LockCore.removeUserData(id);
 	}
 }

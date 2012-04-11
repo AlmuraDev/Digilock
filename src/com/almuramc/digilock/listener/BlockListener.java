@@ -1,7 +1,6 @@
 package com.almuramc.digilock.listener;
 
 import com.almuramc.digilock.util.BlockTools;
-import com.almuramc.digilock.util.Config;
 import com.almuramc.digilock.util.Messages;
 
 import org.bukkit.block.Block;

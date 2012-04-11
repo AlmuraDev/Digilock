@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.almuramc.digilock.util;
 
 import java.net.MalformedURLException;
@@ -205,7 +201,7 @@ public class BlockTools {
 			SpoutManager
 					.getSoundManager()
 					.playGlobalCustomSoundEffect(
-							Digilock.plugin,
+							Digilock.getInstance(),
 							Config.DIGILOCK_SOUND,
 							true, sBlock.getLocation(), 5);
 		}
@@ -316,30 +312,30 @@ public class BlockTools {
 						+ nextBlock.getType());
 			}
 			boolean pressButton = true;
-			if (Digilock.useEconomy
+			if (Digilock.getHandler().useEconomy()
 					&& cost > 0
 					&& doTheWork
 					&& lock.isUser(sPlayer)
 					&& !(lock.isOwner(sPlayer) || lock
 					.isCoowner(sPlayer))) {
-				if (Digilock.plugin.economy.hasAccount(sPlayer.getName())) {
-					if (Digilock.plugin.economy.has(sPlayer.getName(), cost)) {
-						Digilock.plugin.economy.withdrawPlayer(sPlayer.getName(), cost);
-						if (Digilock.plugin.economy.hasAccount(nextLock.getOwner())) {
-							Digilock.plugin.economy.depositPlayer(nextLock.getOwner(), cost);
+				if (Digilock.getHooks().getEconHook().hasAccount(sPlayer.getName())) {
+					if (Digilock.getHooks().getEconHook().has(sPlayer.getName(), cost)) {
+						Digilock.getHooks().getEconHook().withdrawPlayer(sPlayer.getName(), cost);
+						if (Digilock.getHooks().getEconHook().hasAccount(nextLock.getOwner())) {
+							Digilock.getHooks().getEconHook().depositPlayer(nextLock.getOwner(), cost);
 						}
 
 						sPlayer.sendMessage("Your account ("
-								+ Digilock.plugin.economy.getBalance(
+								+ Digilock.getHooks().getEconHook().getBalance(
 								sPlayer.getName())
 								+ ") has been deducted "
-								+ Digilock.plugin.economy.format(cost) + ".");
+								+ Digilock.getHooks().getEconHook().format(cost) + ".");
 					} else {
 						sPlayer.sendMessage("You dont have enough money ("
-								+ Digilock.plugin.economy.getBalance(
+								+ Digilock.getHooks().getEconHook().getBalance(
 								sPlayer.getName())
 								+ "). Cost is:"
-								+ Digilock.plugin.economy.format(cost));
+								+ Digilock.getHooks().getEconHook().format(cost));
 						pressButton = false;
 					}
 				}
@@ -427,31 +423,31 @@ public class BlockTools {
 							+ nextBlock.getType());
 				}
 				boolean setleveron = true;
-				if (Digilock.useEconomy
+				if (Digilock.getHandler().useEconomy()
 						&& cost > 0
 						&& doTheWork
 						&& lock.isUser(sPlayer)
 						&& !(lock.isOwner(sPlayer) || lock
 						.isCoowner(sPlayer))) {
-					if (Digilock.plugin.economy.hasAccount(sPlayer.getName())) {
-						if (Digilock.plugin.economy.has(sPlayer.getName(), cost)) {
-							Digilock.plugin.economy.withdrawPlayer(sPlayer.getName(), cost);
-							if (Digilock.plugin.economy.hasAccount(nextLock
+					if (Digilock.getHooks().getEconHook().hasAccount(sPlayer.getName())) {
+						if (Digilock.getHooks().getEconHook().has(sPlayer.getName(), cost)) {
+							Digilock.getHooks().getEconHook().withdrawPlayer(sPlayer.getName(), cost);
+							if (Digilock.getHooks().getEconHook().hasAccount(nextLock
 									.getOwner())) {
-								Digilock.plugin.economy.depositPlayer(
+								Digilock.getHooks().getEconHook().depositPlayer(
 										nextLock.getOwner(), cost);
 							}
 							sPlayer.sendMessage("Your account ("
-									+ Digilock.plugin.economy.getBalance(
+									+ Digilock.getHooks().getEconHook().getBalance(
 									sPlayer.getName())
 									+ ") has been deducted "
-									+ Digilock.plugin.economy.format(cost) + ".");
+									+ Digilock.getHooks().getEconHook().format(cost) + ".");
 						} else {
 							sPlayer.sendMessage("You dont have enough money ("
-									+ Digilock.plugin.economy.getBalance(
+									+ Digilock.getHooks().getEconHook().getBalance(
 									sPlayer.getName())
 									+ "). Cost is:"
-									+ Digilock.plugin.economy.format(cost));
+									+ Digilock.getHooks().getEconHook().format(cost));
 							setleveron = false;
 						}
 					}
@@ -516,8 +512,8 @@ public class BlockTools {
 									   final SpoutBlock sBlock, final int closetimer) {
 		int fs = closetimer * 20;
 		// 20 ticks / second
-		int taskID = Digilock.plugin.getServer().getScheduler()
-				.scheduleSyncDelayedTask(Digilock.plugin, new Runnable() {
+		int taskID = Digilock.getInstance().getServer().getScheduler()
+				.scheduleSyncDelayedTask(Digilock.getInstance(), new Runnable() {
 					@Override
 					public void run() {
 						SpoutBlock sb = sBlock;
@@ -562,26 +558,26 @@ public class BlockTools {
 	public static void openDoor(SpoutPlayer sPlayer, SpoutBlock sBlock, int cost) {
 		boolean opendoor = true;
 		LockCore lock = loadDigiLock(sBlock);
-		if (Digilock.useEconomy && cost > 0 && lock.isUser(sPlayer)
+		if (Digilock.getHandler().useEconomy() && cost > 0 && lock.isUser(sPlayer)
 				&& !(lock.isOwner(sPlayer) || lock.isCoowner(sPlayer))) {
-			if (Digilock.plugin.economy.hasAccount(sPlayer.getName())) {
-				if (Digilock.plugin.economy.has(sPlayer.getName(),
+			if (Digilock.getHooks().getEconHook().hasAccount(sPlayer.getName())) {
+				if (Digilock.getHooks().getEconHook().has(sPlayer.getName(),
 						cost)) {
-					Digilock.plugin.economy.withdrawPlayer(sPlayer.getName(),
+					Digilock.getHooks().getEconHook().withdrawPlayer(sPlayer.getName(),
 							cost);
-					if (Digilock.plugin.economy.hasAccount(lock.getOwner())) {
-						Digilock.plugin.economy.depositPlayer(lock.getOwner(),
+					if (Digilock.getHooks().getEconHook().hasAccount(lock.getOwner())) {
+						Digilock.getHooks().getEconHook().depositPlayer(lock.getOwner(),
 								cost);
 					}
 					sPlayer.sendMessage("Your account ("
-							+ Digilock.plugin.economy.getBalance(sPlayer.getName())
+							+ Digilock.getHooks().getEconHook().getBalance(sPlayer.getName())
 							+ ") has been deducted "
-							+ Digilock.plugin.economy.format(cost) + ".");
+							+ Digilock.getHooks().getEconHook().format(cost) + ".");
 				} else {
 					sPlayer.sendMessage("You dont have enough money ("
-							+ Digilock.plugin.economy.getBalance(sPlayer.getName())
+							+ Digilock.getHooks().getEconHook().getBalance(sPlayer.getName())
 							+ "). Cost is:"
-							+ Digilock.plugin.economy.format(cost));
+							+ Digilock.getHooks().getEconHook().format(cost));
 					opendoor = false;
 				}
 			}
@@ -615,27 +611,27 @@ public class BlockTools {
 								 int cost) {
 		boolean closedoor = true;
 		LockCore lock = loadDigiLock(sBlock);
-		if (Digilock.useEconomy && cost > 0 && lock.isUser(sPlayer)
+		if (Digilock.getHandler().useEconomy() && cost > 0 && lock.isUser(sPlayer)
 				&& !(lock.isOwner(sPlayer) || lock.isCoowner(sPlayer))) {
-			if (Digilock.plugin.economy.hasAccount(sPlayer.getName())) {
-				if (Digilock.plugin.economy.has(sPlayer.getName(),
+			if (Digilock.getHooks().getEconHook().hasAccount(sPlayer.getName())) {
+				if (Digilock.getHooks().getEconHook().has(sPlayer.getName(),
 						cost)) {
-					Digilock.plugin.economy.withdrawPlayer(sPlayer.getName(),
+					Digilock.getHooks().getEconHook().withdrawPlayer(sPlayer.getName(),
 							cost);
-					if (Digilock.plugin.economy.hasAccount(lock.getOwner())) {
-						Digilock.plugin.economy.depositPlayer(lock.getOwner(),
+					if (Digilock.getHooks().getEconHook().hasAccount(lock.getOwner())) {
+						Digilock.getHooks().getEconHook().depositPlayer(lock.getOwner(),
 								cost);
 					}
 
 					sPlayer.sendMessage("Your account ("
-							+ Digilock.plugin.economy.getBalance(sPlayer.getName())
+							+ Digilock.getHooks().getEconHook().getBalance(sPlayer.getName())
 							+ ") has been deducted "
-							+ Digilock.plugin.economy.format(cost) + ".");
+							+ Digilock.getHooks().getEconHook().format(cost) + ".");
 				} else {
 					sPlayer.sendMessage("You dont have enough money ("
-							+ Digilock.plugin.economy.getBalance(sPlayer.getName())
+							+ Digilock.getHooks().getEconHook().getBalance(sPlayer.getName())
 							+ "). Cost is:"
-							+ Digilock.plugin.economy.format(cost));
+							+ Digilock.getHooks().getEconHook().format(cost));
 					closedoor = false;
 				}
 			}
@@ -697,8 +693,8 @@ public class BlockTools {
 										final SpoutBlock sBlock, final int closetimer, final int cost) {
 		int fs = closetimer * 20;
 		// 20 ticks / second
-		int taskID = Digilock.plugin.getServer().getScheduler()
-				.scheduleSyncDelayedTask(Digilock.plugin, new Runnable() {
+		int taskID = Digilock.getInstance().getServer().getScheduler()
+				.scheduleSyncDelayedTask(Digilock.getInstance(), new Runnable() {
 					@Override
 					public void run() {
 						SpoutBlock sb = sBlock;
@@ -742,26 +738,26 @@ public class BlockTools {
 									int cost) {
 		boolean opentrapdoor = true;
 		LockCore lock = loadDigiLock(sBlock);
-		if (Digilock.useEconomy && cost > 0 && lock.isUser(sPlayer)
+		if (Digilock.getHandler().useEconomy() && cost > 0 && lock.isUser(sPlayer)
 				&& !(lock.isOwner(sPlayer) || lock.isCoowner(sPlayer))) {
-			if (Digilock.plugin.economy.hasAccount(sPlayer.getName())) {
-				if (Digilock.plugin.economy.has(sPlayer.getName(),
+			if (Digilock.getHooks().getEconHook().hasAccount(sPlayer.getName())) {
+				if (Digilock.getHooks().getEconHook().has(sPlayer.getName(),
 						cost)) {
-					Digilock.plugin.economy.withdrawPlayer(sPlayer.getName(),
+					Digilock.getHooks().getEconHook().withdrawPlayer(sPlayer.getName(),
 							cost);
-					if (Digilock.plugin.economy.hasAccount(lock.getOwner())) {
-						Digilock.plugin.economy.depositPlayer(lock.getOwner(),
+					if (Digilock.getHooks().getEconHook().hasAccount(lock.getOwner())) {
+						Digilock.getHooks().getEconHook().depositPlayer(lock.getOwner(),
 								cost);
 					}
 					sPlayer.sendMessage("Your account ("
-							+ Digilock.plugin.economy.getBalance(sPlayer.getName())
+							+ Digilock.getHooks().getEconHook().getBalance(sPlayer.getName())
 							+ ") has been deducted "
-							+ Digilock.plugin.economy.format(cost) + ".");
+							+ Digilock.getHooks().getEconHook().format(cost) + ".");
 				} else {
 					sPlayer.sendMessage("You dont have enough money ("
-							+ Digilock.plugin.economy.getBalance(sPlayer.getName())
+							+ Digilock.getHooks().getEconHook().getBalance(sPlayer.getName())
 							+ "). Cost is:"
-							+ Digilock.plugin.economy.format(cost));
+							+ Digilock.getHooks().getEconHook().format(cost));
 					opentrapdoor = false;
 				}
 			}
@@ -792,8 +788,8 @@ public class BlockTools {
 											final SpoutBlock sBlock, final int closetimer) {
 		int fs = closetimer * 20;
 		// 20 ticks / second
-		int taskID = Digilock.plugin.getServer().getScheduler()
-				.scheduleSyncDelayedTask(Digilock.plugin, new Runnable() {
+		int taskID = Digilock.getInstance().getServer().getScheduler()
+				.scheduleSyncDelayedTask(Digilock.getInstance(), new Runnable() {
 					@Override
 					public void run() {
 						SpoutBlock sb = sBlock;
@@ -836,26 +832,26 @@ public class BlockTools {
 									 int cost) {
 		boolean openFenceGate = true;
 		LockCore lock = loadDigiLock(sBlock);
-		if (Digilock.useEconomy && cost > 0 && lock.isUser(sPlayer)
+		if (Digilock.getHandler().useEconomy() && cost > 0 && lock.isUser(sPlayer)
 				&& !(lock.isOwner(sPlayer) || lock.isCoowner(sPlayer))) {
-			if (Digilock.plugin.economy.hasAccount(sPlayer.getName())) {
-				if (Digilock.plugin.economy.has(sPlayer.getName(),
+			if (Digilock.getHooks().getEconHook().hasAccount(sPlayer.getName())) {
+				if (Digilock.getHooks().getEconHook().has(sPlayer.getName(),
 						cost)) {
-					Digilock.plugin.economy.withdrawPlayer(sPlayer.getName(),
+					Digilock.getHooks().getEconHook().withdrawPlayer(sPlayer.getName(),
 							cost);
-					if (Digilock.plugin.economy.hasAccount(lock.getOwner())) {
-						Digilock.plugin.economy.depositPlayer(lock.getOwner(),
+					if (Digilock.getHooks().getEconHook().hasAccount(lock.getOwner())) {
+						Digilock.getHooks().getEconHook().depositPlayer(lock.getOwner(),
 								cost);
 					}
 					sPlayer.sendMessage("Your account ("
-							+ Digilock.plugin.economy.getBalance(sPlayer.getName())
+							+ Digilock.getHooks().getEconHook().getBalance(sPlayer.getName())
 							+ ") has been deducted "
-							+ Digilock.plugin.economy.format(cost) + ".");
+							+ Digilock.getHooks().getEconHook().format(cost) + ".");
 				} else {
 					sPlayer.sendMessage("You dont have enough money ("
-							+ Digilock.plugin.economy.getBalance(sPlayer.getName())
+							+ Digilock.getHooks().getEconHook().getBalance(sPlayer.getName())
 							+ "). Cost is:"
-							+ Digilock.plugin.economy.format(cost));
+							+ Digilock.getHooks().getEconHook().format(cost));
 					openFenceGate = false;
 				}
 			}
@@ -886,8 +882,8 @@ public class BlockTools {
 											 final SpoutBlock sBlock, final int closetimer) {
 		int fs = closetimer * 20;
 		// 20 ticks / second
-		int taskID = Digilock.plugin.getServer().getScheduler()
-				.scheduleSyncDelayedTask(Digilock.plugin, new Runnable() {
+		int taskID = Digilock.getInstance().getServer().getScheduler()
+				.scheduleSyncDelayedTask(Digilock.getInstance(), new Runnable() {
 					@Override
 					public void run() {
 						SpoutBlock sb = sBlock;
@@ -1168,8 +1164,8 @@ public class BlockTools {
 											  final SpoutBlock sBlock, final int closetimer, final int cost) {
 		int fs = closetimer * 20;
 		// 20 ticks / second
-		int taskID = Digilock.plugin.getServer().getScheduler()
-				.scheduleSyncDelayedTask(Digilock.plugin, new Runnable() {
+		int taskID = Digilock.getInstance().getServer().getScheduler()
+				.scheduleSyncDelayedTask(Digilock.getInstance(), new Runnable() {
 					@Override
 					public void run() {
 						SpoutBlock sb = sBlock;

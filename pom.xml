@@ -71,37 +71,19 @@
     <repositories>
         <repository>
             <id>bukkit-repo</id>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
             <url>http://repo.bukkit.org/artifactory/repo</url>
         </repository>
         <repository>
             <id>zml repo</id>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
             <url>http://files.zachsthings.com/repo/</url>
         </repository>
         <repository>
             <id>spout-repo</id>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
             <url>http://repo.spout.org/</url>
         </repository>
     </repositories>
     <build>
-        <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
+        <sourceDirectory>${basedir}/src</sourceDirectory>
         <resources>
             <resource>
                 <targetPath>.</targetPath>

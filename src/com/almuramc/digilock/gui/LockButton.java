@@ -4,7 +4,6 @@ import java.util.UUID;
 
 import com.almuramc.digilock.LockCore;
 import com.almuramc.digilock.util.BlockTools;
-import com.almuramc.digilock.util.Config;
 import com.almuramc.digilock.util.LockInventory;
 import com.almuramc.digilock.util.Messages;
 import com.almuramc.digilock.util.Permissions;
@@ -24,10 +23,6 @@ import org.getspout.spoutapi.gui.GenericButton;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 public class LockButton extends GenericButton {
-	public LockButton() {
-		super();
-	}
-
 	public LockButton(String name) {
 		super(name);
 	}

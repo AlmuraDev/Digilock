@@ -1,57 +1,34 @@
-############################################################
-# +------------------------------------------------------+ #
-# |  Plugin configuration file for Digilock              | #
-# |                                                      | #
-# |                                                      | #
-# +------------------------------------------------------+ #
-############################################################
-
-############################################################
-# +------------------------------------------------------+ #
-# |                        General                       | #
-# +------------------------------------------------------+ #
-############################################################
-Util:
-    # Set the key to activate sort. 
-    # Deactivate the HOTKEY by setting SortKey: DISABLED
-    LockKey: KEY_L
-    MenuKey: DISABLED
-
-
-    # If you want to disable Spouts SignEditGUI and use 
-    # the ordinary editor, set UseSignEditGUI: false
-    UseSignEditGUI: true
-
-############################################################
-# +------------------------------------------------------+ #
-# |                  Properties for SQL                  | #
-# +------------------------------------------------------+ #
-############################################################
-Storage:
+features:
+    economy: false
+    war: false
+    mobarena: false
+    jail: false
+    residence: false
+gui:
+    lockkey: KEY_L
+    menukey: DISABLED
+    signgui: true
+storage:
     # Storage supports [MYSQL|SQLITE]
-    Type: SQLITE
+    type: SQLITE
 
     # MySQL Settings - Will only be used if Storage.Type: is
     # set to MYSQL
     # Host: servername:portnumber. Std port is 3306.
-    Host: localhost:3306
-    Username: 'root'
-    Password: 'password'
-    Database: minecraft
-
-############################################################
-# +------------------------------------------------------+ #
-# |                  Properties for Digilock             | #
-# +------------------------------------------------------+ #
-############################################################
+    host: localhost:3306
+    username: 'root'
+    password: 'password'
+    database: minecraft
+#############################################################
 # Cost:        Is the cost of creating a new lock
 # UseMaxCost:  Is the limit of the cost the PLAYER can
 #              charge anotherplayer, to use his lock.
 # DestroyCost: Is the cost for destroying a lock. If the
 #              cost is negative, the player will gain money.
-DigiLock:
-    Cost: 100
-    UseMaxCost: 100
-    DestroyCost: -10
-    Sound: 'http://dl.dropbox.com/u/36067670/BukkitInventoryTools/Sounds/Digilock.wav'
-    Sound_On: false
+#############################################################
+lock:
+    cost: 100
+    usemaxcost: 100
+    destroycost: -10
+    sound: 'http://dl.dropbox.com/u/36067670/BukkitInventoryTools/Sounds/Digilock.wav'
+    sound_on: false

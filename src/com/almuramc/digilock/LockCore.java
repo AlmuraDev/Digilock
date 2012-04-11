@@ -6,7 +6,6 @@ import java.util.UUID;
 
 import com.almuramc.digilock.gui.LockButton;
 import com.almuramc.digilock.util.BlockTools;
-import com.almuramc.digilock.util.Config;
 import com.almuramc.digilock.util.Messages;
 import com.almuramc.digilock.util.Permissions;
 
@@ -35,6 +34,8 @@ public class LockCore {
 	public int typeId;
 	public String connectedTo;
 	public int useCost;
+
+	public static Map<Integer, String> holdingKey = new HashMap<Integer, String>();
 
 	/**
 	 * Constructs a new LockCore
@@ -104,19 +105,19 @@ public class LockCore {
 								+ block.getWorld().getName() + "', '" + coowners + "', '"
 								+ users + "', " + block.getTypeId() + ", '" + connectedTo
 								+ "', " + useCost + " );";*/
-			if (Digilock.useEconomy) {
-				if (Digilock.plugin.economy.hasAccount(sPlayer.getName()) && cost > 0) {
-					if (Digilock.plugin.economy.has(sPlayer.getName(), cost)) {
-						Digilock.plugin.economy.withdrawPlayer(sPlayer.getName(), cost);
+			if (Digilock.getHandler().useEconomy()) {
+				if (Digilock.getHooks().getEconHook().hasAccount(sPlayer.getName()) && cost > 0) {
+					if (Digilock.getHooks().getEconHook().has(sPlayer.getName(), cost)) {
+						Digilock.getHooks().getEconHook().withdrawPlayer(sPlayer.getName(), cost);
 						sPlayer.sendMessage("Your account ("
-								+ Digilock.plugin.economy.getBalance(sPlayer.getName())
+								+ Digilock.getHooks().getEconHook().getBalance(sPlayer.getName())
 								+ ") has been deducted "
-								+ Digilock.plugin.economy.format(cost) + ".");
+								+ Digilock.getHooks().getEconHook().format(cost) + ".");
 					} else {
 						sPlayer.sendMessage("You dont have enough money ("
-								+ Digilock.plugin.economy.getBalance(sPlayer.getName())
+								+ Digilock.getHooks().getEconHook().getBalance(sPlayer.getName())
 								+ "). Cost is:"
-								+ Digilock.plugin.economy.format(cost));
+								+ Digilock.getHooks().getEconHook().format(cost));
 						createlock = false;
 					}
 				}
@@ -300,24 +301,23 @@ public class LockCore {
 
 	public void RemoveDigiLock(SpoutPlayer sPlayer) {
 		boolean deletelock = true;
-		if (Digilock.useEconomy) {
-			if (Digilock.plugin.economy.hasAccount(sPlayer.getName())) {
-				if (Digilock.plugin.economy.has(sPlayer.getName(),
+		if (Digilock.getHandler().useEconomy()) {
+			if (Digilock.getHooks().getEconHook().hasAccount(sPlayer.getName())) {
+				if (Digilock.getHooks().getEconHook().has(sPlayer.getName(),
 						Config.DIGILOCK_DESTROYCOST)
 						|| Config.DIGILOCK_DESTROYCOST < 0) {
-					Digilock.plugin.economy.withdrawPlayer(sPlayer.getName(),
+					Digilock.getHooks().getEconHook().withdrawPlayer(sPlayer.getName(),
 							Config.DIGILOCK_DESTROYCOST);
 					sPlayer.sendMessage("Your account ("
-							+ Digilock.plugin.economy.getBalance(sPlayer.getName())
+							+ Digilock.getHooks().getEconHook().getBalance(sPlayer.getName())
 							+ ") has been deducted "
-							+ Digilock.plugin.economy.format(Config.DIGILOCK_DESTROYCOST)
+							+ Digilock.getHooks().getEconHook().format(Config.DIGILOCK_DESTROYCOST)
 							+ ".");
 				} else {
 					sPlayer.sendMessage("You dont have enough money ("
-							+ Digilock.plugin.economy.getBalance(sPlayer.getName())
+							+ Digilock.getHooks().getEconHook().getBalance(sPlayer.getName())
 							+ "). Cost is:"
-							+ Digilock.plugin.economy
-							.format(Config.DIGILOCK_DESTROYCOST));
+							+ Digilock.getHooks().getEconHook().format(Config.DIGILOCK_DESTROYCOST));
 					deletelock = false;
 				}
 			}
@@ -415,9 +415,9 @@ public class LockCore {
 	public static void cleanupPopupScreen(SpoutPlayer sPlayer) {
 		int playerId = sPlayer.getEntityId();
 		if (popupScreen.containsKey(playerId)) {
-			popupScreen.get(playerId).removeWidgets(Digilock.plugin);
+			popupScreen.get(playerId).removeWidgets(Digilock.getInstance());
 			popupScreen.get(playerId).setDirty(true);
-			sPlayer.getMainScreen().removeWidgets(Digilock.plugin);
+			sPlayer.getMainScreen().removeWidgets(Digilock.getInstance());
 			popupScreen.get(playerId).close();
 			clickedBlock.remove(sPlayer.getEntityId());
 		}
@@ -429,10 +429,6 @@ public class LockCore {
 			case 23:
 				return "http://www.almuramc.com/images/dispenser.png";
 			// Dispenser - looks nice.
-
-			case 47:
-				/// return "http://dl.dropbox.com/u/36067670/lock/extures/Bookshelf.png";
-				// Bookshelf - looks nice.
 
 			case 54:
 				return "http://www.almuramc.com/images/singlechest.png";
@@ -544,7 +540,7 @@ public class LockCore {
 		border.setX(65).setY(20);
 		border.setPriority(RenderPriority.High);
 		border.setWidth(263).setHeight(150);
-		popupScreen.get(id).attachWidget(Digilock.plugin, border);
+		popupScreen.get(id).attachWidget(Digilock.getInstance(), border);
 
 		//Password text Field
 		y = y + 3 * height;
@@ -556,19 +552,19 @@ public class LockCore {
 		pincodeGUI.get(id).setHeight(height).setWidth(35);
 		pincodeGUI.get(id).setPasswordField(true);
 		pincodeGUI.get(id).setFocus(true);
-		popupScreen.get(id).attachWidget(Digilock.plugin, pincodeGUI.get(id));
+		popupScreen.get(id).attachWidget(Digilock.getInstance(), pincodeGUI.get(id));
 		y = y + height;
 
 		// Unlock Button
 		LockButton unlockButton = new LockButton("Unlock");
 		unlockButton.setAuto(false).setX(x).setY(y).setHeight(height).setWidth(width);
 		BITDigiLockButtons.put(unlockButton.getId(), "getPincodeUnlock");
-		popupScreen.get(id).attachWidget(Digilock.plugin, unlockButton);
+		popupScreen.get(id).attachWidget(Digilock.getInstance(), unlockButton);
 
 		// Cancel Button
 		LockButton cancelButton = new LockButton("Cancel");
 		cancelButton.setAuto(false).setX(x + width + 10).setY(y).setHeight(height).setWidth(width);
-		popupScreen.get(id).attachWidget(Digilock.plugin, cancelButton);
+		popupScreen.get(id).attachWidget(Digilock.getInstance(), cancelButton);
 		BITDigiLockButtons.put(cancelButton.getId(), "getPincodeCancel");
 
 		// Open Window Call
@@ -615,7 +611,7 @@ public class LockCore {
 		border.setX(65).setY(20);
 		border.setPriority(RenderPriority.High);
 		border.setWidth(263).setHeight(150);
-		popupScreen.get(id).attachWidget(Digilock.plugin, border);
+		popupScreen.get(id).attachWidget(Digilock.getInstance(), border);
 
 		// first row -------- x=20-170-------------------------------------
 		x = 10;
@@ -629,14 +625,14 @@ public class LockCore {
 		GenericLabel costToCreate = new GenericLabel(" " + String.valueOf(Config.DIGILOCK_COST));
 		costToCreate.setAuto(true).setX(120).setY(156).setHeight(6).setWidth(140);
 		costToCreate.setTooltip("The cost to create a new DigiLock");
-		popupScreen.get(id).attachWidget(Digilock.plugin, costToCreate);
+		popupScreen.get(id).attachWidget(Digilock.getInstance(), costToCreate);
 
 		// ownerButton
 		//LockButton ownerButton = new LockButton("Owner");
 		//ownerButton.setAuto(false).setX(x).setY(y).setHeight(height)
 		//.setWidth(w1);
 		//ownerButton.setTooltip("Set Owner");
-		//popupScreen.get(id).attachWidget(Digilock.plugin, ownerButton);
+		//popupScreen.get(id).attachWidget(Digilock.getInstance(), ownerButton);
 		//BITDigiLockButtons.put(ownerButton.getId(), "OwnerButton");
 
 		// owner text field
@@ -645,28 +641,28 @@ public class LockCore {
 		ownerGUI.get(id).setFixed(false);
 		ownerGUI.get(id).setX(121).setY(68);
 		ownerGUI.get(id).setHeight(height).setWidth(170);
-		popupScreen.get(id).attachWidget(Digilock.plugin, ownerGUI.get(id));
+		popupScreen.get(id).attachWidget(Digilock.getInstance(), ownerGUI.get(id));
 
 		// closetimerButton
 		//LockButton closetimerButton = new LockButton("Closetimer");
 		//closetimerButton.setAuto(false).setX(x + w1 + w2 + 10).setY(y)
 		//.setHeight(height).setWidth(w1);
 		//closetimerButton.setTooltip("Set closetimer");
-		//popupScreen.get(id).attachWidget(Digilock.plugin, closetimerButton);
+		//popupScreen.get(id).attachWidget(Digilock.getInstance(), closetimerButton);
 		//BITDigiLockButtons.put(closetimerButton.getId(), "ClosetimerButton");
 		// closetimer
 		closetimerGUI.get(id).setTooltip("Autoclosing time in sec.");
 		closetimerGUI.get(id).setMaximumCharacters(3);
 		closetimerGUI.get(id).setX(128).setY(137);
 		closetimerGUI.get(id).setHeight(height).setWidth(40);
-		popupScreen.get(id).attachWidget(Digilock.plugin, closetimerGUI.get(id));
+		popupScreen.get(id).attachWidget(Digilock.getInstance(), closetimerGUI.get(id));
 
 		// useCostButton
 		//LockButton useCostButton = new LockButton("Use cost");
 		//useCostButton.setAuto(false).setX(x + w1 + w2 + 10 + w1 + w3 + 10)
 		//.setY(y).setHeight(height).setWidth(w1);
 		//useCostButton.setTooltip("Set cost");
-		//popupScreen.get(id).attachWidget(Digilock.plugin, useCostButton);
+		//popupScreen.get(id).attachWidget(Digilock.getInstance(), useCostButton);
 		//BITDigiLockButtons.put(useCostButton.getId(), "UseCostButton");
 
 		// useCost Text Field
@@ -675,7 +671,7 @@ public class LockCore {
 		useCostGUI.get(id).setFixed(true);
 		useCostGUI.get(id).setX(232).setY(137);
 		useCostGUI.get(id).setHeight(height).setWidth(40);
-		popupScreen.get(id).attachWidget(Digilock.plugin, useCostGUI.get(id));
+		popupScreen.get(id).attachWidget(Digilock.getInstance(), useCostGUI.get(id));
 		//y = y + height + 1;
 
 		// setCoOwnerButton
@@ -683,14 +679,14 @@ public class LockCore {
 		//CoOwnerButton.setAuto(false).setX(x).setY(y).setHeight(height)
 		//.setWidth(w1);
 		//CoOwnerButton.setTooltip("CoOwners must be seperated by a comma.");
-		//popupScreen.get(id).attachWidget(Digilock.plugin, CoOwnerButton);
+		//popupScreen.get(id).attachWidget(Digilock.getInstance(), CoOwnerButton);
 		//BITDigiLockButtons.put(CoOwnerButton.getId(), "CoOwnerButton");
 
 		// listOfCoOwners8
 		coOwnersGUI.get(id).setX(121).setY(84).setWidth(170).setHeight(18);
 		coOwnersGUI.get(id).setMaximumCharacters(1000).setMaximumLines(2);
 		coOwnersGUI.get(id).setText(coOwnersGUI.get(id).getText());
-		popupScreen.get(id).attachWidget(Digilock.plugin, coOwnersGUI.get(id));
+		popupScreen.get(id).attachWidget(Digilock.getInstance(), coOwnersGUI.get(id));
 		//y = y + height;
 
 		// setUsersButton
@@ -698,14 +694,14 @@ public class LockCore {
 		//usersButton.setAuto(false).setX(x).setY(y).setHeight(height)
 		//.setWidth(w1);
 		//usersButton.setTooltip("users must be seperated by a comma.");
-		//popupScreen.get(id).attachWidget(Digilock.plugin, usersButton);
+		//popupScreen.get(id).attachWidget(Digilock.getInstance(), usersButton);
 		//BITDigiLockButtons.put(usersButton.getId(), "usersButton");
 
 		// listOfUsers
 		usersGUI.get(id).setX(121).setY(108).setWidth(170).setHeight(18);
 		usersGUI.get(id).setMaximumCharacters(1000).setMaximumLines(2);
 		usersGUI.get(id).setText(usersGUI.get(id).getText());
-		popupScreen.get(id).attachWidget(Digilock.plugin, usersGUI.get(id));
+		popupScreen.get(id).attachWidget(Digilock.getInstance(), usersGUI.get(id));
 		//y = y + height;
 
 		// Second row ------------X=170-270-370------------------------------
@@ -721,20 +717,20 @@ public class LockCore {
 		pincodeGUI.get(id).setHeight(height).setWidth(130);
 		pincodeGUI.get(id).setPasswordField(false);
 		pincodeGUI.get(id).setFocus(true);
-		popupScreen.get(id).attachWidget(Digilock.plugin, pincodeGUI.get(id));
+		popupScreen.get(id).attachWidget(Digilock.getInstance(), pincodeGUI.get(id));
 		//y = y + height;
 
 		// SaveButton
 		LockButton lockButton = new LockButton("Save");
 		lockButton.setAuto(false).setX(240).setY(153).setHeight(height + 5).setWidth(35);
 		lockButton.setTooltip("Enter/change the pincode and press lock.");
-		popupScreen.get(id).attachWidget(Digilock.plugin, lockButton);
+		popupScreen.get(id).attachWidget(Digilock.getInstance(), lockButton);
 		BITDigiLockButtons.put(lockButton.getId(), "setPincodeLock");
 
 		// cancelButton
 		LockButton cancelButton2 = new LockButton("Cancel");
 		cancelButton2.setAuto(false).setX(280).setY(153).setHeight(height + 5).setWidth(40);
-		popupScreen.get(id).attachWidget(Digilock.plugin, cancelButton2);
+		popupScreen.get(id).attachWidget(Digilock.getInstance(), cancelButton2);
 		BITDigiLockButtons.put(cancelButton2.getId(), "setPincodeCancel");
 
 		// removeButton
@@ -744,7 +740,7 @@ public class LockCore {
 			removeButton.setTooltip("Press Remove to delete the lock.");
 			removeButton.setEnabled(true);
 			BITDigiLockButtons.put(removeButton.getId(), "setPincodeRemove");
-			popupScreen.get(id).attachWidget(Digilock.plugin, removeButton);
+			popupScreen.get(id).attachWidget(Digilock.getInstance(), removeButton);
 		}
 
 		// AdminButton
@@ -757,7 +753,7 @@ public class LockCore {
 			adminButton.setTooltip("Administrator Open Override.");
 			adminButton.setEnabled(true);
 			BITDigiLockButtons.put(adminButton.getId(), "AdminOpen");
-			popupScreen.get(id).attachWidget(Digilock.plugin, adminButton);
+			popupScreen.get(id).attachWidget(Digilock.getInstance(), adminButton);
 		}
 
 		// Open Window
