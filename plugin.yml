@@ -4,6 +4,7 @@ author: Rocologo
 authors: [Rocologo, Dockter]
 website: http://dev.bukkit.org/server-mods/digilock/
 description: Protection of blocks using the digilock system including Spout GUI support.
+version: dev-SNAPSHOT
 depend: [Spout]
 softdepend: [Vault, WorldGuard, MobArena, Jail, War]
 commands:
