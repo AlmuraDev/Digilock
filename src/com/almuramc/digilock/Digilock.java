@@ -6,7 +6,7 @@ import com.almuramc.digilock.listener.BlockListener;
 import com.almuramc.digilock.listener.PlayerListener;
 import com.almuramc.digilock.util.Dependency;
 import com.almuramc.digilock.util.LockConfig;
-import com.almuramc.digilock.util.SQLHandler;
+import com.almuramc.digilock.util.SqlHandler;
 
 import org.bukkit.plugin.Plugin;
 
@@ -18,7 +18,7 @@ public class Digilock extends SpoutPlugin {
 	private static Plugin instance;
 	private static Dependency hooks;
 	private static LockConfig config;
-	private static SQLHandler sql;
+	private static SqlHandler sql;
 
 	@Override
 	public void onDisable() {
@@ -35,7 +35,7 @@ public class Digilock extends SpoutPlugin {
 		//Handles all dependencies
 		hooks = new Dependency(this);
 
-		sql = new SQLHandler(this);
+		sql = new SqlHandler(this);
 
 		//Register command
 		new LockCommand(this);
@@ -60,7 +60,7 @@ public class Digilock extends SpoutPlugin {
 		return config;
 	}
 
-	public static SQLHandler getHandler() {
+	public static SqlHandler getHandler() {
 		return sql;
 	}
 }

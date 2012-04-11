@@ -7,13 +7,13 @@ import lib.PatPeter.SQLibrary.SQLite;
 
 import org.bukkit.plugin.Plugin;
 
-public class SQLHandler {
+public class SqlHandler {
 	private Plugin plugin;
 	private MySQL mysql;
 	private SQLite sqlite;
 	private String digilockTable = "Digilock";
 
-	public SQLHandler(Plugin instance) {
+	public SqlHandler(Plugin instance) {
 		plugin = instance;
 		setupSQL();
 	}
