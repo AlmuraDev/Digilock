@@ -59,7 +59,7 @@ public class Dependency {
 		return arena;
 	}
 
-	public Residence getResidenceHook() {
+	/*public Residence getResidenceHook() {
 		return null; //TODO Implement Residence
-	}
+	}*/
 }

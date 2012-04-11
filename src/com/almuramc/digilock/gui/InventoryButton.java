@@ -37,11 +37,11 @@ public class InventoryButton extends GenericButton {
 		}
 
 		int useCost = Integer.valueOf(LockInventory.useCostGUI.get(entId).getText());
-		if (useCost > Digilock.getConfig().getLockMaxCost()) {
+		if (useCost > Digilock.getConf().getLockMaxCost()) {
 			Messages.sendNotification(sPlayer, "Cost must be less "
-					+ Digilock.getConfig().getDestroyCost());
+					+ Digilock.getConf().getDestroyCost());
 			LockInventory.useCostGUI.get(entId).setText(
-					String.valueOf(Digilock.getConfig().getDestroyCost()));
+					String.valueOf(Digilock.getConf().getDestroyCost()));
 			LockInventory.popupScreen.get(entId).setDirty(true);
 			return false;
 		} else if (useCost < 0) {

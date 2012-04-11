@@ -186,7 +186,7 @@ public class BlockListener implements Listener {
 			return;
 		}
 		if (BlockTools.isLocked(sBlock)) {
-			if (!Digilock.getConfig().useSignGUI()) {
+			if (!Digilock.getConf().useSignGUI()) {
 				event.setCancelled(true);
 			}
 		}

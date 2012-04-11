@@ -19,8 +19,8 @@ public class SQLHandler {
 	}
 
 	private void setupSQL() {
-		if (Digilock.getConfig().getSQLType().equals("MYSQL")) {
-			mysql = new MySQL(plugin.getLogger(), "[" + plugin.getName() + "]", Digilock.getConfig().getSQLHost(), Digilock.getConfig().getSQLPort(), Digilock.getConfig().getSQLDatabase(), Digilock.getConfig().getSQLUsername(), Digilock.getConfig().getSQLPassword());
+		if (Digilock.getConf().getSQLType().equals("MYSQL")) {
+			mysql = new MySQL(plugin.getLogger(), "[" + plugin.getName() + "]", Digilock.getConf().getSQLHost(), Digilock.getConf().getSQLPort(), Digilock.getConf().getSQLDatabase(), Digilock.getConf().getSQLUsername(), Digilock.getConf().getSQLPassword());
 			if (mysql.checkConnection()) {
 				//Check if the Connection was successful
 				String query;
@@ -34,7 +34,7 @@ public class SQLHandler {
 					mysql.createTable(query);
 				}
 			}
-		} else if (Digilock.getConfig().getSQLType().equals("SQLITE")) {
+		} else if (Digilock.getConf().getSQLType().equals("SQLITE")) {
 			try {
 				sqlite = new SQLite(plugin.getLogger(), "[" + plugin.getName() + "]", plugin.getName(), plugin.getDataFolder().getCanonicalPath());
 			} catch (Exception e) {

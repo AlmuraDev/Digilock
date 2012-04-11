@@ -102,7 +102,7 @@ public class LockButton extends GenericButton {
 									.openBitInventory(sPlayer, bitInventory);
 						} else if (BlockTools.isSign(sBlock)) {
 							if (sPlayer.isSpoutCraftEnabled()
-									&& Digilock.getConfig().useSignGUI()
+									&& Digilock.getConf().useSignGUI()
 									&& Permissions.hasPerm(sPlayer, "lock.signadmin",
 									Permissions.NOT_QUIET)) {
 								Sign sign = (Sign) sBlock.getState();
@@ -267,11 +267,11 @@ public class LockButton extends GenericButton {
 			LockCore.closetimerGUI.get(entId).setText("3600");
 			LockCore.popupScreen.get(entId).setDirty(true);
 			return false;
-		} else if (useCost > Digilock.getConfig().getLockMaxCost()) {
+		} else if (useCost > Digilock.getConf().getLockMaxCost()) {
 			Messages.sendNotification(sPlayer, "Cost must be less "
-					+ Digilock.getConfig().getLockMaxCost());
+					+ Digilock.getConf().getLockMaxCost());
 			LockCore.useCostGUI.get(entId).setText(
-					String.valueOf(Digilock.getConfig().getLockMaxCost()));
+					String.valueOf(Digilock.getConf().getLockMaxCost()));
 			LockCore.popupScreen.get(entId).setDirty(true);
 			return false;
 		} else if (useCost < 0) {

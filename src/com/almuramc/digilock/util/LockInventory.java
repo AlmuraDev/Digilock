@@ -125,7 +125,7 @@ public class LockInventory {
 						+ " AND z = " + block.getZ() + " AND world='"
 						+ block.getWorld().getName() + "' AND slotno=" + i
 						+ ";";
-				if (Digilock.getConfig().getSQLType().equals("MYSQL")) {
+				if (Digilock.getConf().getSQLType().equals("MYSQL")) {
 					Digilock.getHandler().getMySQLHandler().query(query);
 				} else {
 					Digilock.getHandler().getSqliteHandler().query(query);
@@ -141,7 +141,7 @@ public class LockInventory {
 				+ " AND z = " + block.getZ() + " AND world='"
 				+ block.getWorld().getName() + "');";
 		ResultSet result = null;
-		if (Digilock.getConfig().getSQLType().equals("MYSQL")) {
+		if (Digilock.getConf().getSQLType().equals("MYSQL")) {
 			result = Digilock.getHandler().getMySQLHandler().query(query);
 		} else { // SQLLITE
 			result = Digilock.getHandler().getSqliteHandler().query(query);
@@ -173,7 +173,7 @@ public class LockInventory {
 				+ sBlock.getWorld().getName() + "');";
 		// sPlayer.sendMessage("select:" + query);
 		ResultSet result = null;
-		if (Digilock.getConfig().getSQLType().equals("MYSQL")) {
+		if (Digilock.getConf().getSQLType().equals("MYSQL")) {
 			result = Digilock.getHandler().getMySQLHandler().query(query);
 		} else { // SQLLITE
 			result = Digilock.getHandler().getSqliteHandler().query(query);
@@ -221,7 +221,7 @@ public class LockInventory {
 				+ " AND z = " + block.getZ() + " AND world='"
 				+ block.getWorld().getName() + "');";
 		ResultSet result = null;
-		if (Digilock.getConfig().getSQLType().equals("MYSQL")) {
+		if (Digilock.getConf().getSQLType().equals("MYSQL")) {
 			result = Digilock.getHandler().getMySQLHandler().query(query);
 		} else { // SQLLITE
 			result = Digilock.getHandler().getSqliteHandler().query(query);
@@ -244,7 +244,7 @@ public class LockInventory {
 				+ " AND z = " + block.getZ() + " AND world='"
 				+ block.getWorld().getName() + "');";
 		ResultSet result = null;
-		if (Digilock.getConfig().getSQLType().equals("MYSQL")) {
+		if (Digilock.getConf().getSQLType().equals("MYSQL")) {
 			result = Digilock.getHandler().getMySQLHandler().query(query);
 		} else { // SQLLITE
 			result = Digilock.getHandler().getSqliteHandler().query(query);
@@ -262,7 +262,7 @@ public class LockInventory {
 
 	public void RemoveBitInventory(SpoutPlayer sPlayer, int destroycost) {
 		boolean deleteInventory = true;
-		if (Digilock.getConfig().useEconomy()) {
+		if (Digilock.getConf().useEconomy()) {
 			if (Digilock.getHooks().getEconHook().hasAccount(sPlayer.getName())) {
 				if (Digilock.getHooks().getEconHook().has(sPlayer.getName(), destroycost) || destroycost < 0) {
 					Digilock.getHooks().getEconHook().withdrawPlayer(sPlayer.getName(), destroycost);
@@ -278,7 +278,7 @@ public class LockInventory {
 				+ sBlock.getZ() + " AND world='" + sBlock.getWorld().getName()
 				+ "');";
 		if (deleteInventory) {
-			if (Digilock.getConfig().getSQLType().equals("MYSQL")) {
+			if (Digilock.getConf().getSQLType().equals("MYSQL")) {
 				Digilock.getHandler().getMySQLHandler().query(query);
 			} else { // SQLLITE
 				Digilock.getHandler().getSqliteHandler().query(query);

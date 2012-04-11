@@ -56,7 +56,7 @@ public class Digilock extends SpoutPlugin {
 		return hooks;
 	}
 
-	public static LockConfig getConfig() {
+	public static LockConfig getConf() {
 		return config;
 	}
 
