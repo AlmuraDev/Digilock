@@ -2,6 +2,7 @@ package com.almuramc.digilock.gui;
 
 import java.util.UUID;
 
+import com.almuramc.digilock.Digilock;
 import com.almuramc.digilock.LockCore;
 import com.almuramc.digilock.util.LockInventory;
 import com.almuramc.digilock.util.Messages;
@@ -36,11 +37,11 @@ public class InventoryButton extends GenericButton {
 		}
 
 		int useCost = Integer.valueOf(LockInventory.useCostGUI.get(entId).getText());
-		if (useCost > Config.DIGILOCK_USEMAXCOST) {
+		if (useCost > Digilock.getConfig().getLockMaxCost()) {
 			Messages.sendNotification(sPlayer, "Cost must be less "
-					+ Config.DIGILOCK_USEMAXCOST);
+					+ Digilock.getConfig().getDestroyCost());
 			LockInventory.useCostGUI.get(entId).setText(
-					String.valueOf(Config.DIGILOCK_USEMAXCOST));
+					String.valueOf(Digilock.getConfig().getDestroyCost()));
 			LockInventory.popupScreen.get(entId).setDirty(true);
 			return false;
 		} else if (useCost < 0) {

@@ -2,6 +2,7 @@ package com.almuramc.digilock.gui;
 
 import java.util.UUID;
 
+import com.almuramc.digilock.Digilock;
 import com.almuramc.digilock.LockCore;
 import com.almuramc.digilock.util.BlockTools;
 import com.almuramc.digilock.util.LockInventory;
@@ -101,7 +102,7 @@ public class LockButton extends GenericButton {
 									.openBitInventory(sPlayer, bitInventory);
 						} else if (BlockTools.isSign(sBlock)) {
 							if (sPlayer.isSpoutCraftEnabled()
-									&& Config.LIBRARY_USESIGNEDITGUI
+									&& Digilock.getConfig().useSignGUI()
 									&& Permissions.hasPerm(sPlayer, "lock.signadmin",
 									Permissions.NOT_QUIET)) {
 								Sign sign = (Sign) sBlock.getState();
@@ -266,11 +267,11 @@ public class LockButton extends GenericButton {
 			LockCore.closetimerGUI.get(entId).setText("3600");
 			LockCore.popupScreen.get(entId).setDirty(true);
 			return false;
-		} else if (useCost > Config.DIGILOCK_USEMAXCOST) {
+		} else if (useCost > Digilock.getConfig().getLockMaxCost()) {
 			Messages.sendNotification(sPlayer, "Cost must be less "
-					+ Config.DIGILOCK_USEMAXCOST);
+					+ Digilock.getConfig().getLockMaxCost());
 			LockCore.useCostGUI.get(entId).setText(
-					String.valueOf(Config.DIGILOCK_USEMAXCOST));
+					String.valueOf(Digilock.getConfig().getLockMaxCost()));
 			LockCore.popupScreen.get(entId).setDirty(true);
 			return false;
 		} else if (useCost < 0) {

@@ -1,5 +1,6 @@
 package com.almuramc.digilock.listener;
 
+import com.almuramc.digilock.Digilock;
 import com.almuramc.digilock.util.BlockTools;
 import com.almuramc.digilock.util.Messages;
 
@@ -185,7 +186,7 @@ public class BlockListener implements Listener {
 			return;
 		}
 		if (BlockTools.isLocked(sBlock)) {
-			if (!Config.LIBRARY_USESIGNEDITGUI) {
+			if (!Digilock.getConfig().useSignGUI()) {
 				event.setCancelled(true);
 			}
 		}

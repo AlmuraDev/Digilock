@@ -108,14 +108,13 @@ public class LockInventory {
 										String owner, String name, String coowners, Inventory inventory,
 										int useCost) {
 		String query;
-		boolean createBookshelf = true;
 		if (isBitInventoryCreated(block)) {
 			for (int i = 0; i < inventory.getSize(); i++) {
 				int itemid = inventory.getItem(i) != null ? 0 : inventory.getItem(i).getTypeId();
 				int itemamount = inventory.getItem(i) != null ? 0 : inventory.getItem(i).getAmount();
 				int itemdurability = inventory.getItem(i) != null ? 0 : inventory.getItem(i).getDurability();
 
-				query = "UPDATE " + Digilock.bitInventoryTable + " SET owner='"
+				query = "UPDATE " + Digilock.getHandler().getTableName() + " SET owner='"
 						+ owner + "', coowners='" + coowners + "', usecost="
 						+ useCost + ", slotNo=" + i + ", itemstack_type="
 						+ itemid
@@ -127,18 +126,10 @@ public class LockInventory {
 						+ " AND z = " + block.getZ() + " AND world='"
 						+ block.getWorld().getName() + "' AND slotno=" + i
 						+ ";";
-				if (Config.STORAGE_TYPE.equals("MYSQL")) {
-					try {
-						Digilock.manageMySQL.insertQuery(query);
-					} catch (MalformedURLException e) {
-						e.printStackTrace();
-					} catch (InstantiationException e) {
-						e.printStackTrace();
-					} catch (IllegalAccessException e) {
-						e.printStackTrace();
-					}
+				if (Digilock.getConfig().getSQLType().equals("MYSQL")) {
+					Digilock.getHandler().getMySQLHandler().query(query);
 				} else {
-					Digilock.manageSQLite.insertQuery(query);
+					Digilock.getHandler().getSqliteHandler().query(query);
 				}
 			}
 			Messages.sendNotification(sPlayer, "Bookshelf updated.");
@@ -146,23 +137,15 @@ public class LockInventory {
 	}
 
 	public static Boolean isBitInventoryCreated(SpoutBlock block) {
-		String query = "SELECT * FROM " + Digilock.bitInventoryTable
+		String query = "SELECT * FROM " + Digilock.getHandler().getTableName()
 				+ " WHERE (x = " + block.getX() + " AND y = " + block.getY()
 				+ " AND z = " + block.getZ() + " AND world='"
 				+ block.getWorld().getName() + "');";
 		ResultSet result = null;
-		if (Config.STORAGE_TYPE.equals("MYSQL")) {
-			try {
-				result = Digilock.manageMySQL.sqlQuery(query);
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-			} catch (InstantiationException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			}
+		if (Digilock.getConfig().getSQLType().equals("MYSQL")) {
+			result = Digilock.getHandler().getMySQLHandler().query(query);
 		} else { // SQLLITE
-			result = Digilock.manageSQLite.sqlQuery(query);
+			result = Digilock.getHandler().getSqliteHandler().query(query);
 		}
 		try {
 			if (result != null && result.next()) {
@@ -185,25 +168,16 @@ public class LockInventory {
 		String owner = sPlayer.getName();
 		String coOwners = "";
 		int useCost = 0;
-		String query = "SELECT * FROM " + Digilock.bitInventoryTable
+		String query = "SELECT * FROM " + Digilock.getHandler().getTableName()
 				+ " WHERE (x = " + sBlock.getX() + " AND y = " + sBlock.getY()
 				+ " AND z = " + sBlock.getZ() + " AND world='"
 				+ sBlock.getWorld().getName() + "');";
 		// sPlayer.sendMessage("select:" + query);
 		ResultSet result = null;
-		if (Config.STORAGE_TYPE.equals("MYSQL")) {
-			try {
-				result = Digilock.manageMySQL.sqlQuery(query);
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-			} catch (InstantiationException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			}
+		if (Digilock.getConfig().getSQLType().equals("MYSQL")) {
+			result = Digilock.getHandler().getMySQLHandler().query(query);
 		} else { // SQLLITE
-			result = Digilock.manageSQLite.sqlQuery(query);
-			// sPlayer.sendMessage("Result:" + result.toString());
+			result = Digilock.getHandler().getSqliteHandler().query(query);
 		}
 		int i = 0;
 		ItemStack itemstack;
@@ -243,23 +217,15 @@ public class LockInventory {
 	public static String loadBitInventoryName(SpoutPlayer sPlayer,
 											  SpoutBlock block) {
 		String name;
-		String query = "SELECT * FROM " + Digilock.bitInventoryTable
+		String query = "SELECT * FROM " + Digilock.getHandler().getTableName()
 				+ " WHERE (x = " + block.getX() + " AND y = " + block.getY()
 				+ " AND z = " + block.getZ() + " AND world='"
 				+ block.getWorld().getName() + "');";
 		ResultSet result = null;
-		if (Config.STORAGE_TYPE.equals("MYSQL")) {
-			try {
-				result = Digilock.manageMySQL.sqlQuery(query);
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-			} catch (InstantiationException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			}
+		if (Digilock.getConfig().getSQLType().equals("MYSQL")) {
+			result = Digilock.getHandler().getMySQLHandler().query(query);
 		} else { // SQLLITE
-			result = Digilock.manageSQLite.sqlQuery(query);
+			result = Digilock.getHandler().getSqliteHandler().query(query);
 		}
 		try {
 			if (result != null && result.next()) {
@@ -274,23 +240,15 @@ public class LockInventory {
 
 	public static int loadBitInventorySize(SpoutBlock block) {
 		int i = 0;
-		String query = "SELECT * FROM " + Digilock.bitInventoryTable
+		String query = "SELECT * FROM " + Digilock.getHandler().getTableName()
 				+ " WHERE (x = " + block.getX() + " AND y = " + block.getY()
 				+ " AND z = " + block.getZ() + " AND world='"
 				+ block.getWorld().getName() + "');";
 		ResultSet result = null;
-		if (Config.STORAGE_TYPE.equals("MYSQL")) {
-			try {
-				result = Digilock.manageMySQL.sqlQuery(query);
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-			} catch (InstantiationException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			}
+		if (Digilock.getConfig().getSQLType().equals("MYSQL")) {
+			result = Digilock.getHandler().getMySQLHandler().query(query);
 		} else { // SQLLITE
-			result = Digilock.manageSQLite.sqlQuery(query);
+			result = Digilock.getHandler().getSqliteHandler().query(query);
 		}
 		try {
 
@@ -305,7 +263,7 @@ public class LockInventory {
 
 	public void RemoveBitInventory(SpoutPlayer sPlayer, int destroycost) {
 		boolean deleteInventory = true;
-		if (Digilock.getHandler().useEconomy()) {
+		if (Digilock.getConfig().useEconomy()) {
 			if (Digilock.getHooks().getEconHook().hasAccount(sPlayer.getName())) {
 				if (Digilock.getHooks().getEconHook().has(sPlayer.getName(), destroycost) || destroycost < 0) {
 					Digilock.getHooks().getEconHook().withdrawPlayer(sPlayer.getName(), destroycost);
@@ -316,23 +274,15 @@ public class LockInventory {
 				}
 			}
 		}
-		String query = "DELETE FROM " + Digilock.bitInventoryTable + " WHERE (x = "
+		String query = "DELETE FROM " + Digilock.getHandler().getTableName() + " WHERE (x = "
 				+ sBlock.getX() + " AND y = " + sBlock.getY() + " AND z = "
 				+ sBlock.getZ() + " AND world='" + sBlock.getWorld().getName()
 				+ "');";
 		if (deleteInventory) {
-			if (Config.STORAGE_TYPE.equals("MYSQL")) {
-				try {
-					Digilock.manageMySQL.deleteQuery(query);
-				} catch (MalformedURLException e) {
-					e.printStackTrace();
-				} catch (InstantiationException e) {
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					e.printStackTrace();
-				}
+			if (Digilock.getConfig().getSQLType().equals("MYSQL")) {
+				Digilock.getHandler().getMySQLHandler().query(query);
 			} else { // SQLLITE
-				Digilock.manageSQLite.deleteQuery(query);
+				Digilock.getHandler().getSqliteHandler().query(query);
 			}
 			Messages.sendNotification(sPlayer, "Bookshelf removed.");
 		} else {

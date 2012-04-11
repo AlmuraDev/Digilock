@@ -81,7 +81,7 @@ public class LockCore {
 		String query;
 		boolean createlock = true;
 		boolean newLock = true;
-		int cost = Config.DIGILOCK_COST;
+		double cost = Digilock.getConfig().getLockCost();
 		block = BlockTools.getDigiLockBlock(block);
 		if (BlockTools.isLocked(block)) {
 			newLock = false;
@@ -105,7 +105,7 @@ public class LockCore {
 								+ block.getWorld().getName() + "', '" + coowners + "', '"
 								+ users + "', " + block.getTypeId() + ", '" + connectedTo
 								+ "', " + useCost + " );";*/
-			if (Digilock.getHandler().useEconomy()) {
+			if (Digilock.getConfig().useEconomy()) {
 				if (Digilock.getHooks().getEconHook().hasAccount(sPlayer.getName()) && cost > 0) {
 					if (Digilock.getHooks().getEconHook().has(sPlayer.getName(), cost)) {
 						Digilock.getHooks().getEconHook().withdrawPlayer(sPlayer.getName(), cost);
@@ -301,23 +301,23 @@ public class LockCore {
 
 	public void RemoveDigiLock(SpoutPlayer sPlayer) {
 		boolean deletelock = true;
-		if (Digilock.getHandler().useEconomy()) {
+		if (Digilock.getConfig().useEconomy()) {
 			if (Digilock.getHooks().getEconHook().hasAccount(sPlayer.getName())) {
 				if (Digilock.getHooks().getEconHook().has(sPlayer.getName(),
-						Config.DIGILOCK_DESTROYCOST)
-						|| Config.DIGILOCK_DESTROYCOST < 0) {
+						Digilock.getConfig().getDestroyCost())
+						|| Digilock.getConfig().getDestroyCost() < 0) {
 					Digilock.getHooks().getEconHook().withdrawPlayer(sPlayer.getName(),
-							Config.DIGILOCK_DESTROYCOST);
+							Digilock.getConfig().getDestroyCost());
 					sPlayer.sendMessage("Your account ("
 							+ Digilock.getHooks().getEconHook().getBalance(sPlayer.getName())
 							+ ") has been deducted "
-							+ Digilock.getHooks().getEconHook().format(Config.DIGILOCK_DESTROYCOST)
+							+ Digilock.getHooks().getEconHook().format(Digilock.getConfig().getDestroyCost())
 							+ ".");
 				} else {
 					sPlayer.sendMessage("You dont have enough money ("
 							+ Digilock.getHooks().getEconHook().getBalance(sPlayer.getName())
 							+ "). Cost is:"
-							+ Digilock.getHooks().getEconHook().format(Config.DIGILOCK_DESTROYCOST));
+							+ Digilock.getHooks().getEconHook().format(Digilock.getConfig().getDestroyCost()));
 					deletelock = false;
 				}
 			}
@@ -343,7 +343,7 @@ public class LockCore {
 			Messages.sendNotification(sPlayer, "DigiLock removed.");
 		} else {
 			Messages.sendNotification(sPlayer, "You need more money ("
-					+ Config.DIGILOCK_DESTROYCOST + ")");
+					+ Digilock.getConfig().getDestroyCost() + ")");
 		}
 	}
 
@@ -597,9 +597,6 @@ public class LockCore {
 			ownerGUI.get(id).setText(sPlayer.getName());
 			coOwnersGUI.get(id).setText("");
 			usersGUI.get(id).setText("");
-			//closetimerGUI.get(id).setText("0");
-			closetimerGUI.get(id).setText(Config.DIGILOCK_DefCloseTimer);
-			//cost = Config.SBP_price18;
 			useCostGUI.get(id).setText("0");
 		}
 
@@ -622,7 +619,7 @@ public class LockCore {
 
 		y = 165;
 
-		GenericLabel costToCreate = new GenericLabel(" " + String.valueOf(Config.DIGILOCK_COST));
+		GenericLabel costToCreate = new GenericLabel(" " + String.valueOf(Digilock.getConfig().getLockCost()));
 		costToCreate.setAuto(true).setX(120).setY(156).setHeight(6).setWidth(140);
 		costToCreate.setTooltip("The cost to create a new DigiLock");
 		popupScreen.get(id).attachWidget(Digilock.getInstance(), costToCreate);

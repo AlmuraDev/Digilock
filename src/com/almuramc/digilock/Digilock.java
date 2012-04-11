@@ -4,7 +4,9 @@ import com.almuramc.digilock.command.LockCommand;
 import com.almuramc.digilock.gui.KeyHandler;
 import com.almuramc.digilock.listener.BlockListener;
 import com.almuramc.digilock.listener.PlayerListener;
+import com.almuramc.digilock.util.Dependency;
 import com.almuramc.digilock.util.LockConfig;
+import com.almuramc.digilock.util.SQLHandler;
 
 import org.bukkit.plugin.Plugin;
 
@@ -16,6 +18,7 @@ public class Digilock extends SpoutPlugin {
 	private static Plugin instance;
 	private static Dependency hooks;
 	private static LockConfig config;
+	private static SQLHandler sql;
 
 	@Override
 	public void onDisable() {
@@ -32,6 +35,8 @@ public class Digilock extends SpoutPlugin {
 		//Handles all dependencies
 		hooks = new Dependency(this);
 
+		sql = new SQLHandler(this);
+
 		//Register command
 		new LockCommand(this);
 
@@ -39,6 +44,7 @@ public class Digilock extends SpoutPlugin {
 		registerEvents(new PlayerListener());
 
 		SpoutManager.getKeyBindingManager().registerBinding("Digilock.Lock", Keyboard.KEY_L, "The key to lock chests", new KeyHandler(this, Keyboard.KEY_L), this);
+
 
 		log("v" + this.getVersion() + " enabled.");
 	}
@@ -51,7 +57,11 @@ public class Digilock extends SpoutPlugin {
 		return hooks;
 	}
 
-	public static LockConfig getHandler() {
+	public static LockConfig getConfig() {
 		return config;
+	}
+
+	public static SQLHandler getHandler() {
+		return sql;
 	}
 }

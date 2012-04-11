@@ -543,7 +543,7 @@ public class PlayerListener implements Listener {
 							Messages.sendNotification(sPlayer,
 									"Used with fingerprint");
 							if (sPlayer.isSpoutCraftEnabled()
-									&& Config.LIBRARY_USESIGNEDITGUI
+									&& Digilock.getConfig().useSignGUI()
 									&& LockCore.holdingKey.get(id).equals("KEY_LSHIFT")
 									&& Permissions.hasPerm(sPlayer,
 									"lock.signadmin",
@@ -752,7 +752,7 @@ public class PlayerListener implements Listener {
 				// HANDLING SIGN and SIGN_POST
 				else if (BlockTools.isSign(sBlock)) {
 					if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
-							&& Config.LIBRARY_USESIGNEDITGUI
+							&& Digilock.getConfig().useSignGUI()
 							&& LockCore.holdingKey.get(id).equals("KEY_LSHIFT")
 							&& Permissions.hasPerm(sPlayer,
 							"lock.signadmin",

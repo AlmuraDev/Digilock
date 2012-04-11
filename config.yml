@@ -9,26 +9,21 @@ gui:
     menukey: DISABLED
     signgui: true
 storage:
-    # Storage supports [MYSQL|SQLITE]
-    type: SQLITE
+    # Storage supports [MYSQL|SQLITE|NONE]
+    type: NONE
 
     # MySQL Settings - Will only be used if Storage.Type: is
     # set to MYSQL
     # Host: servername:portnumber. Std port is 3306.
-    host: localhost:3306
+    host: localhost
+    port: 3306
+    database: minecraft
     username: 'root'
     password: 'password'
-    database: minecraft
-#############################################################
-# Cost:        Is the cost of creating a new lock
-# UseMaxCost:  Is the limit of the cost the PLAYER can
-#              charge anotherplayer, to use his lock.
-# DestroyCost: Is the cost for destroying a lock. If the
-#              cost is negative, the player will gain money.
-#############################################################
 lock:
     cost: 100
-    usemaxcost: 100
+    maxcost: 100
     destroycost: -10
+    playsound: false
     sound: 'http://dl.dropbox.com/u/36067670/BukkitInventoryTools/Sounds/Digilock.wav'
-    sound_on: false
+

@@ -65,23 +65,15 @@ public class BlockTools {
 		// TODO: fasten up the load of lock, select from a HASHMAP second
 		// time
 		block = getDigiLockBlock(block);
-		String query = "SELECT * FROM " + Digilock.digilockTable + " WHERE (x = "
+		String query = "SELECT * FROM " + Digilock.getHandler().getTableName() + " WHERE (x = "
 				+ block.getX() + " AND y = " + block.getY() + " AND z = "
 				+ block.getZ() + " AND world='" + block.getWorld().getName()
 				+ "');";
 		ResultSet result = null;
-		if (Config.STORAGE_TYPE.equals("MYSQL")) {
-			try {
-				result = Digilock.manageMySQL.sqlQuery(query);
-			} catch (MalformedURLException e) {
-				e.printStackTrace();
-			} catch (InstantiationException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			}
+		if (Digilock.getConfig().getSQLType().equals("MYSQL")) {
+			result = Digilock.getHandler().getMySQLHandler().query(query);
 		} else { // SQLLITE
-			result = Digilock.manageSQLite.sqlQuery(query);
+			result = Digilock.getHandler().getSqliteHandler().query(query);
 		}
 
 		try {
@@ -118,23 +110,15 @@ public class BlockTools {
 		if (block != null) {
 			if (isLockable(block)) {
 				block = getDigiLockBlock(block);
-				String query = "SELECT * FROM " + Digilock.digilockTable
+				String query = "SELECT * FROM " + Digilock.getHandler().getTableName()
 						+ " WHERE (x = " + block.getX() + " AND y = "
 						+ block.getY() + " AND z = " + block.getZ()
 						+ " AND world='" + block.getWorld().getName() + "');";
 				ResultSet result = null;
-				if (Config.STORAGE_TYPE.equals("MYSQL")) {
-					try {
-						result = Digilock.manageMySQL.sqlQuery(query);
-					} catch (MalformedURLException e) {
-						e.printStackTrace();
-					} catch (InstantiationException e) {
-						e.printStackTrace();
-					} catch (IllegalAccessException e) {
-						e.printStackTrace();
-					}
+				if (Digilock.getConfig().getSQLType().equals("MYSQL")) {
+					result = Digilock.getHandler().getMySQLHandler().query(query);
 				} else { // SQLLITE
-					result = Digilock.manageSQLite.sqlQuery(query);
+					result = Digilock.getHandler().getSqliteHandler().query(query);
 				}
 				try {
 					if (result != null && result.next()) {
@@ -197,12 +181,12 @@ public class BlockTools {
 
 	// Dockter 12/27/11, Added check to see if global sound is on or off.
 	public static void playDigiLockSound(SpoutBlock sBlock) {
-		if (Config.DIGILOCK_SOUND_ON) {
+		if (Digilock.getConfig().playLockSound()) {
 			SpoutManager
 					.getSoundManager()
 					.playGlobalCustomSoundEffect(
 							Digilock.getInstance(),
-							Config.DIGILOCK_SOUND,
+							Digilock.getConfig().getSoundURL(),
 							true, sBlock.getLocation(), 5);
 		}
 	}
@@ -312,7 +296,7 @@ public class BlockTools {
 						+ nextBlock.getType());
 			}
 			boolean pressButton = true;
-			if (Digilock.getHandler().useEconomy()
+			if (Digilock.getConfig().useEconomy()
 					&& cost > 0
 					&& doTheWork
 					&& lock.isUser(sPlayer)
@@ -423,7 +407,7 @@ public class BlockTools {
 							+ nextBlock.getType());
 				}
 				boolean setleveron = true;
-				if (Digilock.getHandler().useEconomy()
+				if (Digilock.getConfig().useEconomy()
 						&& cost > 0
 						&& doTheWork
 						&& lock.isUser(sPlayer)
@@ -558,7 +542,7 @@ public class BlockTools {
 	public static void openDoor(SpoutPlayer sPlayer, SpoutBlock sBlock, int cost) {
 		boolean opendoor = true;
 		LockCore lock = loadDigiLock(sBlock);
-		if (Digilock.getHandler().useEconomy() && cost > 0 && lock.isUser(sPlayer)
+		if (Digilock.getConfig().useEconomy() && cost > 0 && lock.isUser(sPlayer)
 				&& !(lock.isOwner(sPlayer) || lock.isCoowner(sPlayer))) {
 			if (Digilock.getHooks().getEconHook().hasAccount(sPlayer.getName())) {
 				if (Digilock.getHooks().getEconHook().has(sPlayer.getName(),
@@ -611,7 +595,7 @@ public class BlockTools {
 								 int cost) {
 		boolean closedoor = true;
 		LockCore lock = loadDigiLock(sBlock);
-		if (Digilock.getHandler().useEconomy() && cost > 0 && lock.isUser(sPlayer)
+		if (Digilock.getConfig().useEconomy() && cost > 0 && lock.isUser(sPlayer)
 				&& !(lock.isOwner(sPlayer) || lock.isCoowner(sPlayer))) {
 			if (Digilock.getHooks().getEconHook().hasAccount(sPlayer.getName())) {
 				if (Digilock.getHooks().getEconHook().has(sPlayer.getName(),
@@ -738,7 +722,7 @@ public class BlockTools {
 									int cost) {
 		boolean opentrapdoor = true;
 		LockCore lock = loadDigiLock(sBlock);
-		if (Digilock.getHandler().useEconomy() && cost > 0 && lock.isUser(sPlayer)
+		if (Digilock.getConfig().useEconomy() && cost > 0 && lock.isUser(sPlayer)
 				&& !(lock.isOwner(sPlayer) || lock.isCoowner(sPlayer))) {
 			if (Digilock.getHooks().getEconHook().hasAccount(sPlayer.getName())) {
 				if (Digilock.getHooks().getEconHook().has(sPlayer.getName(),
@@ -832,7 +816,7 @@ public class BlockTools {
 									 int cost) {
 		boolean openFenceGate = true;
 		LockCore lock = loadDigiLock(sBlock);
-		if (Digilock.getHandler().useEconomy() && cost > 0 && lock.isUser(sPlayer)
+		if (Digilock.getConfig().useEconomy() && cost > 0 && lock.isUser(sPlayer)
 				&& !(lock.isOwner(sPlayer) || lock.isCoowner(sPlayer))) {
 			if (Digilock.getHooks().getEconHook().hasAccount(sPlayer.getName())) {
 				if (Digilock.getHooks().getEconHook().has(sPlayer.getName(),

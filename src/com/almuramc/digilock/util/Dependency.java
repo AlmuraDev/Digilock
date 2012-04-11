@@ -1,4 +1,4 @@
-package com.almuramc.digilock;
+package com.almuramc.digilock.util;
 
 import com.garbagemule.MobArena.MobArenaHandler;
 import com.matejdro.bukkit.jail.Jail;
