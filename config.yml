@@ -9,8 +9,8 @@ gui:
     menukey: DISABLED
     signgui: true
 storage:
-    # Storage supports [MYSQL|SQLITE|NONE]
-    type: NONE
+    # Storage supports [MYSQL|SQLITE]
+    type: SQLITE
 
     # MySQL Settings - Will only be used if Storage.Type: is
     # set to MYSQL

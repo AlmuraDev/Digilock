@@ -34,7 +34,7 @@ public class SqlHandler {
 					mysql.createTable(query);
 				}
 			}
-		} else if (Digilock.getConf().getSQLType().equals("SQLITE")) {
+		} else {
 			try {
 				sqlite = new SQLite(plugin.getLogger(), "[" + plugin.getName() + "]", plugin.getName(), plugin.getDataFolder().getCanonicalPath());
 			} catch (Exception e) {
@@ -50,8 +50,6 @@ public class SqlHandler {
 						+ " typeid INTEGER, connectedto TEXT, usecost INTEGER);";
 				sqlite.createTable(query);
 			}
-		} else {
-			return;
 		}
 	}
 
