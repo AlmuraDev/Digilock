@@ -17,7 +17,7 @@ public class LockConfig {
 		if (!new File(parent.getDataFolder(), "config.yml").exists()) {
 			parent.saveDefaultConfig();
 		}
-		config = config;
+		config = parent.getConfig();
 	}
 
 	public boolean useEconomy() {
