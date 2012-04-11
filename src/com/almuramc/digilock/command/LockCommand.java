@@ -109,7 +109,7 @@ public class LockCommand implements CommandExecutor {
 								Inventory inv = furnace.getInventory();
 								sPlayer.openInventory(inv);
 							} else if (BlockTools.isDispenser(block)) {
-								Dispenser dispenser = (Dispenser) block .getState();
+								Dispenser dispenser = (Dispenser) block.getState();
 								Inventory inv = dispenser.getInventory();
 								sPlayer.openInventory(inv);
 							} else if (BlockTools.isTrapdoor(block)) {

@@ -1,6 +1,5 @@
 package com.almuramc.digilock.util;
 
-import java.net.MalformedURLException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -280,7 +279,7 @@ public class BlockTools {
 	 * Handle the actions when a player presses the STONE_BUTTON
 	 * @param sPlayer SpoutPlayer
 	 * @param sBlock  SpoutBlock
-	 * @param cost	the cost the player is charged when the button is pressed.
+	 * @param cost    the cost the player is charged when the button is pressed.
 	 */
 	public static void pressButtonOn(SpoutPlayer sPlayer, SpoutBlock sBlock,
 									 int cost) {

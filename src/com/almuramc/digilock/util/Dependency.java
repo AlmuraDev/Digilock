@@ -18,7 +18,6 @@ public class Dependency {
 	private MobArenaHandler arena = null;
 	private JailAPI jail = null;
 	//public Residence area = null;
-
 	private Plugin plugin;
 
 	public Dependency(Plugin instance) {

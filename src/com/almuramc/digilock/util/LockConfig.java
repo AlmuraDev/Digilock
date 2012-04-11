@@ -75,9 +75,9 @@ public class LockConfig {
 	public String getSQLDatabase() {
 		return config.getString("storage.database");
 	}
-	
+
 	public double getLockCost() {
-		return config.getDouble("lock.cost");		
+		return config.getDouble("lock.cost");
 	}
 
 	public double getLockMaxCost() {
@@ -91,8 +91,8 @@ public class LockConfig {
 	public boolean playLockSound() {
 		return config.getBoolean("lock.playsound");
 	}
-	
+
 	public String getSoundURL() {
-		return config.getString("lock.sound");		
+		return config.getString("lock.sound");
 	}
 }

@@ -45,7 +45,6 @@ public class Digilock extends SpoutPlugin {
 
 		SpoutManager.getKeyBindingManager().registerBinding("Digilock.Lock", Keyboard.KEY_L, "The key to lock chests", new KeyHandler(this, Keyboard.KEY_L), this);
 
-
 		log("v" + this.getVersion() + " enabled.");
 	}
 

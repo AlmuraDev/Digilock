@@ -34,7 +34,6 @@ public class LockCore {
 	public int typeId;
 	public String connectedTo;
 	public int useCost;
-
 	public static Map<Integer, String> holdingKey = new HashMap<Integer, String>();
 
 	/**
@@ -65,15 +64,15 @@ public class LockCore {
 
 	/**
 	 * Saves the lock to the database.
-	 * @param sPlayer	 the player who is interactions with the lock.
-	 * @param block	   The block of the lock.
-	 * @param pincode	 of the lock. "fingerprint" or "" or a 10 digits code.
-	 * @param owner	   is the owner of the lock
+	 * @param sPlayer     the player who is interactions with the lock.
+	 * @param block       The block of the lock.
+	 * @param pincode     of the lock. "fingerprint" or "" or a 10 digits code.
+	 * @param owner       is the owner of the lock
 	 * @param closetimer  is number of seconds before the door closes.
-	 * @param coowners	is the list of co - owners of the lock.
-	 * @param typeId	  is the type of the block.
+	 * @param coowners    is the list of co - owners of the lock.
+	 * @param typeId      is the type of the block.
 	 * @param connectedTo - not used yet.
-	 * @param useCost	 is the cost to use the block.
+	 * @param useCost     is the cost to use the block.
 	 */
 	public static void SaveDigiLock(SpoutPlayer sPlayer, SpoutBlock block,
 									String pincode, String owner, Integer closetimer, String coowners,
