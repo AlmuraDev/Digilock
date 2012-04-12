@@ -1,5 +1,8 @@
 package com.almuramc.digilock;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.almuramc.digilock.command.LockCommand;
 import com.almuramc.digilock.gui.KeyHandler;
 import com.almuramc.digilock.listener.BlockListener;
@@ -62,5 +65,25 @@ public class Digilock extends SpoutPlugin {
 
 	public static SqlHandler getHandler() {
 		return sql;
+	}
+
+	public static Map<Integer, String> holdingKey = new HashMap<Integer, String>();
+	public static Map<Integer, Integer> userno = new HashMap<Integer, Integer>();
+
+	public static void removeUserData(int id) {
+		if (userno.containsKey(id)) {
+			// DigiLock
+			holdingKey.remove(id);
+			userno.remove(id);
+		}
+	}
+
+	public static void addUserData(int id) {
+		if (!userno.containsKey(id)) {
+			// DigiLock
+			userno.put(id, new Integer(id));
+			holdingKey.put(id, "");
+		}
+
 	}
 }

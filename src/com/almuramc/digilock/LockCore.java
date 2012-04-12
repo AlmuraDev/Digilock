@@ -32,7 +32,6 @@ public class LockCore {
 	public int useCost;
 
 	private Digilock plugin;
-	public static Map<Integer, String> holdingKey = new HashMap<Integer, String>();
 
 	/**
 	 * Constructs a new LockCore

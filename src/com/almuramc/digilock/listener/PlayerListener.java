@@ -55,7 +55,7 @@ public class PlayerListener implements Listener {
 
 		if (sPlayer.isSpoutCraftEnabled()
 				&& BlockTools.isLockable(sBlock)
-				&& LockCore.holdingKey.get(id).equals("KEY_LCONTROL")
+				&& Digilock.holdingKey.get(id).equals("KEY_LCONTROL")
 				&& event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
 				&& (Permissions.hasPerm(sPlayer, "lock.create",
 				Permissions.NOT_QUIET) || Permissions.hasPerm(
@@ -544,7 +544,7 @@ public class PlayerListener implements Listener {
 									"Used with fingerprint");
 							if (sPlayer.isSpoutCraftEnabled()
 									&& Digilock.getConf().useSignGUI()
-									&& LockCore.holdingKey.get(id).equals("KEY_LSHIFT")
+									&& Digilock.holdingKey.get(id).equals("KEY_LSHIFT")
 									&& Permissions.hasPerm(sPlayer,
 									"lock.signadmin",
 									Permissions.NOT_QUIET)) {
@@ -753,7 +753,7 @@ public class PlayerListener implements Listener {
 				else if (BlockTools.isSign(sBlock)) {
 					if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
 							&& Digilock.getConf().useSignGUI()
-							&& LockCore.holdingKey.get(id).equals("KEY_LSHIFT")
+							&& Digilock.holdingKey.get(id).equals("KEY_LSHIFT")
 							&& Permissions.hasPerm(sPlayer,
 							"lock.signadmin",
 							Permissions.NOT_QUIET)) {
@@ -766,21 +766,21 @@ public class PlayerListener implements Listener {
 
 	public void onPlayerLogin(PlayerLoginEvent event) {
 		int id = event.getPlayer().getEntityId();
-		LockCore.addUserData(id);
+		Digilock.addUserData(id);
 	}
 
 	public void onPlayerKick(PlayerKickEvent event) {
 		int id = event.getPlayer().getEntityId();
-		LockCore.removeUserData(id);
+		Digilock.removeUserData(id);
 	}
 
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		int id = event.getPlayer().getEntityId();
-		LockCore.addUserData(id);
+		Digilock.addUserData(id);
 	}
 
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		int id = event.getPlayer().getEntityId();
-		LockCore.removeUserData(id);
+		Digilock.removeUserData(id);
 	}
 }
