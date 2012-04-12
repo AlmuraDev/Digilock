@@ -9,6 +9,8 @@ import com.almuramc.digilock.util.BlockTools;
 import com.almuramc.digilock.util.Messages;
 import com.almuramc.digilock.util.Permissions;
 
+import org.bukkit.plugin.Plugin;
+
 import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.gui.GenericLabel;
 import org.getspout.spoutapi.gui.GenericPopup;
@@ -19,12 +21,6 @@ import org.getspout.spoutapi.gui.RenderPriority;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 public class LockCore {
-	private Digilock plugin;
-
-	public LockCore(Digilock plugin) {
-		this.plugin = plugin;
-	}
-
 	public SpoutBlock sBlock;
 	public String pincode;
 	public String owner;
@@ -34,6 +30,8 @@ public class LockCore {
 	public int typeId;
 	public String connectedTo;
 	public int useCost;
+
+	private Digilock plugin;
 	public static Map<Integer, String> holdingKey = new HashMap<Integer, String>();
 
 	/**
@@ -48,9 +46,10 @@ public class LockCore {
 	 * @param connectedTo
 	 * @param useCost
 	 */
-	public LockCore(SpoutBlock block, String pincode, String owner, int closetimer,
+	public LockCore(Digilock plugin, SpoutBlock block, String pincode, String owner, int closetimer,
 					String coowners, String users, int typeId, String connectedTo,
 					int useCost) {
+		this.plugin = plugin;
 		this.sBlock = block;
 		this.pincode = pincode;
 		this.owner = owner;
@@ -84,26 +83,24 @@ public class LockCore {
 		block = BlockTools.getDigiLockBlock(block);
 		if (BlockTools.isLocked(block)) {
 			newLock = false;
-			/*			query = "UPDATE " + Digilock.digilockTable + " SET pincode='" + pincode
-								+ "', owner='" + owner + "', closetimer=" + closetimer
-								+ " , coowners='" + coowners + "' , users='" + users
-								+ "', typeid=" + typeId + ", connectedto='" + connectedTo
-								+ "', usecost=" + useCost
-
-								+ " WHERE x = " + block.getX() + " AND y = " + block.getY()
-								+ " AND z = " + block.getZ() + " AND world='"
-								+ block.getWorld().getName() + "';";*/
+			query = "UPDATE " + Digilock.getHandler().getTableName() + " SET pincode='" + pincode
+				+ "', owner='" + owner + "', closetimer=" + closetimer
+				+ " , coowners='" + coowners + "' , users='" + users
+				+ "', typeid=" + typeId + ", connectedto='" + connectedTo
+				+ "', usecost=" + useCost + " WHERE x = " + block.getX() + " AND y = " + block.getY()
+				+ " AND z = " + block.getZ() + " AND world='"
+				+ block.getWorld().getName() + "';";
 		} else {
 			// NEW DIGILOCK
-			/*			query = "INSERT INTO " + Digilock.digilockTable
-								+ " (pincode, owner, closetimer, "
-								+ "x, y, z, world, coowners, users, "
-								+ "typeid, connectedto, usecost) VALUES ('" + pincode
-								+ "', '" + owner + "', " + closetimer + ", " + block.getX()
-								+ ", " + block.getY() + ", " + block.getZ() + ", '"
-								+ block.getWorld().getName() + "', '" + coowners + "', '"
-								+ users + "', " + block.getTypeId() + ", '" + connectedTo
-								+ "', " + useCost + " );";*/
+			query = "INSERT INTO " + Digilock.getHandler().getTableName()
+			+ " (pincode, owner, closetimer, "
+			+ "x, y, z, world, coowners, users, "
+			+ "typeid, connectedto, usecost) VALUES ('" + pincode
+			+ "', '" + owner + "', " + closetimer + ", " + block.getX()
+			+ ", " + block.getY() + ", " + block.getZ() + ", '"
+			+ block.getWorld().getName() + "', '" + coowners + "', '"
+			+ users + "', " + block.getTypeId() + ", '" + connectedTo
+			+ "', " + useCost + " );";
 			if (Digilock.getConf().useEconomy()) {
 				if (Digilock.getHooks().getEconHook().hasAccount(sPlayer.getName()) && cost > 0) {
 					if (Digilock.getHooks().getEconHook().has(sPlayer.getName(), cost)) {
@@ -123,19 +120,11 @@ public class LockCore {
 			}
 		}
 		if (createlock) {
-			/*			if (Config.STORAGE_TYPE.equals("MYSQL")) {
-				try {
-					Digilock.manageMySQL.insertQuery(query);
-				} catch (MalformedURLException e) {
-					e.printStackTrace();
-				} catch (InstantiationException e) {
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					e.printStackTrace();
-				}
+			if (Digilock.getConf().getSQLType().equals("MYSQL")) {
+				Digilock.getHandler().getMySQLHandler().query(query);
 			} else {
-				Digilock.manageSQLite.insertQuery(query);
-			}*/
+				Digilock.getHandler().getSqliteHandler().query(query);
+			}
 			if (newLock) {
 				Messages.sendNotification(sPlayer, "DigiLock created.");
 			} else {
@@ -321,24 +310,16 @@ public class LockCore {
 				}
 			}
 		}
-		/*		String query = "DELETE FROM " + Digilock.digilockTable + " WHERE (x = "
-						+ sBlock.getX() + " AND y = " + sBlock.getY() + " AND z = "
-						+ sBlock.getZ() + " AND world='" + sBlock.getWorld().getName()
-						+ "');";*/
+		String query = "DELETE FROM " + Digilock.getHandler().getTableName() + " WHERE (x = "
+			+ sBlock.getX() + " AND y = " + sBlock.getY() + " AND z = "
+			+ sBlock.getZ() + " AND world='" + sBlock.getWorld().getName()
+			+ "');";
 		if (deletelock) {
-			/*			if (Config.STORAGE_TYPE.equals("MYSQL")) {
-				try {
-					Digilock.manageMySQL.deleteQuery(query);
-				} catch (MalformedURLException e) {
-					e.printStackTrace();
-				} catch (InstantiationException e) {
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					e.printStackTrace();
-				}
+			if (Digilock.getConf().getSQLType().equals("MYSQL")) {
+				Digilock.getHandler().getMySQLHandler().query(query);
 			} else { // SQLLITE
-				Digilock.manageSQLite.deleteQuery(query);
-			}*/
+				Digilock.getHandler().getSqliteHandler().query(query);
+			}
 			Messages.sendNotification(sPlayer, "DigiLock removed.");
 		} else {
 			Messages.sendNotification(sPlayer, "You need more money ("

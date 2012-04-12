@@ -85,7 +85,7 @@ public class BlockTools {
 				int typeId = result.getInt("typeId");
 				String connectedTo = result.getString("connectedto");
 				int useCost = result.getInt("usecost");
-				LockCore lock = new LockCore(block, pincode, owner,
+				LockCore lock = new LockCore(Digilock.getInstance(), block, pincode, owner,
 						closetimer, coowners, users, typeId, connectedTo,
 						useCost);
 				return lock;

@@ -15,7 +15,7 @@ import org.getspout.spoutapi.keyboard.Keyboard;
 import org.getspout.spoutapi.plugin.SpoutPlugin;
 
 public class Digilock extends SpoutPlugin {
-	private static Plugin instance;
+	private static Digilock instance;
 	private static Dependency hooks;
 	private static LockConfig config;
 	private static SqlHandler sql;
@@ -48,7 +48,7 @@ public class Digilock extends SpoutPlugin {
 		log("v" + this.getVersion() + " enabled.");
 	}
 
-	public static Plugin getInstance() {
+	public static Digilock getInstance() {
 		return instance;
 	}
 

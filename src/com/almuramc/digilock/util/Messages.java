@@ -3,13 +3,15 @@ package com.almuramc.digilock.util;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.almuramc.digilock.Digilock;
+
 import org.bukkit.Material;
 
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 public class Messages {
 	public static final Logger l = Logger.getLogger("Minecraft");
-	private static String PLUGIN_NAME = LockPlugin.PLUGIN_NAME;
+	private static String PLUGIN_NAME = Digilock.getInstance().getName();
 
 	public static void showInfo(String message) {
 		l.log(Level.INFO, "[" + PLUGIN_NAME + "] " + message);
