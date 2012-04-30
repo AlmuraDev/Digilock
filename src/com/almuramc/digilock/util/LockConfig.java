@@ -88,7 +88,7 @@ public class LockConfig {
 		return config.getDouble("lock.destroycost");
 	}
 	
-	public double getDefaultCloseTimer() {
+	public int getDefaultCloseTimer() {
 		return config.getInt("lock.defaultclosetimer");
 	}
 

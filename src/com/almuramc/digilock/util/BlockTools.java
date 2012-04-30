@@ -910,17 +910,20 @@ public class BlockTools {
 					Door door = (Door) sBlock.getState().getData();
 					if (door.getFacing() == BlockFace.EAST
 							&& door.getHingeCorner() == BlockFace.SOUTH_EAST) {
+						
 						if (isDoor(sBlock.getRelative(BlockFace.NORTH))) {
 							Door door2 = (Door) sBlock
 									.getRelative(BlockFace.NORTH).getState()
 									.getData();
-							if (door2.getHingeCorner() == BlockFace.NORTH_EAST) {
+							
+							if (door2.getHingeCorner() == BlockFace.NORTH_EAST) { //North_East
 								return true;
 							}
 						} else if (isDoor(sBlock.getRelative(BlockFace.WEST))) {
 							Door door2 = (Door) sBlock
 									.getRelative(BlockFace.WEST).getState()
 									.getData();
+							
 							if (door2.getHingeCorner() == BlockFace.SOUTH_WEST) {
 								return true;
 							}
