@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import com.almuramc.digilock.gui.LockButton;
 import com.almuramc.digilock.util.BlockTools;
+import com.almuramc.digilock.util.LockConfig;
 import com.almuramc.digilock.util.Messages;
 import com.almuramc.digilock.util.Permissions;
 
@@ -582,6 +583,7 @@ public class LockCore {
 			coOwnersGUI.get(id).setText("");
 			usersGUI.get(id).setText("");
 			useCostGUI.get(id).setText("0");
+			closetimerGUI.get(id).setText(String.valueOf(Digilock.getConf().getDefaultCloseTimer()));
 		}
 
 		// Dockter GUI

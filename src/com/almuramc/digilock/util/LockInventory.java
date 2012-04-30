@@ -151,8 +151,7 @@ public class LockInventory {
 				result.close();
 				return true;
 				
-			} else {
-				result.close();
+			} else {				
 				return false;			}
 		} catch (SQLException e) {
 			e.printStackTrace();

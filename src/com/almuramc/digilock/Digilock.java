@@ -26,6 +26,7 @@ public class Digilock extends SpoutPlugin {
 
 	@Override
 	public void onDisable() {
+		sql.getSqliteHandler().close();
 		log("disabled.");
 	}
 

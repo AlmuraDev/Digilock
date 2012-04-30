@@ -18,7 +18,7 @@ public class LockGUI extends GenericPopup {
 	private GenericButton configure;
 
 	public LockGUI() {
-		GenericLabel label = new GenericLabel(ChatColor.YELLOW + "Texture packs");
+		GenericLabel label = new GenericLabel(ChatColor.YELLOW + "");
 		label.setX(175).setY(25);
 		label.setPriority(RenderPriority.Lowest);
 		label.setWidth(-1).setHeight(-1);

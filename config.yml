@@ -24,6 +24,7 @@ lock:
     cost: 100
     maxcost: 100
     destroycost: -10
+    defaultclosetimer: 2
     playsound: false
     sound: 'http://dl.dropbox.com/u/36067670/BukkitInventoryTools/Sounds/Digilock.wav'
 

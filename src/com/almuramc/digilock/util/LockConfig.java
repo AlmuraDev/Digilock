@@ -10,7 +10,7 @@ import org.bukkit.plugin.Plugin;
  */
 public class LockConfig {
 	private final Plugin parent;
-	private FileConfiguration config;
+	private static FileConfiguration config;
 
 	public LockConfig(Plugin instance) {
 		parent = instance;
@@ -86,6 +86,10 @@ public class LockConfig {
 
 	public double getDestroyCost() {
 		return config.getDouble("lock.destroycost");
+	}
+	
+	public double getDefaultCloseTimer() {
+		return config.getInt("lock.defaultclosetimer");
 	}
 
 	public boolean playLockSound() {

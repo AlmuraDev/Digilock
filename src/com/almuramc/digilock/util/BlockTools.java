@@ -126,7 +126,6 @@ public class BlockTools {
 						result.close();
 						return true;
 					} else {
-						result.close();
 						return false;
 					}
 				} catch (SQLException e) {
