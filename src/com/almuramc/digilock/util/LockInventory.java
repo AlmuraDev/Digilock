@@ -148,10 +148,12 @@ public class LockInventory {
 		}
 		try {
 			if (result != null && result.next()) {
+				result.close();
 				return true;
+				
 			} else {
-				return false;
-			}
+				result.close();
+				return false;			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -204,6 +206,7 @@ public class LockInventory {
 				useCost = result.getInt("usecost");
 				i++;
 			}
+			result.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -229,6 +232,7 @@ public class LockInventory {
 		try {
 			if (result != null && result.next()) {
 				name = result.getString("name");
+				result.close();
 				return name;
 			}
 		} catch (SQLException e) {
@@ -254,6 +258,7 @@ public class LockInventory {
 			while (result != null && result.next()) {
 				i++;
 			}
+			result.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

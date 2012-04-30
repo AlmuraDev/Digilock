@@ -88,6 +88,8 @@ public class BlockTools {
 				LockCore lock = new LockCore(Digilock.getInstance(), block, pincode, owner,
 						closetimer, coowners, users, typeId, connectedTo,
 						useCost);
+				result.close();
+				
 				return lock;
 			} else {
 				return null;
@@ -121,8 +123,10 @@ public class BlockTools {
 				}
 				try {
 					if (result != null && result.next()) {
+						result.close();
 						return true;
 					} else {
+						result.close();
 						return false;
 					}
 				} catch (SQLException e) {

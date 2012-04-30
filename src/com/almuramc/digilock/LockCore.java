@@ -9,6 +9,9 @@ import com.almuramc.digilock.util.BlockTools;
 import com.almuramc.digilock.util.Messages;
 import com.almuramc.digilock.util.Permissions;
 
+import lib.PatPeter.SQLibrary.MySQL;
+import lib.PatPeter.SQLibrary.SQLite;
+
 import org.bukkit.plugin.Plugin;
 
 import org.getspout.spoutapi.block.SpoutBlock;
@@ -120,9 +123,11 @@ public class LockCore {
 		}
 		if (createlock) {
 			if (Digilock.getConf().getSQLType().equals("MYSQL")) {
-				Digilock.getHandler().getMySQLHandler().query(query);
+				Digilock.getHandler().getMySQLHandler().query(query);		
 			} else {
-				Digilock.getHandler().getSqliteHandler().query(query);
+				Digilock.getHandler().getSqliteHandler().query(query);	
+			
+				Messages.sendNotification(sPlayer, "SQLite Command Ran.");
 			}
 			if (newLock) {
 				Messages.sendNotification(sPlayer, "DigiLock created.");
