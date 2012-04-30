@@ -7,6 +7,7 @@ import com.almuramc.digilock.command.LockCommand;
 import com.almuramc.digilock.gui.KeyHandler;
 import com.almuramc.digilock.listener.BlockListener;
 import com.almuramc.digilock.listener.PlayerListener;
+import com.almuramc.digilock.listener.KeyboardListener;
 import com.almuramc.digilock.util.Dependency;
 import com.almuramc.digilock.util.LockConfig;
 import com.almuramc.digilock.util.SqlHandler;
@@ -45,6 +46,7 @@ public class Digilock extends SpoutPlugin {
 
 		registerEvents(new BlockListener());
 		registerEvents(new PlayerListener());
+		registerEvents(new KeyboardListener());
 
 		SpoutManager.getKeyBindingManager().registerBinding("Digilock.Lock", Keyboard.KEY_L, "The key to lock chests", new KeyHandler(this, Keyboard.KEY_L), this);
 
