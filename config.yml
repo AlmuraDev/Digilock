@@ -15,9 +15,9 @@ storage:
     # MySQL Settings - Will only be used if Storage.Type: is
     # set to MYSQL
     # Host: servername:portnumber. Std port is 3306.
-    host: localhost
-    port: 3306
-    database: minecraft
+    host: 'localhost'
+    port: '3306'
+    database: 'minecraft'
     username: 'root'
     password: 'password'
 lock:

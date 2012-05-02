@@ -10,6 +10,7 @@ import com.almuramc.digilock.listener.PlayerListener;
 import com.almuramc.digilock.listener.KeyboardListener;
 import com.almuramc.digilock.util.Dependency;
 import com.almuramc.digilock.util.LockConfig;
+import com.almuramc.digilock.util.Messages;
 import com.almuramc.digilock.util.SqlHandler;
 
 import org.bukkit.plugin.Plugin;
@@ -26,7 +27,10 @@ public class Digilock extends SpoutPlugin {
 
 	@Override
 	public void onDisable() {
+		if (Digilock.getConf().getSQLType().equals("SQLITE")) {
 		sql.getSqliteHandler().close();
+		Messages.showInfo("SQLite Database Closed.");
+		}
 		log("disabled.");
 	}
 

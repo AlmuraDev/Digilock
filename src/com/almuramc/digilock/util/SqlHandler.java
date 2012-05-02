@@ -7,6 +7,8 @@ import lib.PatPeter.SQLibrary.SQLite;
 
 import org.bukkit.plugin.Plugin;
 
+import com.almuramc.digilock.util.Dependency;
+
 public class SqlHandler {
 	private Plugin plugin;
 	private MySQL mysql;
@@ -21,10 +23,11 @@ public class SqlHandler {
 	private void setupSQL() {
 		if (Digilock.getConf().getSQLType().equals("MYSQL")) {
 			mysql = new MySQL(plugin.getLogger(), "[" + plugin.getName() + "]", Digilock.getConf().getSQLHost(), Digilock.getConf().getSQLPort(), Digilock.getConf().getSQLDatabase(), Digilock.getConf().getSQLUsername(), Digilock.getConf().getSQLPassword());
+			mysql.open();
 			if (mysql.checkConnection()) {
 				//Check if the Connection was successful
 				String query;
-
+				Messages.showInfo("MySQL Initialization Sucessful.");
 				if (!mysql.checkTable(digilockTable)) {
 					query = "CREATE TABLE "
 							+ digilockTable
@@ -32,7 +35,12 @@ public class SqlHandler {
 							+ "pincode VARCHAR(255), coowners VARCHAR(255), users VARCHAR(255), closetimer INT, "
 							+ "typeid INT, connectedto VARCHAR(255), usecost INT);";
 					mysql.createTable(query);
+					Messages.showInfo("MySQL Table Created Sucessfully.");
+				} else {
+					Messages.showInfo("MySQL Table Loaded.");
 				}
+			} else {
+				Messages.showInfo("MySQL Initialization failed!");
 			}
 		} else {
 			try {
@@ -40,15 +48,23 @@ public class SqlHandler {
 			} catch (Exception e) {
 
 			}
-			String query;
-			if (!sqlite.checkTable(digilockTable)) {
-				query = "CREATE TABLE "
-						+ digilockTable
-						+ " (x INTEGER, y INTEGER, z INTEGER, world TEXT, owner TEXT,"
-						+ " pincode TEXT,"
-						+ " coowners TEXT, users TEXT, closetimer INTEGER,"
-						+ " typeid INTEGER, connectedto TEXT, usecost INTEGER);";
-				sqlite.createTable(query);
+			sqlite.open();
+			if (sqlite.open() != null) {
+				String query;
+				if (!sqlite.checkTable(digilockTable)) {
+					query = "CREATE TABLE "
+							+ digilockTable
+							+ " (x INTEGER, y INTEGER, z INTEGER, world TEXT, owner TEXT,"
+							+ " pincode TEXT,"
+							+ " coowners TEXT, users TEXT, closetimer INTEGER,"
+							+ " typeid INTEGER, connectedto TEXT, usecost INTEGER);";
+					sqlite.createTable(query);
+					Messages.showInfo("SQLite Table Created Sucessfully.");
+				} else {
+					Messages.showInfo("SQLite Table Loaded.");
+				}
+			} else {
+				Messages.showInfo("SQLite Initialization failed!");
 			}
 		}
 	}
