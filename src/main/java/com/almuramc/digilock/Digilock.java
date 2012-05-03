@@ -76,7 +76,7 @@ public class Digilock extends SpoutPlugin {
 		return sql;
 	}
 
-	public static Map<Integer, String> holdingKey = new HashMap<Integer, String>();
+	public static Map<Integer, Keyboard> holdingKey = new HashMap<Integer, Keyboard>();
 	public static Map<Integer, Integer> userno = new HashMap<Integer, Integer>();
 
 	public static void removeUserData(int id) {
@@ -91,7 +91,7 @@ public class Digilock extends SpoutPlugin {
 		if (!userno.containsKey(id)) {
 			// DigiLock
 			userno.put(id, new Integer(id));
-			holdingKey.put(id, "KEY_LCONTROL");
+			holdingKey.put(id, Keyboard.CHAR_NONE);
 		}
 	}
 }

@@ -10,6 +10,7 @@ import com.bekvon.bukkit.residence.Residence;
 import com.bekvon.bukkit.residence.protection.ClaimedResidence;
 
 import org.getspout.spoutapi.block.SpoutBlock;
+import org.getspout.spoutapi.keyboard.Keyboard;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import org.bukkit.Material;
@@ -57,7 +58,7 @@ public class PlayerListener implements Listener {
 
 		if (sPlayer.isSpoutCraftEnabled()
 				&& BlockTools.isLockable(sBlock)
-				&& Digilock.holdingKey.get(id).equals("KEY_LCONTROL")
+				&& Digilock.holdingKey.get(id).equals(Keyboard.KEY_LSHIFT)
 				&& event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
 				&& (Permissions.hasPerm(sPlayer, "create",
 				Permissions.NOT_QUIET) || Permissions.hasPerm(
@@ -544,7 +545,7 @@ public class PlayerListener implements Listener {
 									"Used with fingerprint");
 							if (sPlayer.isSpoutCraftEnabled()
 									&& Digilock.getConf().useSignGUI()
-									&& Digilock.holdingKey.get(id).equals("KEY_LSHIFT")
+									&& Digilock.holdingKey.get(id).equals(Keyboard.KEY_LSHIFT)
 									&& Permissions.hasPerm(sPlayer, "signedit",
 									Permissions.NOT_QUIET)) {
 								Sign sign = (Sign) sBlock.getState();
@@ -765,7 +766,7 @@ public class PlayerListener implements Listener {
 				else if (BlockTools.isSign(sBlock)) {
 					if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
 							&& Digilock.getConf().useSignGUI()
-							&& Digilock.holdingKey.get(id).equals("KEY_LSHIFT")
+							&& Digilock.holdingKey.get(id).equals(Keyboard.KEY_LSHIFT)
 							&& Permissions.hasPerm(sPlayer,
 							"signedit",
 							Permissions.NOT_QUIET)) {

@@ -4,6 +4,7 @@ import com.almuramc.digilock.Digilock;
 
 import org.getspout.spoutapi.event.input.KeyPressedEvent;
 import org.getspout.spoutapi.event.input.KeyReleasedEvent;
+import org.getspout.spoutapi.keyboard.Keyboard;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,12 +12,11 @@ import org.bukkit.event.Listener;
 public class KeyboardListener implements Listener {
 	@EventHandler
 	public void onKeyPressedEvent(KeyPressedEvent event) {
-		System.out.println(event.getKey().name());
-		Digilock.holdingKey.put(event.getPlayer().getEntityId(), event.getKey().name());
+		Digilock.holdingKey.put(event.getPlayer().getEntityId(), event.getKey());
 	}
 
 	@EventHandler
 	public void onKeyReleasedEvent(KeyReleasedEvent event) {
-		Digilock.holdingKey.put(event.getPlayer().getEntityId(), "");
+		Digilock.holdingKey.put(event.getPlayer().getEntityId(), Keyboard.CHAR_NONE);
 	}
 }
