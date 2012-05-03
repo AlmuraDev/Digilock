@@ -103,6 +103,14 @@
                     <include>plugin.yml</include>
                 </includes>
             </resource>
+            <resource>
+                <targetPath>.</targetPath>
+                <filtering>false</filtering>
+                <directory>${basedir}/src/main/resources</directory>
+                <includes>
+                    <include>config.yml</include>
+                </includes>
+            </resource>
         </resources>
         <!-- Plugins -->
         <plugins>
