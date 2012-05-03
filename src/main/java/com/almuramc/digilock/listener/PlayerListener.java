@@ -58,7 +58,7 @@ public class PlayerListener implements Listener {
 
 		if (sPlayer.isSpoutCraftEnabled()
 				&& BlockTools.isLockable(sBlock)
-				&& Digilock.holdingKey.get(id).equals(Keyboard.KEY_LSHIFT)
+				&& Digilock.holdingKey.get(id).equals(Keyboard.KEY_LCONTROL)
 				&& event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
 				&& (Permissions.hasPerm(sPlayer, "create",
 				Permissions.NOT_QUIET) || Permissions.hasPerm(
