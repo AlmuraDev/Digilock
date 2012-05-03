@@ -40,7 +40,7 @@ public class LockCommand implements CommandExecutor {
 			if (sender instanceof Player) {
 				Messages.showError("You cant use this command in the console.");
 				return false;
-			} else if (Permissions.hasPerm(sPlayer, "digilock.create", Permissions.NOT_QUIET) || Permissions.hasPerm(sPlayer, "digilock.use", Permissions.NOT_QUIET) || Permissions.hasPerm(sPlayer, "digilock.admin", Permissions.NOT_QUIET) || Permissions.hasPerm(sPlayer, "digilock.*", Permissions.NOT_QUIET) || Permissions.hasPerm(sPlayer, "*", Permissions.NOT_QUIET)) {
+			} else if (Permissions.hasPerm(sPlayer, "digilock.create", Permissions.NOT_QUIET) || Permissions.hasPerm(sPlayer, "digilock.use", Permissions.NOT_QUIET) || Permissions.hasPerm(sPlayer, "admin", Permissions.NOT_QUIET) || Permissions.hasPerm(sPlayer, "digilock.*", Permissions.NOT_QUIET) || Permissions.hasPerm(sPlayer, "*", Permissions.NOT_QUIET)) {
 				if (!BlockTools.isLocked(block)) {
 					if (args.length == 0) {
 						return false;
@@ -130,21 +130,21 @@ public class LockCommand implements CommandExecutor {
 							sPlayer.damage(5);
 						}
 						// REMOVE ***************************************
-					} else if (action.equalsIgnoreCase("remove") && (lock.getOwner().equalsIgnoreCase(sPlayer.getName()) || Permissions.hasPerm(sPlayer, "digilock.admin", Permissions.NOT_QUIET)) && args.length == 1) {
+					} else if (action.equalsIgnoreCase("remove") && (lock.getOwner().equalsIgnoreCase(sPlayer.getName()) || Permissions.hasPerm(sPlayer, "admin", Permissions.NOT_QUIET)) && args.length == 1) {
 						lock.RemoveDigiLock(sPlayer);
 						// closetimer ***************************************
-					} else if (action.equalsIgnoreCase("closetimer") && (lock.getOwner().equalsIgnoreCase(sPlayer.getName()) || Permissions.hasPerm(sPlayer, "digilock.admin", Permissions.NOT_QUIET)) && args.length == 2) {
+					} else if (action.equalsIgnoreCase("closetimer") && (lock.getOwner().equalsIgnoreCase(sPlayer.getName()) || Permissions.hasPerm(sPlayer, "admin", Permissions.NOT_QUIET)) && args.length == 2) {
 						lock.setClosetimer(Integer.getInteger(args[1], 0));
 						LockCore.SaveDigiLock(sPlayer, lock.getBlock(), lock.getPincode(), lock.getOwner(), lock.getClosetimer(), lock.getCoOwners(), lock.getUsers(), lock.getBlock().getTypeId(), lock.getConnectedTo(), lock.getUseCost());
 						// addcoowner ***************************************
-					} else if (action.equalsIgnoreCase("addcoowner") && (lock.getOwner().equalsIgnoreCase(sPlayer.getName()) || Permissions.hasPerm(sPlayer, "digilock.admin", Permissions.NOT_QUIET)) && args.length == 2) {
+					} else if (action.equalsIgnoreCase("addcoowner") && (lock.getOwner().equalsIgnoreCase(sPlayer.getName()) || Permissions.hasPerm(sPlayer, "admin", Permissions.NOT_QUIET)) && args.length == 2) {
 						lock.addCoowner(args[1]);
 						LockCore.SaveDigiLock(sPlayer, lock.getBlock(), lock.getPincode(), lock.getOwner(), lock.getClosetimer(), lock.getCoOwners(), lock.getUsers(), lock.getBlock().getTypeId(), lock.getConnectedTo(), lock.getUseCost());
 						// remcoowner ***************************************
 					} else if (action.equalsIgnoreCase("remcoowner")
 							&& (lock.getOwner().equalsIgnoreCase(
 							sPlayer.getName()) || Permissions
-							.hasPerm(sPlayer, "digilock.admin",
+							.hasPerm(sPlayer, "admin",
 									Permissions.NOT_QUIET))
 							&& args.length == 2) {
 						lock.removeCoowner(args[1]);
@@ -159,7 +159,7 @@ public class LockCommand implements CommandExecutor {
 					} else if (action.equalsIgnoreCase("adduser")
 							&& (lock.getOwner().equalsIgnoreCase(
 							sPlayer.getName()) || Permissions
-							.hasPerm(sPlayer, "digilock.admin",
+							.hasPerm(sPlayer, "admin",
 									Permissions.NOT_QUIET))
 							&& args.length == 2) {
 						lock.addUser(args[1]);
@@ -174,7 +174,7 @@ public class LockCommand implements CommandExecutor {
 					} else if (action.equalsIgnoreCase("remuser")
 							&& (lock.getOwner().equalsIgnoreCase(
 							sPlayer.getName()) || Permissions
-							.hasPerm(sPlayer, "digilock.admin",
+							.hasPerm(sPlayer, "admin",
 									Permissions.NOT_QUIET))
 							&& args.length == 2) {
 						lock.removeUser(args[1]);
@@ -189,7 +189,7 @@ public class LockCommand implements CommandExecutor {
 					} else if (action.equalsIgnoreCase("usecost")
 							&& (lock.getOwner().equalsIgnoreCase(
 							sPlayer.getName()) || Permissions
-							.hasPerm(sPlayer, "digilock.admin",
+							.hasPerm(sPlayer, "admin",
 									Permissions.NOT_QUIET))
 							&& args.length == 2) {
 						lock.setUseCost(Integer.getInteger(args[1], 0));
@@ -204,7 +204,7 @@ public class LockCommand implements CommandExecutor {
 					} else if (action.equalsIgnoreCase("connectedto")
 							&& (lock.getOwner().equalsIgnoreCase(
 							sPlayer.getName()) || Permissions
-							.hasPerm(sPlayer, "digilock.admin",
+							.hasPerm(sPlayer, "admin",
 									Permissions.NOT_QUIET))
 							&& args.length == 2) {
 						lock.setConnectedTo(args[1]);

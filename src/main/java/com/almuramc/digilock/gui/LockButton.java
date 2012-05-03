@@ -52,10 +52,10 @@ public class LockButton extends GenericButton {
 					LockCore.cleanupPopupScreen(sPlayer);
 					if ((lock.getPincode().equals(
 							LockCore.pincodeGUI.get(entId).getText()) && Permissions
-							.hasPerm(sPlayer, "digilock.use",
+							.hasPerm(sPlayer, "use",
 									Permissions.QUIET))
 							|| Permissions.hasPerm(sPlayer,
-							"digilock.admin", Permissions.QUIET)) {
+							"admin", Permissions.QUIET)) {
 						if (BlockTools.isChest(lock.getBlock())) {
 							Chest sChest = (Chest) sBlock.getState();
 							Inventory inv = sChest.getInventory();

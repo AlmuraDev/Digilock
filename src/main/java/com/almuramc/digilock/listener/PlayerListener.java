@@ -59,7 +59,7 @@ public class PlayerListener implements Listener {
 				&& BlockTools.isLockable(sBlock)
 				&& Digilock.holdingKey.get(id).equals("KEY_LCONTROL")
 				&& event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
-				&& (Permissions.hasPerm(sPlayer, "digilock.create",
+				&& (Permissions.hasPerm(sPlayer, "create",
 				Permissions.NOT_QUIET) || Permissions.hasPerm(
 				sPlayer, "digilock.admin", Permissions.NOT_QUIET))) {
 
@@ -68,7 +68,7 @@ public class PlayerListener implements Listener {
 				LockCore lock = BlockTools.loadDigiLock(sBlock);
 				if (lock.isOwner(sPlayer)
 						|| lock.isCoowner(sPlayer)
-						|| Permissions.hasPerm(sPlayer, "digilock.admin",
+						|| Permissions.hasPerm(sPlayer, "admin",
 						Permissions.NOT_QUIET)) {
 					LockCore.setPincode(sPlayer, sBlock);
 				} else {
@@ -126,13 +126,13 @@ public class PlayerListener implements Listener {
 					if (lock.getPincode().equals("")
 							|| lock.getPincode()
 							.equalsIgnoreCase("fingerprint")
-							&& Permissions.hasPerm(sPlayer, "digilock.use",
+							&& Permissions.hasPerm(sPlayer, "use",
 							Permissions.NOT_QUIET)) {
 						// TOGGLE DOOR BY FINGERPRINT / NAME
 						if (lock.isOwner(sPlayer)
 								|| lock.isCoowner(sPlayer)
 								|| lock.isUser(sPlayer)
-								|| Permissions.hasPerm(sPlayer, "digilock.admin",
+								|| Permissions.hasPerm(sPlayer, "admin",
 								Permissions.NOT_QUIET)) {
 							BlockTools.playDigiLockSound(sBlock);
 							if (BlockTools.isDoubleDoorOpen(sBlock)) {
@@ -175,13 +175,13 @@ public class PlayerListener implements Listener {
 					if (lock.getPincode().equals("")
 							|| lock.getPincode()
 							.equalsIgnoreCase("fingerprint")
-							&& Permissions.hasPerm(sPlayer, "digilock.use",
+							&& Permissions.hasPerm(sPlayer, "use",
 							Permissions.NOT_QUIET)) {
 						// TOGGLE DOOR BY FINGERPRINT / NAME
 						if (lock.isOwner(sPlayer)
 								|| lock.isCoowner(sPlayer)
 								|| lock.isUser(sPlayer)
-								|| Permissions.hasPerm(sPlayer, "digilock.admin",
+								|| Permissions.hasPerm(sPlayer, "admin",
 								Permissions.NOT_QUIET)) {
 							BlockTools.playDigiLockSound(sBlock);
 							if (BlockTools.isDoorOpen(sBlock)) {

@@ -749,7 +749,7 @@ public class LockCore {
 		// AdminButton
 		if (BlockTools.isLocked(sBlock)
 				&& BlockTools.isChest(sBlock) // Displays only if sBlock=Chest.
-				&& Permissions.hasPerm(sPlayer, "digilock.admin",
+				&& Permissions.hasPerm(sPlayer, "admin",
 						Permissions.NOT_QUIET)) {
 			LockButton adminButton = new LockButton("Open");
 			adminButton.setAuto(false).setX(155).setY(153).setHeight(height + 5).setWidth(35);

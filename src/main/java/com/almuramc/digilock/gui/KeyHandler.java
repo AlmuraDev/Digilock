@@ -42,8 +42,8 @@ public class KeyHandler implements BindingExecutionDelegate {
 		// GAME_SCREEN
 		else if (BlockTools.isLockable(targetblock)) {
 			if (screentype == ScreenType.GAME_SCREEN) {
-				if ((Permissions.hasPerm(sPlayer, "digilock.create",
-						Permissions.QUIET) || Permissions.hasPerm(sPlayer, "digilock.admin", Permissions.QUIET))) {
+				if ((Permissions.hasPerm(sPlayer, "create",
+						Permissions.QUIET) || Permissions.hasPerm(sPlayer, "admin", Permissions.QUIET))) {
 					if (BlockTools.isLocked(targetblock)) {
 						LockCore lock = BlockTools.loadDigiLock(targetblock);
 						if (BlockTools.isDoubleDoor(targetblock)) {
