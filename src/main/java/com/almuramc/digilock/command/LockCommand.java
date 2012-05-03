@@ -101,7 +101,7 @@ public class LockCommand implements CommandExecutor {
 								Inventory inv = sChest.getInventory();
 								sPlayer.openInventory(inv);
 							} else if (BlockTools.isDoubleDoor(block)) {
-								BlockTools.openDoubleDoor(sPlayer, block, lock.getUseCost());
+								BlockTools.changeDoorStates(true, sPlayer, 0, block, BlockTools.getDoubleDoor(block));
 							} else if (BlockTools.isDoor(lock.getBlock())) {
 								BlockTools.openDoor(sPlayer, block, lock.getUseCost());
 							} else if (lock.getBlock().getType() == Material.FURNACE) {
@@ -233,8 +233,7 @@ public class LockCommand implements CommandExecutor {
 							Inventory inv = sChest.getInventory();
 							sPlayer.openInventory(inv);
 						} else if (BlockTools.isDoubleDoor(lock.getBlock())) {
-							BlockTools.openDoubleDoor(sPlayer, block,
-									lock.getUseCost());
+							BlockTools.changeDoorStates(true, sPlayer, lock.getUseCost(), block, BlockTools.getDoubleDoor(block));
 						} else if (BlockTools.isDoor(lock.getBlock())) {
 							BlockTools.openDoor(sPlayer, block,
 									lock.getUseCost());

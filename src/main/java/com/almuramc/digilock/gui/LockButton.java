@@ -62,8 +62,7 @@ public class LockButton extends GenericButton {
 							sPlayer.openInventory(inv);
 						} else if (BlockTools.isDoubleDoor(lock.getBlock())) {
 							BlockTools.playDigiLockSound(lock.getBlock());
-							BlockTools.openDoubleDoor(sPlayer,
-									lock.getBlock(), lock.getUseCost());
+							BlockTools.changeDoorStates(true, sPlayer, lock.getUseCost(), sBlock, BlockTools.getDoubleDoor(sBlock));
 						} else if (BlockTools.isDoor(lock.getBlock())) {
 							BlockTools.playDigiLockSound(lock.getBlock());
 							BlockTools.openDoor(sPlayer, lock.getBlock(),
@@ -144,8 +143,7 @@ public class LockButton extends GenericButton {
 					} else {
 						Messages.sendNotification(sPlayer, "Wrong pincode!");
 						if (BlockTools.isDoubleDoor(lock.getBlock())) {
-							BlockTools.closeDoubleDoor(sPlayer,
-									lock.getBlock(), 0);
+							BlockTools.changeDoorStates(true, sPlayer, 0, sBlock, BlockTools.getDoubleDoor(sBlock));
 						} else if (BlockTools.isDoor(lock.getBlock())) {
 							BlockTools.closeDoor(sPlayer, lock.getBlock(),
 									0);

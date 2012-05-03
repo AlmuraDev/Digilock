@@ -47,7 +47,7 @@ public class KeyHandler implements BindingExecutionDelegate {
 					if (BlockTools.isLocked(targetblock)) {
 						LockCore lock = BlockTools.loadDigiLock(targetblock);
 						if (BlockTools.isDoubleDoor(targetblock)) {
-							BlockTools.closeDoubleDoor(sPlayer, targetblock, 0);
+							BlockTools.changeDoorStates(true, sPlayer, 0, targetblock, BlockTools.getDoubleDoor(targetblock));
 						} else if (BlockTools.isDoor(targetblock)) {
 							BlockTools.closeDoor(sPlayer, targetblock, 0);
 						} else if (BlockTools.isTrapdoor(targetblock)) {
@@ -62,10 +62,8 @@ public class KeyHandler implements BindingExecutionDelegate {
 					} else {
 						if (sPlayer.isSpoutCraftEnabled()) {
 							if (BlockTools.isDoubleDoor(targetblock)) {
-								SpoutBlock leftdoor = BlockTools.getLeftDoubleDoor(targetblock);
-								BlockTools.closeDoubleDoor(sPlayer, leftdoor,
-										0);
-								LockCore.setPincode(sPlayer, leftdoor);
+								BlockTools.changeDoorStates(true, sPlayer, 0, targetblock, BlockTools.getDoubleDoor(targetblock));
+								LockCore.setPincode(sPlayer, targetblock);
 							} else if (BlockTools.isDoor(targetblock)) {
 								BlockTools.closeDoor(targetblock);
 								LockCore.setPincode(sPlayer, targetblock);

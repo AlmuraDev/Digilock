@@ -2,6 +2,8 @@ package com.almuramc.digilock.util;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.List;
 
 import com.almuramc.digilock.Digilock;
 import com.almuramc.digilock.LockCore;
@@ -15,10 +17,13 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Chest;
 import org.bukkit.block.Dispenser;
+import org.bukkit.event.block.Action;
 import org.bukkit.inventory.DoubleChestInventory;
 import org.bukkit.material.Button;
 import org.bukkit.material.Door;
 import org.bukkit.material.Lever;
+
+import org.spout.api.event.player.PlayerInteractEvent;
 
 public class BlockTools {
 	private static final Material lockablematerials[] = {Material.CHEST,
@@ -145,11 +150,7 @@ public class BlockTools {
 	public static SpoutBlock getDigiLockBlock(SpoutBlock sBlock) {
 		if (isDoor(sBlock)) {
 			if (isDoubleDoor(sBlock)) {
-				sBlock = getLeftDoubleDoor(sBlock);
-			}
-			Door door = (Door) sBlock.getState().getData();
-			if (door.isTopHalf()) {
-				sBlock = sBlock.getRelative(BlockFace.DOWN);
+				return (SpoutBlock) getDoubleDoor(sBlock);
 			}
 		} else if (isChest(sBlock) && (sBlock.getState() instanceof Chest)) {
 			Chest sChest1 = (Chest) sBlock.getState();
@@ -332,7 +333,7 @@ public class BlockTools {
 				// x | 8 ^ 8 = 0
 				// sBlock.setData((byte) ((lever.getData() | 8) ^ 8));
 				if (isDoubleDoor(nextBlock)) {
-					openDoubleDoor(sPlayer, nextBlock, 0);
+					changeDoorStates(true, sPlayer, cost, nextBlock, getDoubleDoor(nextBlock));
 					scheduleCloseDoubleDoor(sPlayer, nextBlock, 5,
 							0);
 				} else if (isDoor(nextBlock)) {
@@ -446,7 +447,7 @@ public class BlockTools {
 					// sBlock.setData((byte) ((lever.getData() | 8) ^ 8));
 
 					if (isDoubleDoor(nextBlock)) {
-						openDoubleDoor(sPlayer, nextBlock, 0);
+						changeDoorStates(true, sPlayer, cost, nextBlock, getDoubleDoor(nextBlock));
 					} else if (isDoor(nextBlock)) {
 						openDoor(sPlayer, nextBlock, 0);
 					} else if (isTrapdoor(nextBlock)) {
@@ -478,7 +479,7 @@ public class BlockTools {
 						lever.setPowered(false);
 						// sBlock.setData((byte) (lever.getData() |8));
 						if (isDoubleDoor(nextBlock)) {
-							closeDoubleDoor(sPlayer, nextBlock, 0);
+							changeDoorStates(true, sPlayer, 0, sBlock, getDoubleDoor(sBlock));
 						} else if (isDoor(nextBlock)) {
 							closeDoor(sPlayer, nextBlock, 0);
 						} else if (isTrapdoor(nextBlock)) {
@@ -891,282 +892,118 @@ public class BlockTools {
 	//
 	// *******************************************************
 
+	public static boolean isDoubleDoor(SpoutBlock block) {
+		if (getDoubleDoor(block) != null) {
+			return true;
+		}
+
+		return false;
+	}
 	/**
 	 * Checks if the block is a part of a double door
 	 * @param sBlock
 	 * @return
 	 */
-	public static boolean isDoubleDoor(SpoutBlock sBlock) {
-		// left door:NORTH,NORTH_EAST Right door:WEST,NORTH_WEST
-		// left door:WEST,NORTH_WEST Right door:SOUTH,SOUTH_WEST
-		// left door:SOUTH,SOUTH_WEST Right door:EAST,SOUTH_EAST
-		// left door:EAST,SOUTH_EAST Right door:NORTH,NORTH_EAST
-		if (sBlock != null) {
-			if (isDoor(sBlock)) {
-				if (isDoor(sBlock.getRelative(BlockFace.EAST))
-						|| isDoor(sBlock.getRelative(BlockFace.NORTH))
-						|| isDoor(sBlock.getRelative(BlockFace.SOUTH))
-						|| isDoor(sBlock.getRelative(BlockFace.WEST))) {
-					Door door = (Door) sBlock.getState().getData();
-					if (door.getFacing() == BlockFace.EAST
-							&& door.getHingeCorner() == BlockFace.SOUTH_EAST) {
-
-						if (isDoor(sBlock.getRelative(BlockFace.NORTH))) {
-							Door door2 = (Door) sBlock
-									.getRelative(BlockFace.NORTH).getState()
-									.getData();
-
-							if (door2.getHingeCorner() == BlockFace.NORTH_EAST) { //North_East
-								return true;
-							}
-						} else if (isDoor(sBlock.getRelative(BlockFace.WEST))) {
-							Door door2 = (Door) sBlock
-									.getRelative(BlockFace.WEST).getState()
-									.getData();
-
-							if (door2.getHingeCorner() == BlockFace.SOUTH_WEST) {
-								return true;
-							}
-						} else {
-						}
-					} else if (door.getFacing() == BlockFace.NORTH
-							&& door.getHingeCorner() == BlockFace.NORTH_EAST) {
-						if (isDoor(sBlock.getRelative(BlockFace.WEST))) {
-							Door door2 = (Door) sBlock
-									.getRelative(BlockFace.WEST).getState()
-									.getData();
-							if (door2.getHingeCorner() == BlockFace.NORTH_WEST) {
-								return true;
-							}
-						} else if (isDoor(sBlock.getRelative(BlockFace.SOUTH))) {
-							Door door2 = (Door) sBlock
-									.getRelative(BlockFace.SOUTH).getState()
-									.getData();
-							if (door2.getHingeCorner() == BlockFace.SOUTH_EAST) {
-								return true;
-							}
-						}
-					} else if (door.getFacing() == BlockFace.SOUTH
-							&& door.getHingeCorner() == BlockFace.SOUTH_WEST) {
-						if (isDoor(sBlock.getRelative(BlockFace.EAST))) {
-							Door door2 = (Door) sBlock
-									.getRelative(BlockFace.EAST).getState()
-									.getData();
-							if (door2.getHingeCorner() == BlockFace.SOUTH_EAST) {
-								return true;
-							}
-						} else if (isDoor(sBlock.getRelative(BlockFace.NORTH))) {
-							Door door2 = (Door) sBlock
-									.getRelative(BlockFace.NORTH).getState()
-									.getData();
-							if (door2.getHingeCorner() == BlockFace.NORTH_WEST) {
-								return true;
-							}
-						}
-					} else if (door.getFacing() == BlockFace.WEST
-							&& door.getHingeCorner() == BlockFace.NORTH_WEST) {
-						if (isDoor(sBlock.getRelative(BlockFace.SOUTH))) {
-							Door door2 = (Door) sBlock
-									.getRelative(BlockFace.SOUTH).getState()
-									.getData();
-							if (door2.getHingeCorner() == BlockFace.SOUTH_WEST) {
-								return true;
-							}
-						} else if (isDoor(sBlock.getRelative(BlockFace.EAST))) {
-							Door door2 = (Door) sBlock
-									.getRelative(BlockFace.EAST).getState()
-									.getData();
-							if (door2.getHingeCorner() == BlockFace.NORTH_EAST) {
-								return true;
-							}
-						}
-					}
-				}
+	public static Block getDoubleDoor(SpoutBlock sBlock) {
+		Block block = sBlock;
+		if ((sBlock.getData() & 0x8) == 0x8) {
+			block = block.getRelative(BlockFace.DOWN);
+		}
+		Block found = findAdjacentBlock(block, block.getType());
+		if (found != null) {
+			if (found.getType() == Material.WOOD_DOOR) {
+				return found;
+			}
+			if (found.getType() == Material.IRON_DOOR) {
+				return found;
 			}
 		}
-		return false;
+		return null;
 	}
 
-	/**
-	 * checks if the double door is open
-	 * @param sBlock
-	 * @return true if the double door is open, false if not
-	 */
-	public static boolean isDoubleDoorOpen(SpoutBlock sBlock) {
-		return (isDoorOpen(getLeftDoubleDoor(sBlock)) || !isDoorOpen(getRightDoubleDoor(sBlock)));
-	}
+	public static void changeDoorStates(boolean allowDoorToOpen, SpoutPlayer sPlayer, int cost, Block... doors) {
+		boolean cont = false;
 
-	public static void closeDoubleDoor(SpoutPlayer sPlayer, SpoutBlock sBlock,
-									   int cost) {
-		if (isDoubleDoor(sBlock)) {
-			if (isLeftDoubleDoor(sBlock)) {
-				closeDoor(sPlayer, sBlock, 0);
-				openDoor(sPlayer, getRightDoubleDoor(sBlock), 0);
-			} else {
-				openDoor(sPlayer, sBlock, cost);
-				closeDoor(sPlayer, getLeftDoubleDoor(sBlock), cost);
+		for (Block door : doors) {
+			if (door == null) {
+				continue;
+			}
+
+			if (!allowDoorToOpen && (door.getData() & 0x4) == 0) {
+				continue;
+			}
+
+			// Get the top half of the door
+			Block topHalf = door.getRelative(BlockFace.UP);
+
+			// Now xor both data values with 0x8, the flag that states if the door is open
+			door.setData((byte) (door.getData() ^ 0x4));
+
+			// Only change the block above it if it is something we can open or close
+			if (isValid(topHalf.getType())) {
+				topHalf.setData((byte) (topHalf.getData() ^ 0x4));
+				cont = true;
 			}
 		}
-	}
 
-	public static void openDoubleDoor(SpoutPlayer sPlayer, SpoutBlock sBlock,
-									  int cost) {
-		if (isDoubleDoor(sBlock)) {
-			if (isLeftDoubleDoor(sBlock)) {
-				openDoor(sPlayer, sBlock, cost);
-				closeDoor(sPlayer, getRightDoubleDoor(sBlock), 0);
-			} else {
-				closeDoor(sPlayer, sBlock, 0);
-				openDoor(sPlayer, getLeftDoubleDoor(sBlock), cost);
-			}
+		if (!cont) {
+			return;
 		}
+
+		SpoutBlock sBlock = (SpoutBlock) doors[0];
+		playDigiLockSound((SpoutBlock) doors[0]);
 		LockCore lock = loadDigiLock(sBlock);
-		if (lock != null) {
-			if (lock.getClosetimer() > 0) {
-				scheduleCloseDoubleDoor(sPlayer, sBlock,
-						lock.getClosetimer(), 0);
-			}
-		}
-	}
+		if (Digilock.getConf().useEconomy() && cost > 0 && lock.isUser(sPlayer) && !(lock.isOwner(sPlayer) || lock.isCoowner(sPlayer))) {
+			if (Digilock.getHooks().getEconHook().hasAccount(sPlayer.getName())) {
+				if (Digilock.getHooks().getEconHook().has(sPlayer.getName(), cost)) {
+					Digilock.getHooks().getEconHook().withdrawPlayer(sPlayer.getName(), cost);
+					if (Digilock.getHooks().getEconHook().hasAccount(lock.getOwner())) {
+						Digilock.getHooks().getEconHook().depositPlayer(lock.getOwner(), cost);
+					}
 
-	public static boolean isLeftDoubleDoor(SpoutBlock sBlock) {
-		if (isDoubleDoor(sBlock)) {
-			Door door = (Door) sBlock.getState().getData();
-			// left door:NORTH,NORTH_EAST Right door:WEST,NORTH_WEST
-			// left door:WEST,NORTH_WEST Right door:SOUTH,SOUTH_WEST
-			// left door:SOUTH,SOUTH_WEST Right door:EAST,SOUTH_EAST
-			// left door:EAST,SOUTH_EAST Right door:NORTH,NORTH_EAST
-			if (door.getFacing() == BlockFace.NORTH
-					&& door.getHingeCorner() == BlockFace.NORTH_EAST) {
-				if (isDoor(sBlock.getRelative(BlockFace.WEST))) {
-					Door door2 = (Door) sBlock.getRelative(BlockFace.WEST)
-							.getState().getData();
-					if (door2.getHingeCorner() == BlockFace.NORTH_WEST) {
-						return true;
-					}
+					sPlayer.sendMessage("Your account (" + Digilock.getHooks().getEconHook().getBalance(sPlayer.getName()) + ") has been deducted " + Digilock.getHooks().getEconHook().format(cost) + ".");
 				} else {
-					return false;
-				}
-			} else if (door.getFacing() == BlockFace.WEST
-					&& door.getHingeCorner() == BlockFace.NORTH_WEST) {
-				if (isDoor(sBlock.getRelative(BlockFace.SOUTH))) {
-					Door door2 = (Door) sBlock.getRelative(BlockFace.SOUTH)
-							.getState().getData();
-					if (door2.getHingeCorner() == BlockFace.SOUTH_WEST) {
-						return true;
-					}
-				} else {
-					return false;
-				}
-			} else if (door.getFacing() == BlockFace.EAST
-					&& door.getHingeCorner() == BlockFace.SOUTH_EAST) {
-				if (isDoor(sBlock.getRelative(BlockFace.NORTH))) {
-					Door door2 = (Door) sBlock.getRelative(BlockFace.NORTH)
-							.getState().getData();
-					if (door2.getHingeCorner() == BlockFace.NORTH_EAST) {
-						return true;
-					}
-				} else {
-					return false;
-				}
-			} else if (door.getFacing() == BlockFace.SOUTH
-					&& door.getHingeCorner() == BlockFace.SOUTH_WEST) {
-				if (isDoor(sBlock.getRelative(BlockFace.EAST))) {
-					Door door2 = (Door) sBlock.getRelative(BlockFace.EAST)
-							.getState().getData();
-					if (door2.getHingeCorner() == BlockFace.SOUTH_EAST) {
-						return true;
-					}
-				} else {
-					return false;
+					sPlayer.sendMessage("You dont have enough money (" + Digilock.getHooks().getEconHook().getBalance(sPlayer.getName()) + "). Cost is:" + Digilock.getHooks().getEconHook().format(cost));
 				}
 			}
 		}
-		return false;
 	}
 
-	public static SpoutBlock getLeftDoubleDoor(SpoutBlock sBlock) {
-		if (isLeftDoubleDoor(sBlock)) {
-			return sBlock;
-		} else {
-			Door door = (Door) sBlock.getState().getData();
-			// left door:NORTH,NORTH_EAST Right door:WEST,NORTH_WEST
-			// left door:WEST,NORTH_WEST Right door:SOUTH,SOUTH_WEST
-			// left door:EAST,SOUTH_EAST Right door:NORTH,NORTH_EAST
-			// left door:SOUTH,SOUTH_WEST Right door:EAST,SOUTH_EAST
-			if (door.getFacing() == BlockFace.NORTH
-					&& door.getHingeCorner() == BlockFace.NORTH_EAST) {
-				return sBlock.getRelative(BlockFace.SOUTH);
-			} else if (door.getFacing() == BlockFace.WEST
-					&& door.getHingeCorner() == BlockFace.NORTH_WEST) {
-				return sBlock.getRelative(BlockFace.EAST);
-			} else if (door.getFacing() == BlockFace.EAST
-					&& door.getHingeCorner() == BlockFace.SOUTH_EAST) {
-				return sBlock.getRelative(BlockFace.WEST);
-			} else {
-				// if (door.getFacing() == BlockFace.SOUTH
-				// && door.getHingeCorner() == BlockFace.SOUTH_WEST) {
-				return sBlock.getRelative(BlockFace.NORTH);
+	public static boolean isDoubleDoorOpen(SpoutBlock block) {
+		if ((block.getData() & 0x4) == 0) {
+			return false;
+		}
+
+		return true;
+	}
+
+	private static boolean isValid(Material material) {
+		return material == Material.IRON_DOOR_BLOCK || material == Material.WOODEN_DOOR || material == Material.FENCE_GATE;
+	}
+
+	public static Block findAdjacentBlock(Block block, Material material, Block... ignore) {
+		BlockFace[] faces = new BlockFace[]{BlockFace.NORTH, BlockFace.SOUTH, BlockFace.EAST, BlockFace.WEST};
+		List<Block> ignoreList = Arrays.asList(ignore);
+
+		for (BlockFace face : faces) {
+			Block adjacentBlock = block.getRelative(face);
+
+			if (adjacentBlock.getType() == material && !ignoreList.contains(adjacentBlock)) {
+				return adjacentBlock;
 			}
 		}
+
+		return null;
 	}
 
-	public static boolean isRightDoubleDoor(SpoutBlock sBlock) {
-		if (isDoubleDoor(sBlock)) {
-			if (isLeftDoubleDoor(sBlock)) {
-				return false;
-			} else {
-				return true;
+	public static int scheduleCloseDoubleDoor(final SpoutPlayer sPlayer, final SpoutBlock sBlock, final int closetimer, final int cost) {
+		final Block doubleDoorBlock = getDoubleDoor(sBlock);
+
+		int taskID = Digilock.getInstance().getServer().getScheduler().scheduleSyncDelayedTask(Digilock.getInstance(), new Runnable() {
+			public void run() {
+				changeDoorStates(false, sPlayer, cost, sBlock, doubleDoorBlock);
 			}
-		}
-		return false;
-	}
-
-	public static SpoutBlock getRightDoubleDoor(SpoutBlock sBlock) {
-		if (isRightDoubleDoor(sBlock)) {
-			return sBlock;
-		} else {
-			Door door = (Door) sBlock.getState().getData();
-			// left door:NORTH,NORTH_EAST Right door:WEST,NORTH_WEST
-			// left door:WEST,NORTH_WEST Right door:SOUTH,SOUTH_WEST
-			// left door:EAST,SOUTH_EAST Right door:NORTH,NORTH_EAST
-			// left door:SOUTH,SOUTH_WEST Right door:EAST,SOUTH_EAST
-			if (door.getFacing() == BlockFace.NORTH
-					&& door.getHingeCorner() == BlockFace.NORTH_EAST) {
-				return sBlock.getRelative(BlockFace.WEST);
-			} else if (door.getFacing() == BlockFace.WEST
-					&& door.getHingeCorner() == BlockFace.NORTH_WEST) {
-				return sBlock.getRelative(BlockFace.SOUTH);
-			} else if (door.getFacing() == BlockFace.EAST
-					&& door.getHingeCorner() == BlockFace.SOUTH_EAST) {
-				return sBlock.getRelative(BlockFace.NORTH);
-			} else {
-				// (door.getFacing() == BlockFace.SOUTH
-				// && door.getHingeCorner() == BlockFace.SOUTH_WEST) {
-				return sBlock.getRelative(BlockFace.EAST);
-			}
-		}
-	}
-
-	public static int scheduleCloseDoubleDoor(final SpoutPlayer sPlayer,
-											  final SpoutBlock sBlock, final int closetimer, final int cost) {
-		int fs = closetimer * 20;
-		// 20 ticks / second
-		int taskID = Digilock.getInstance().getServer().getScheduler()
-				.scheduleSyncDelayedTask(Digilock.getInstance(), new Runnable() {
-					@Override
-					public void run() {
-						SpoutBlock sb = sBlock;
-						SpoutPlayer sp = sPlayer;
-						int c = cost;
-						if (isDoubleDoor(sBlock)) {
-							if (isDoubleDoorOpen(sb)) {
-								closeDoubleDoor(sp, sb, c);
-								playDigiLockSound(sBlock);
-							}
-						}
-					}
-				}, fs);
+		}, closetimer);
 		return taskID;
 	}
 

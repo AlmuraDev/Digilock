@@ -136,19 +136,14 @@ public class PlayerListener implements Listener {
 								|| Permissions.hasPerm(sPlayer, "admin",
 								Permissions.NOT_QUIET)) {
 							BlockTools.playDigiLockSound(sBlock);
-							if (BlockTools.isDoubleDoorOpen(sBlock)) {
-								BlockTools.closeDoubleDoor(sPlayer, sBlock, 0);
-							} else {
-								BlockTools.openDoubleDoor(sPlayer, sBlock,
-										lock.getUseCost());
-							}
+							BlockTools.changeDoorStates(true, sPlayer, lock.getUseCost(), sBlock, BlockTools.getDoubleDoor(sBlock));
 							Messages.sendNotification(sPlayer,
 									"Used with fingerprint");
 						} else {
 							sPlayer.sendMessage("Your fingerprint does not match the DigiLock");
 							if (BlockTools.isDoubleDoorOpen(sBlock)) {
 								BlockTools.playDigiLockSound(sBlock);
-								BlockTools.closeDoubleDoor(sPlayer, sBlock, 0);
+								BlockTools.changeDoorStates(true, sPlayer, 0, sBlock, BlockTools.getDoubleDoor(sBlock));
 							}
 						}
 					} else {
@@ -157,14 +152,13 @@ public class PlayerListener implements Listener {
 								&& Permissions.hasPerm(sPlayer, "use",
 								Permissions.NOT_QUIET)) {
 							if (sPlayer.isSpoutCraftEnabled()) {
-								LockCore.getPincode(sPlayer,
-										BlockTools.getLeftDoubleDoor(sBlock));
+								LockCore.getPincode(sPlayer, (SpoutBlock) BlockTools.getDoubleDoor(sBlock));
 							} else {
 								sPlayer.sendMessage("Digilock'ed by "
 										+ lock.owner);
 							}
 						} else {
-							BlockTools.closeDoubleDoor(sPlayer, sBlock, 0);
+							BlockTools.changeDoorStates(true, sPlayer, 0, sBlock, BlockTools.getDoubleDoor(sBlock));
 							BlockTools.playDigiLockSound(sBlock);
 						}
 					}
@@ -416,8 +410,7 @@ public class PlayerListener implements Listener {
 											+ nextLockableBlock.getType()
 											+ " is not locked. Please lock it.");
 									if (BlockTools.isDoubleDoor(nextLockableBlock)) {
-										BlockTools.closeDoubleDoor(sPlayer,
-												nextLockableBlock, 0);
+										BlockTools.changeDoorStates(true, sPlayer, 0, nextLockableBlock, BlockTools.getDoubleDoor(nextLockableBlock));
 									} else if (BlockTools.isDoor(nextLockableBlock)) {
 										BlockTools.closeDoor(sPlayer,
 												nextLockableBlock, 0);
@@ -452,8 +445,7 @@ public class PlayerListener implements Listener {
 									}
 								} else {
 									if (BlockTools.isDoubleDoor(nextLockableBlock)) {
-										BlockTools.closeDoubleDoor(sPlayer,
-												nextLockableBlock, 0);
+										BlockTools.changeDoorStates(true, sPlayer, 0, nextLockableBlock, BlockTools.getDoubleDoor(nextLockableBlock));
 									} else if (BlockTools.isDoor(nextLockableBlock)) {
 										BlockTools.closeDoor(sPlayer,
 												nextLockableBlock, 0);
@@ -468,8 +460,7 @@ public class PlayerListener implements Listener {
 										+ nextLockableBlock.getType()
 										+ " is not locked. Please lock it.");
 								if (BlockTools.isDoubleDoor(nextLockableBlock)) {
-									BlockTools.closeDoubleDoor(sPlayer,
-											nextLockableBlock, 0);
+									BlockTools.changeDoorStates(true, sPlayer, 0, sBlock, BlockTools.getDoubleDoor(sBlock));
 								} else if (BlockTools.isDoor(nextLockableBlock)) {
 									BlockTools.closeDoor(sPlayer,
 											nextLockableBlock, 0);
@@ -718,11 +709,7 @@ public class PlayerListener implements Listener {
 
 					if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
 						event.setCancelled(true);
-						if (BlockTools.isDoubleDoorOpen(sBlock)) {
-							BlockTools.closeDoubleDoor(sPlayer, sBlock, 0);
-						} else {
-							BlockTools.openDoubleDoor(sPlayer, sBlock, 0);
-						}
+						BlockTools.changeDoorStates(true, sPlayer, 0, sBlock, BlockTools.getDoubleDoor(sBlock));
 					}
 				}
 				// HANDLING THE DOOR
