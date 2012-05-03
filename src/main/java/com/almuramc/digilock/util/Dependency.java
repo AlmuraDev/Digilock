@@ -44,7 +44,7 @@ public class Dependency {
 		}
 
 		if (pm.isPluginEnabled("Residence")) {
-			FlagPermissions.addFlag("build");
+			FlagPermissions.addFlag("lockable");
 		}
 	}
 
