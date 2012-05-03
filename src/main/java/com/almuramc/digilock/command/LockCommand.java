@@ -40,7 +40,7 @@ public class LockCommand implements CommandExecutor {
 			if (sender instanceof Player) {
 				Messages.showError("You cant use this command in the console.");
 				return false;
-			} else if (Permissions.hasPerm(sPlayer, "digilock.create", Permissions.NOT_QUIET) || Permissions.hasPerm(sPlayer, "digilock.use", Permissions.NOT_QUIET) || Permissions.hasPerm(sPlayer, "admin", Permissions.NOT_QUIET) || Permissions.hasPerm(sPlayer, "digilock.*", Permissions.NOT_QUIET) || Permissions.hasPerm(sPlayer, "*", Permissions.NOT_QUIET)) {
+			} else if (Permissions.hasPerm(sPlayer, "create", Permissions.NOT_QUIET) || Permissions.hasPerm(sPlayer, "use", Permissions.NOT_QUIET) || Permissions.hasPerm(sPlayer, "admin", Permissions.NOT_QUIET) || Permissions.hasPerm(sPlayer, "digilock.*", Permissions.NOT_QUIET) || Permissions.hasPerm(sPlayer, "*", Permissions.NOT_QUIET)) {
 				if (!BlockTools.isLocked(block)) {
 					if (args.length == 0) {
 						return false;
@@ -83,7 +83,7 @@ public class LockCommand implements CommandExecutor {
 								n++;
 							}
 						}
-						if (Permissions.hasPerm(sPlayer, "digilock.create", Permissions.NOT_QUIET) && args[0].equalsIgnoreCase("lock")) {
+						if (Permissions.hasPerm(sPlayer, "create", Permissions.NOT_QUIET) && args[0].equalsIgnoreCase("lock")) {
 							LockCore.SaveDigiLock(sPlayer, block, pincode, owner, closetimer, coowners, users, block.getTypeId(), connectedto, usecost);
 							return true;
 						} else {

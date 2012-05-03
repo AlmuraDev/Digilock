@@ -105,7 +105,7 @@ public class LockButton extends GenericButton {
 						} else if (BlockTools.isSign(sBlock)) {
 							if (sPlayer.isSpoutCraftEnabled()
 									&& Digilock.getConf().useSignGUI()
-									&& Permissions.hasPerm(sPlayer, "digilock.signedit",
+									&& Permissions.hasPerm(sPlayer, "signedit",
 									Permissions.NOT_QUIET)) {
 								Sign sign = (Sign) sBlock.getState();
 
@@ -175,7 +175,7 @@ public class LockButton extends GenericButton {
 				// Buttons in sPlayer.setPincode
 				// ************************************
 				else if (buttonName.equals("setPincodeLock")
-						&& Permissions.hasPerm(sPlayer, "digilock.create",
+						&& Permissions.hasPerm(sPlayer, "create",
 						Permissions.QUIET)) {
 					if (validateSetPincodeFields(sPlayer)) {
 						sPlayer.closeActiveWindow();
