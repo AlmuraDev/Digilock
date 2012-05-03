@@ -3,7 +3,6 @@ package com.almuramc.digilock;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.almuramc.digilock.command.LockCommand;
 import com.almuramc.digilock.gui.KeyHandler;
 import com.almuramc.digilock.listener.BlockListener;
 import com.almuramc.digilock.listener.KeyboardListener;
@@ -47,9 +46,6 @@ public class Digilock extends SpoutPlugin {
 
 		//Setup permissions
 		Permissions.setupPermissions(this);
-
-		//Register command
-		new LockCommand(this);
 
 		registerEvents(new BlockListener());
 		registerEvents(new PlayerListener());

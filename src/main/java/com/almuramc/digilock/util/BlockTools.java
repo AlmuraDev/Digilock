@@ -17,13 +17,10 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Chest;
 import org.bukkit.block.Dispenser;
-import org.bukkit.event.block.Action;
 import org.bukkit.inventory.DoubleChestInventory;
 import org.bukkit.material.Button;
 import org.bukkit.material.Door;
 import org.bukkit.material.Lever;
-
-import org.spout.api.event.player.PlayerInteractEvent;
 
 public class BlockTools {
 	private static final Material lockablematerials[] = {Material.CHEST,
@@ -899,6 +896,7 @@ public class BlockTools {
 
 		return false;
 	}
+
 	/**
 	 * Checks if the block is a part of a double door
 	 * @param sBlock

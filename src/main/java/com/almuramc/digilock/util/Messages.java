@@ -21,14 +21,6 @@ public class Messages {
 		l.log(Level.SEVERE, "[" + PLUGIN_NAME + "] " + message);
 	}
 
-	public static void showWarning(String message) {
-		l.log(Level.WARNING, "[" + PLUGIN_NAME + "] " + message);
-	}
-
-	public static void showStackTrace(Throwable t) {
-		l.log(Level.SEVERE, t.getMessage(), t);
-	}
-
 	public static void sendNotification(SpoutPlayer sPlayer, String string) {
 		if (sPlayer.isSpoutCraftEnabled() && (sPlayer instanceof SpoutPlayer)) {
 			if (string.length() < 25) {
