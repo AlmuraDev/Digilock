@@ -545,8 +545,7 @@ public class PlayerListener implements Listener {
 							if (sPlayer.isSpoutCraftEnabled()
 									&& Digilock.getConf().useSignGUI()
 									&& Digilock.holdingKey.get(id).equals("KEY_LSHIFT")
-									&& Permissions.hasPerm(sPlayer,
-									"signedit",
+									&& Permissions.hasPerm(sPlayer, "signedit",
 									Permissions.NOT_QUIET)) {
 								Sign sign = (Sign) sBlock.getState();
 								if (Digilock.getHooks().isResidencyAvailable()) {
