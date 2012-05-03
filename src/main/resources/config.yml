@@ -1,0 +1,30 @@
+features:
+    economy: false
+    war: false
+    mobarena: false
+    jail: false
+    residence: false
+gui:
+    lockkey: KEY_L
+    menukey: DISABLED
+    signgui: true
+storage:
+    # Storage supports [MYSQL|SQLITE]
+    type: SQLITE
+
+    # MySQL Settings - Will only be used if Storage.Type: is
+    # set to MYSQL
+    # Host: servername:portnumber. Std port is 3306.
+    host: 'localhost'
+    port: '3306'
+    database: 'minecraft'
+    username: 'root'
+    password: 'password'
+lock:
+    cost: 100
+    maxcost: 100
+    destroycost: -10
+    defaultclosetimer: 2
+    playsound: false
+    sound: 'http://dl.dropbox.com/u/36067670/BukkitInventoryTools/Sounds/Digilock.wav'
+

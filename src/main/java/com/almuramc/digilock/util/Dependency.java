@@ -1,5 +1,6 @@
 package com.almuramc.digilock.util;
 
+import com.bekvon.bukkit.residence.protection.FlagPermissions;
 import com.garbagemule.MobArena.MobArenaHandler;
 import com.matejdro.bukkit.jail.Jail;
 import com.matejdro.bukkit.jail.JailAPI;
@@ -43,7 +44,7 @@ public class Dependency {
 		}
 
 		if (pm.isPluginEnabled("Residence")) {
-			//TODO Implement Residence
+			FlagPermissions.addFlag("build");
 		}
 	}
 
@@ -59,7 +60,5 @@ public class Dependency {
 		return arena;
 	}
 
-	/*public Residence getResidenceHook() {
-		return null; //TODO Implement Residence
-	}*/
+
 }

@@ -9,6 +9,9 @@ import com.almuramc.digilock.util.BlockTools;
 import com.almuramc.digilock.util.LockConfig;
 import com.almuramc.digilock.util.Messages;
 import com.almuramc.digilock.util.Permissions;
+import com.bekvon.bukkit.residence.Residence;
+import com.bekvon.bukkit.residence.protection.ClaimedResidence;
+import com.bekvon.bukkit.residence.protection.ResidencePermissions;
 
 import lib.PatPeter.SQLibrary.MySQL;
 import lib.PatPeter.SQLibrary.SQLite;
@@ -84,6 +87,21 @@ public class LockCore {
 		boolean newLock = true;
 		double cost = Digilock.getConf().getLockCost();
 		block = BlockTools.getDigiLockBlock(block);
+
+		//Handle Residence
+		ClaimedResidence res = Residence.getResidenceManager().getByLoc(block.getLocation());
+		boolean canBuild = true;
+
+		if (res != null) {
+			canBuild = res.getPermissions().playerHas(sPlayer.getName(), "build", true);
+		}
+
+		if (!canBuild) {
+			sPlayer.sendMessage("This is a residence and you do not have permission to make a digilock here!");
+			return;
+		}
+
+
 		if (BlockTools.isLocked(block)) {
 			newLock = false;
 			query = "UPDATE " + Digilock.getHandler().getTableName() + " SET pincode='" + pincode

@@ -75,8 +75,6 @@ public class PlayerListener implements Listener {
 			} else {
 				LockCore.setPincode(sPlayer, sBlock);
 			}
-
-			// Call openEditSignGUI
 		} else
 
 			// HANDLING THAT PLAYER CLICK ON A BLOCK WITH A DIGILOCK
