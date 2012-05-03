@@ -11,9 +11,8 @@ import org.bukkit.event.Listener;
 public class KeyboardListener implements Listener {
 	@EventHandler
 	public void onKeyPressedEvent(KeyPressedEvent event) {
-		System.out.println(event.getKey().toString());
-		Digilock.holdingKey.put(event.getPlayer().getEntityId(), event.getKey()
-				.name());
+		System.out.println(event.getKey().name());
+		Digilock.holdingKey.put(event.getPlayer().getEntityId(), event.getKey().name());
 	}
 
 	@EventHandler
