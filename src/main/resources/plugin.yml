@@ -22,11 +22,11 @@ permissions:
         default: op
     digilock.signedit:
         default: op
-    digilock.lock.create:
+    digilock.create:
         default: op
-    digilock.lock.use:
+    digilock.use:
         default: op
-    digilock.lock.admin:
+    digilock.admin:
         default: op
 
 
