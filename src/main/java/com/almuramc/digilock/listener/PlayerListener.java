@@ -710,26 +710,20 @@ public class PlayerListener implements Listener {
 							+ sBlock.getType());
 				}
 
-				// } else {
-				// // the player has not lock.use permission.
-				// G333Messages.sendNotification(sPlayer, "Locked with Digilock.");
-				// event.setCancelled(true);
-				// }
-
 				// ELSE - IT WAS NOT A LOCKED BLOCK
 			} else {
 				// HANDLING THE DOUBLEDOOR
 				if (BlockTools.isDoubleDoor(sBlock)) {
 					// if LEFT_CLICK_BLOCK is canceled the double door cant be
 
-					//if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
-					//	event.setCancelled(true);
-					//	if (BlockTools.isDoubleDoorOpen(sBlock)) {
-					//		BlockTools.closeDoubleDoor(sPlayer, sBlock, 0);
-					//	} else {
-					//		BlockTools.openDoubleDoor(sPlayer, sBlock, 0);
-					//	}
-					//}
+					if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+						event.setCancelled(true);
+						if (BlockTools.isDoubleDoorOpen(sBlock)) {
+							BlockTools.closeDoubleDoor(sPlayer, sBlock, 0);
+						} else {
+							BlockTools.openDoubleDoor(sPlayer, sBlock, 0);
+						}
+					}
 				}
 				// HANDLING THE DOOR
 				else if (BlockTools.isDoor(sBlock)) {

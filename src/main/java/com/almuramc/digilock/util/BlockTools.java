@@ -928,7 +928,6 @@ public class BlockTools {
 								return true;
 							}
 						} else {
-							Messages.showInfo("Doubledoor EAST5 false");
 						}
 					} else if (door.getFacing() == BlockFace.NORTH
 							&& door.getHingeCorner() == BlockFace.NORTH_EAST) {
