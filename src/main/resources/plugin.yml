@@ -6,7 +6,7 @@ website: http://dev.bukkit.org/server-mods/digilock/
 description: Protection of blocks using the digilock system including Spout GUI support.
 version: 1.0
 depend: [Spout]
-softdepend: [Vault, WorldGuard, MobArena, Jail, War]
+softdepend: [Vault, WorldGuard, MobArena, Jail, War, Residence]
 commands:
     digilock:
         description: Admin commands.
