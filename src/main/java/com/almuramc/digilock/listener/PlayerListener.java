@@ -790,21 +790,25 @@ public class PlayerListener implements Listener {
 			}
 	}
 
+	@EventHandler
 	public void onPlayerLogin(PlayerLoginEvent event) {
 		int id = event.getPlayer().getEntityId();
 		Digilock.addUserData(id);
 	}
 
+	@EventHandler
 	public void onPlayerKick(PlayerKickEvent event) {
 		int id = event.getPlayer().getEntityId();
 		Digilock.removeUserData(id);
 	}
 
+	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		int id = event.getPlayer().getEntityId();
 		Digilock.addUserData(id);
 	}
 
+	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		int id = event.getPlayer().getEntityId();
 		Digilock.removeUserData(id);
