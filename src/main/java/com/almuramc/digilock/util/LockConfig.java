@@ -49,7 +49,7 @@ public class LockConfig {
 	}
 
 	public boolean useSignGUI() {
-		return config.getBoolean("gui.usesigngui");
+		return config.getBoolean("gui.signgui");
 	}
 
 	public String getSQLType() {
