@@ -16,7 +16,7 @@ commands:
         description: Lock the item with a digital pincode.
         usage: /lock [pincode]|[unlock pincode]|[lock pincode]|[owner playername]|[closetimer seconds]|[usecost cost]|[remove]|[addcoowner name]|[remcoowner name]|[adduser name]|[remuser name]|[info]
         aliases: dlock
-        permission: digilock.lock.use
+        permission: digilock.use
 permissions:
     digilock.admin:
         default: op
