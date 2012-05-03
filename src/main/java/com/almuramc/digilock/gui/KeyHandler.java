@@ -19,6 +19,7 @@ public class KeyHandler implements BindingExecutionDelegate {
 
 	public KeyHandler(Digilock plugin, Keyboard key) {
 		this.plugin = plugin;
+		this.key = key;
 	}
 
 	@Override
@@ -41,8 +42,8 @@ public class KeyHandler implements BindingExecutionDelegate {
 		// GAME_SCREEN
 		else if (BlockTools.isLockable(targetblock)) {
 			if (screentype == ScreenType.GAME_SCREEN) {
-				if ((Permissions.hasPerm(sPlayer, "lock.create",
-						Permissions.QUIET) || Permissions.hasPerm(sPlayer, "lock.admin", Permissions.QUIET))) {
+				if ((Permissions.hasPerm(sPlayer, "digilock.create",
+						Permissions.QUIET) || Permissions.hasPerm(sPlayer, "digilock.admin", Permissions.QUIET))) {
 					if (BlockTools.isLocked(targetblock)) {
 						LockCore lock = BlockTools.loadDigiLock(targetblock);
 						if (BlockTools.isDoubleDoor(targetblock)) {
@@ -78,52 +79,5 @@ public class KeyHandler implements BindingExecutionDelegate {
 				}
 			}
 		}
-		/*
-						// CUSTOM_SCREEN
-						else if (screentype == ScreenType.CUSTOM_SCREEN) {
-							if (keypressed.equals("KEY_ESCAPE") || keypressed.equals("KEY_E")) {
-								// TODO: the lever must swing back to off, when the
-								// player press ESC. Next lines does not work. :-(
-								// if (BlockTools.isLever(targetblock)) {
-								// if ( BlockTools.isLeverOn(targetblock)) {
-								// BlockTools.leverOff(sPlayer, targetblock);
-								// } else {
-								// BlockTools.leverOn(sPlayer, targetblock,0);
-								// }
-								// sPlayer.sendMessage("setting lever to off");
-								// Lever lever = (Lever) targetblock.getState().getData();
-								// lever.setPowered(false);
-								// }
-								if (BlockTools.isLever(targetblock)) {
-									Lever lever = (Lever) targetblock.getState().getData();
-									// lever.setPowered(false);
-									targetblock.setData((byte) (lever.getData() | 8));
-								}
-								sPlayer.closeActiveWindow();
-								BlockTools.cleanupPopupScreen(sPlayer);
-
-							} else if (keypressed.equals("KEY_RETURN")) {
-
-							}
-						}
-
-						else {
-							// UNHANDLED SCREENTYPE
-						}
-				*/
 	}
-	/*
-		@EventHandler
-		public void onKeyReleasedEvent(KeyReleasedEvent event) {
-			// SpoutPlayer sPlayer = event.getPlayer();
-			// Keyboard keyUp = event.getKey();
-			// event.getPlayer().sendMessage(
-			// "sPlayer:" + sPlayer.getName() + "Pressed key:" + keyUp);
-		}
-
-		@EventHandler
-		public void onRenderDistanceChange(RenderDistanceChangeEvent event) {
-
-		}
-			   */
 }

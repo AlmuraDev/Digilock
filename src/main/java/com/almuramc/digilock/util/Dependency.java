@@ -1,5 +1,6 @@
 package com.almuramc.digilock.util;
 
+import com.almuramc.digilock.Digilock;
 import com.bekvon.bukkit.residence.protection.FlagPermissions;
 import com.garbagemule.MobArena.MobArenaHandler;
 import com.matejdro.bukkit.jail.Jail;
@@ -18,7 +19,7 @@ public class Dependency {
 	private War war = null;
 	private MobArenaHandler arena = null;
 	private JailAPI jail = null;
-	//public Residence area = null;
+	private boolean hasResidence = false;
 	private Plugin plugin;
 
 	public Dependency(Plugin instance) {
@@ -44,7 +45,15 @@ public class Dependency {
 		}
 
 		if (pm.isPluginEnabled("Residence")) {
-			FlagPermissions.addFlag("lockable");
+			Messages.showInfo("Residence Property Protection Detected");
+			if (Digilock.getConf().useResidence()) {
+				hasResidence = true;
+				FlagPermissions.addFlag("lockable");
+				FlagPermissions.addResidenceOnlyFlag("lockable");
+				Messages.showInfo("Custom Residence Flag of [lockable] added successfully");
+			} else {
+				Messages.showInfo("Residence was detected but the custom flags are currently disabled in the config.yml");
+			}
 		}
 	}
 
@@ -60,5 +69,7 @@ public class Dependency {
 		return arena;
 	}
 
-
+	public boolean isResidencyAvailable() {
+		return hasResidence;
+	}
 }

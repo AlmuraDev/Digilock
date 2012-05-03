@@ -6,6 +6,8 @@ import com.almuramc.digilock.util.BlockTools;
 import com.almuramc.digilock.util.LockInventory;
 import com.almuramc.digilock.util.Messages;
 import com.almuramc.digilock.util.Permissions;
+import com.bekvon.bukkit.residence.Residence;
+import com.bekvon.bukkit.residence.protection.ClaimedResidence;
 
 import org.bukkit.Material;
 import org.bukkit.block.Chest;
@@ -57,16 +59,16 @@ public class PlayerListener implements Listener {
 				&& BlockTools.isLockable(sBlock)
 				&& Digilock.holdingKey.get(id).equals("KEY_LCONTROL")
 				&& event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
-				&& (Permissions.hasPerm(sPlayer, "lock.create",
+				&& (Permissions.hasPerm(sPlayer, "digilock.create",
 				Permissions.NOT_QUIET) || Permissions.hasPerm(
-				sPlayer, "lock.admin", Permissions.NOT_QUIET))) {
+				sPlayer, "digilock.admin", Permissions.NOT_QUIET))) {
 
 			event.setCancelled(true);
 			if (BlockTools.isLocked(sBlock)) {
 				LockCore lock = BlockTools.loadDigiLock(sBlock);
 				if (lock.isOwner(sPlayer)
 						|| lock.isCoowner(sPlayer)
-						|| Permissions.hasPerm(sPlayer, "lock.admin",
+						|| Permissions.hasPerm(sPlayer, "digilock.admin",
 						Permissions.NOT_QUIET)) {
 					LockCore.setPincode(sPlayer, sBlock);
 				} else {
@@ -86,7 +88,7 @@ public class PlayerListener implements Listener {
 					if ((lock.getPincode().equals("") || lock.getPincode()
 							.equalsIgnoreCase("fingerprint"))
 							&& event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
-							&& Permissions.hasPerm(sPlayer, "lock.use",
+							&& Permissions.hasPerm(sPlayer, "digilock.use",
 							Permissions.NOT_QUIET)) {
 						// OPEN CHEST BY FINGERPRINT / NAME
 						if (lock.isOwner(sPlayer)
@@ -109,7 +111,7 @@ public class PlayerListener implements Listener {
 						if (sPlayer.isSpoutCraftEnabled()
 								&& event.getAction().equals(
 								Action.RIGHT_CLICK_BLOCK)
-								&& Permissions.hasPerm(sPlayer, "lock.use",
+								&& Permissions.hasPerm(sPlayer, "digilock.use",
 								Permissions.NOT_QUIET)) {
 							LockCore.getPincode(sPlayer, sBlock);
 						} else {
@@ -124,13 +126,13 @@ public class PlayerListener implements Listener {
 					if (lock.getPincode().equals("")
 							|| lock.getPincode()
 							.equalsIgnoreCase("fingerprint")
-							&& Permissions.hasPerm(sPlayer, "lock.use",
+							&& Permissions.hasPerm(sPlayer, "digilock.use",
 							Permissions.NOT_QUIET)) {
 						// TOGGLE DOOR BY FINGERPRINT / NAME
 						if (lock.isOwner(sPlayer)
 								|| lock.isCoowner(sPlayer)
 								|| lock.isUser(sPlayer)
-								|| Permissions.hasPerm(sPlayer, "lock.admin",
+								|| Permissions.hasPerm(sPlayer, "digilock.admin",
 								Permissions.NOT_QUIET)) {
 							BlockTools.playDigiLockSound(sBlock);
 							if (BlockTools.isDoubleDoorOpen(sBlock)) {
@@ -151,7 +153,7 @@ public class PlayerListener implements Listener {
 					} else {
 						// ASK FOR PINCODE
 						if (!BlockTools.isDoubleDoorOpen(sBlock)
-								&& Permissions.hasPerm(sPlayer, "lock.use",
+								&& Permissions.hasPerm(sPlayer, "digilock.use",
 								Permissions.NOT_QUIET)) {
 							if (sPlayer.isSpoutCraftEnabled()) {
 								LockCore.getPincode(sPlayer,
@@ -173,13 +175,13 @@ public class PlayerListener implements Listener {
 					if (lock.getPincode().equals("")
 							|| lock.getPincode()
 							.equalsIgnoreCase("fingerprint")
-							&& Permissions.hasPerm(sPlayer, "lock.use",
+							&& Permissions.hasPerm(sPlayer, "digilock.use",
 							Permissions.NOT_QUIET)) {
 						// TOGGLE DOOR BY FINGERPRINT / NAME
 						if (lock.isOwner(sPlayer)
 								|| lock.isCoowner(sPlayer)
 								|| lock.isUser(sPlayer)
-								|| Permissions.hasPerm(sPlayer, "lock.admin",
+								|| Permissions.hasPerm(sPlayer, "digilock.admin",
 								Permissions.NOT_QUIET)) {
 							BlockTools.playDigiLockSound(sBlock);
 							if (BlockTools.isDoorOpen(sBlock)) {
@@ -202,7 +204,7 @@ public class PlayerListener implements Listener {
 						if (!BlockTools.isDoorOpen(sBlock)) {
 							if (sPlayer.isSpoutCraftEnabled()
 									&& Permissions.hasPerm(sPlayer,
-									"lock.use",
+									"digilock.use",
 									Permissions.NOT_QUIET)) {
 								LockCore.getPincode(sPlayer, sBlock);
 							} else {
@@ -222,7 +224,7 @@ public class PlayerListener implements Listener {
 					if (lock.getPincode().equals("")
 							|| lock.getPincode()
 							.equalsIgnoreCase("fingerprint")
-							&& Permissions.hasPerm(sPlayer, "lock.use",
+							&& Permissions.hasPerm(sPlayer, "digilock.use",
 							Permissions.NOT_QUIET)) {
 						// TOGGLE DOOR BY FINGERPRINT / NAME
 						if (lock.isOwner(sPlayer)
@@ -249,7 +251,7 @@ public class PlayerListener implements Listener {
 						if (!BlockTools.isTrapdoorOpen(sPlayer, sBlock)) {
 							if (sPlayer.isSpoutCraftEnabled()
 									&& Permissions.hasPerm(sPlayer,
-									"lock.use",
+									"digilock.use",
 									Permissions.NOT_QUIET)) {
 								LockCore.getPincode(sPlayer, sBlock);
 							} else {
@@ -269,7 +271,7 @@ public class PlayerListener implements Listener {
 					if (lock.getPincode().equals("")
 							|| lock.getPincode()
 							.equalsIgnoreCase("fingerprint")
-							&& Permissions.hasPerm(sPlayer, "lock.use",
+							&& Permissions.hasPerm(sPlayer, "digilock.use",
 							Permissions.NOT_QUIET)) {
 						// TOGGLE DOOR BY FINGERPRINT / NAME
 						if (lock.isOwner(sPlayer)
@@ -296,7 +298,7 @@ public class PlayerListener implements Listener {
 						if (!BlockTools.isFenceGateOpen(sPlayer, sBlock)) {
 							if (sPlayer.isSpoutCraftEnabled()
 									&& Permissions.hasPerm(sPlayer,
-									"lock.use",
+									"digilock.use",
 									Permissions.NOT_QUIET)) {
 								LockCore.getPincode(sPlayer, sBlock);
 							} else {
@@ -315,7 +317,7 @@ public class PlayerListener implements Listener {
 					if ((lock.getPincode().equals("") || lock.getPincode()
 							.equalsIgnoreCase("fingerprint"))
 							&& event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
-							&& Permissions.hasPerm(sPlayer, "lock.use",
+							&& Permissions.hasPerm(sPlayer, "digilock.use",
 							Permissions.NOT_QUIET)) {
 						// USE DISPENSER BY FINGERPRINT (playername)
 						if (lock.isOwner(sPlayer)
@@ -336,7 +338,7 @@ public class PlayerListener implements Listener {
 						if (sPlayer.isSpoutCraftEnabled()
 								&& event.getAction().equals(
 								Action.RIGHT_CLICK_BLOCK)
-								&& Permissions.hasPerm(sPlayer, "lock.use",
+								&& Permissions.hasPerm(sPlayer, "digilock.use",
 								Permissions.NOT_QUIET)) {
 							LockCore.getPincode(sPlayer, sBlock);
 						} else {
@@ -350,7 +352,7 @@ public class PlayerListener implements Listener {
 				else if (sBlock.getType().equals(Material.FURNACE)) {
 					if ((lock.getPincode().equals("") || lock.getPincode()
 							.equalsIgnoreCase("fingerprint")
-							&& Permissions.hasPerm(sPlayer, "lock.use",
+							&& Permissions.hasPerm(sPlayer, "digilock.use",
 							Permissions.NOT_QUIET))
 							&& event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
 						// USE FURNACE BY FINGERPRINT (playername)
@@ -372,7 +374,7 @@ public class PlayerListener implements Listener {
 						if (sPlayer.isSpoutCraftEnabled()
 								&& event.getAction().equals(
 								Action.RIGHT_CLICK_BLOCK)
-								&& Permissions.hasPerm(sPlayer, "lock.use",
+								&& Permissions.hasPerm(sPlayer, "digilock.use",
 								Permissions.NOT_QUIET)) {
 							LockCore.getPincode(sPlayer, sBlock);
 						} else {
@@ -390,7 +392,7 @@ public class PlayerListener implements Listener {
 					if (lock.getPincode().equals("")
 							|| lock.getPincode()
 							.equalsIgnoreCase("fingerprint")
-							&& Permissions.hasPerm(sPlayer, "lock.use",
+							&& Permissions.hasPerm(sPlayer, "digilock.use",
 							Permissions.NOT_QUIET)) {
 						// USE LEVER BY FINGERPRINT
 						if (lock.isOwner(sPlayer)
@@ -439,7 +441,7 @@ public class PlayerListener implements Listener {
 								if (!BlockTools.isLeverOn(sBlock)) {
 									if (sPlayer.isSpoutCraftEnabled()
 											&& Permissions.hasPerm(sPlayer,
-											"lock.use",
+											"digilock.use",
 											Permissions.NOT_QUIET)) {
 										LockCore.getPincode(sPlayer, sBlock);
 									} else {
@@ -488,7 +490,7 @@ public class PlayerListener implements Listener {
 					if (lock.getPincode().equals("")
 							|| lock.getPincode()
 							.equalsIgnoreCase("fingerprint")
-							&& Permissions.hasPerm(sPlayer, "lock.use",
+							&& Permissions.hasPerm(sPlayer, "digilock.use",
 							Permissions.NOT_QUIET)) {
 						// PRESS STONE_BUTTON BY FINGERPRINT
 						// (playername)
@@ -510,7 +512,7 @@ public class PlayerListener implements Listener {
 					} else {
 						event.setCancelled(true);
 						if (sPlayer.isSpoutCraftEnabled()
-								&& Permissions.hasPerm(sPlayer, "lock.use",
+								&& Permissions.hasPerm(sPlayer, "digilock.use",
 								Permissions.NOT_QUIET)) {
 							LockCore.getPincode(sPlayer, sBlock);
 							if (lock.getPincode().equals(
@@ -532,7 +534,7 @@ public class PlayerListener implements Listener {
 					if ((lock.getPincode().equals("") || lock.getPincode()
 							.equalsIgnoreCase("fingerprint"))
 							&& event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
-							&& Permissions.hasPerm(sPlayer, "lock.use",
+							&& Permissions.hasPerm(sPlayer, "digilock.use",
 							Permissions.NOT_QUIET)) {
 						// USE SIGN BY FINGERPRINT (playername)
 						if (lock.isOwner(sPlayer)
@@ -544,10 +546,23 @@ public class PlayerListener implements Listener {
 									&& Digilock.getConf().useSignGUI()
 									&& Digilock.holdingKey.get(id).equals("KEY_LSHIFT")
 									&& Permissions.hasPerm(sPlayer,
-									"lock.signadmin",
+									"digilock.signedit",
 									Permissions.NOT_QUIET)) {
 								Sign sign = (Sign) sBlock.getState();
-								sPlayer.openSignEditGUI(sign);
+								if (Digilock.getHooks().isResidencyAvailable()) {					
+									ClaimedResidence res = Residence.getResidenceManager().getByLoc(sBlock.getLocation());
+									boolean canBuild = true;
+									if (res != null) {
+										canBuild = res.getPermissions().playerHas(sPlayer.getName(), "build", true);
+									}
+									if (canBuild) {
+										sPlayer.openSignEditGUI(sign);
+									} else {
+										sPlayer.sendMessage("Residence is currently restricting your Sign Editing Abilities.");
+									}
+								} else {
+									sPlayer.openSignEditGUI(sign);	
+								}
 							}
 						} else {
 							event.setCancelled(true);
@@ -557,7 +572,7 @@ public class PlayerListener implements Listener {
 						if (sPlayer.isSpoutCraftEnabled()
 								&& event.getAction().equals(
 								Action.RIGHT_CLICK_BLOCK)
-								&& Permissions.hasPerm(sPlayer, "lock.use",
+								&& Permissions.hasPerm(sPlayer, "digilock.use",
 								Permissions.NOT_QUIET)) {
 							LockCore.getPincode(sPlayer, sBlock);
 							if (lock.getPincode().equals(
@@ -580,7 +595,7 @@ public class PlayerListener implements Listener {
 					if ((lock.getPincode().equals("") || lock.getPincode()
 							.equalsIgnoreCase("fingerprint"))
 							&& event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
-							&& Permissions.hasPerm(sPlayer, "lock.use",
+							&& Permissions.hasPerm(sPlayer, "digilock.use",
 							Permissions.NOT_QUIET)
 							&& Permissions.hasPerm(sPlayer, "bookshelf.use",
 							Permissions.NOT_QUIET)) {
@@ -600,7 +615,7 @@ public class PlayerListener implements Listener {
 						if (sPlayer.isSpoutCraftEnabled()
 								&& event.getAction().equals(
 								Action.RIGHT_CLICK_BLOCK)
-								&& Permissions.hasPerm(sPlayer, "lock.use",
+								&& Permissions.hasPerm(sPlayer, "digilock.use",
 								Permissions.NOT_QUIET)) {
 							LockCore.getPincode(sPlayer, sBlock);
 							if (lock.getPincode().equals(
@@ -619,7 +634,7 @@ public class PlayerListener implements Listener {
 					if ((lock.getPincode().equals("") || lock.getPincode()
 							.equalsIgnoreCase("fingerprint"))
 							&& event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
-							&& Permissions.hasPerm(sPlayer, "lock.use",
+							&& Permissions.hasPerm(sPlayer, "digilock.use",
 							Permissions.NOT_QUIET)) {
 						// USE SIGN BY FINGERPRINT (playername)
 						if (lock.isOwner(sPlayer)
@@ -639,7 +654,7 @@ public class PlayerListener implements Listener {
 						if (sPlayer.isSpoutCraftEnabled()
 								&& event.getAction().equals(
 								Action.RIGHT_CLICK_BLOCK)
-								&& Permissions.hasPerm(sPlayer, "lock.use",
+								&& Permissions.hasPerm(sPlayer, "digilock.use",
 								Permissions.NOT_QUIET)
 								&& ((itemInHand.getTypeId() >= 2256 && itemInHand
 								.getTypeId() <= 2266) || jukebox
@@ -660,7 +675,7 @@ public class PlayerListener implements Listener {
 				else if (sBlock.getType().equals(Material.BREWING_STAND)) {
 					if ((lock.getPincode().equals("") || lock.getPincode()
 							.equalsIgnoreCase("fingerprint")
-							&& Permissions.hasPerm(sPlayer, "lock.use",
+							&& Permissions.hasPerm(sPlayer, "digilock.use",
 							Permissions.NOT_QUIET))
 							&& event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
 						// USE BREWING STAND BY FINGERPRINT (playername)
@@ -679,7 +694,7 @@ public class PlayerListener implements Listener {
 						if (sPlayer.isSpoutCraftEnabled()
 								&& event.getAction().equals(
 								Action.RIGHT_CLICK_BLOCK)
-								&& Permissions.hasPerm(sPlayer, "lock.use",
+								&& Permissions.hasPerm(sPlayer, "digilock.use",
 								Permissions.NOT_QUIET)) {
 							LockCore.getPincode(sPlayer, sBlock);
 							sPlayer.sendMessage("Locking brewing stand with pincode is not suported yet!");
@@ -706,15 +721,15 @@ public class PlayerListener implements Listener {
 				// HANDLING THE DOUBLEDOOR
 				if (BlockTools.isDoubleDoor(sBlock)) {
 					// if LEFT_CLICK_BLOCK is canceled the double door cant be
-					// broken.
-					if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
-						event.setCancelled(true);
-						if (BlockTools.isDoubleDoorOpen(sBlock)) {
-							BlockTools.closeDoubleDoor(sPlayer, sBlock, 0);
-						} else {
-							BlockTools.openDoubleDoor(sPlayer, sBlock, 0);
-						}
-					}
+					
+					//if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+					//	event.setCancelled(true);
+					//	if (BlockTools.isDoubleDoorOpen(sBlock)) {
+					//		BlockTools.closeDoubleDoor(sPlayer, sBlock, 0);
+					//	} else {
+					//		BlockTools.openDoubleDoor(sPlayer, sBlock, 0);
+					//	}
+					//}
 				}
 				// HANDLING THE DOOR
 				else if (BlockTools.isDoor(sBlock)) {
@@ -753,10 +768,23 @@ public class PlayerListener implements Listener {
 							&& Digilock.getConf().useSignGUI()
 							&& Digilock.holdingKey.get(id).equals("KEY_LSHIFT")
 							&& Permissions.hasPerm(sPlayer,
-							"lock.signadmin",
+							"digilock.signedit",
 							Permissions.NOT_QUIET)) {
 						Sign sign = (Sign) sBlock.getState();
-						sPlayer.openSignEditGUI(sign);
+						if (Digilock.getHooks().isResidencyAvailable()) {					
+							ClaimedResidence res = Residence.getResidenceManager().getByLoc(sBlock.getLocation());
+							boolean canBuild = true;
+							if (res != null) {
+								canBuild = res.getPermissions().playerHas(sPlayer.getName(), "build", true);
+							}
+							if (canBuild) {
+								sPlayer.openSignEditGUI(sign);
+							} else {
+								sPlayer.sendMessage("Residence is currently restricting your Sign Editing Abilities.");
+							}
+						} else {
+							sPlayer.openSignEditGUI(sign);	
+						}
 					}
 				}
 			}

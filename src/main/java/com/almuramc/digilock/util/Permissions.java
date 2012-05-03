@@ -9,15 +9,17 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 
 import org.getspout.spoutapi.player.SpoutPlayer;
 
+import com.almuramc.digilock.Digilock;
+
 public class Permissions {
 	public static String PERMISSION_NODE;
 	public final static Boolean QUIET = false;
 	public final static Boolean NOT_QUIET = true;
 	public static Permission permission = null;
 
-	protected static void setupPermissions(Plugin plugin) {
+	public static void setupPermissions(Plugin plugin) {
 		PERMISSION_NODE = plugin.getDescription().getName() + ".";
-		if (plugin.getServer().getPluginManager().getPlugin("Vault") != null) {
+		if (Digilock.getHooks().getEconHook() != null) {
 			RegisteredServiceProvider<Permission> permissionProvider = plugin.getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
 			if (permissionProvider != null) {
 				permission = permissionProvider.getProvider();

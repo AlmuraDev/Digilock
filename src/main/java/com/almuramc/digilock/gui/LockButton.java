@@ -8,6 +8,8 @@ import com.almuramc.digilock.util.BlockTools;
 import com.almuramc.digilock.util.LockInventory;
 import com.almuramc.digilock.util.Messages;
 import com.almuramc.digilock.util.Permissions;
+import com.bekvon.bukkit.residence.Residence;
+import com.bekvon.bukkit.residence.protection.ClaimedResidence;
 
 import org.bukkit.Material;
 import org.bukkit.block.Chest;
@@ -50,10 +52,10 @@ public class LockButton extends GenericButton {
 					LockCore.cleanupPopupScreen(sPlayer);
 					if ((lock.getPincode().equals(
 							LockCore.pincodeGUI.get(entId).getText()) && Permissions
-							.hasPerm(sPlayer, "lock.use",
+							.hasPerm(sPlayer, "digilock.use",
 									Permissions.QUIET))
 							|| Permissions.hasPerm(sPlayer,
-							"lock.admin", Permissions.QUIET)) {
+							"digilock.admin", Permissions.QUIET)) {
 						if (BlockTools.isChest(lock.getBlock())) {
 							Chest sChest = (Chest) sBlock.getState();
 							Inventory inv = sChest.getInventory();
@@ -103,10 +105,24 @@ public class LockButton extends GenericButton {
 						} else if (BlockTools.isSign(sBlock)) {
 							if (sPlayer.isSpoutCraftEnabled()
 									&& Digilock.getConf().useSignGUI()
-									&& Permissions.hasPerm(sPlayer, "lock.signadmin",
+									&& Permissions.hasPerm(sPlayer, "digilock.signedit",
 									Permissions.NOT_QUIET)) {
 								Sign sign = (Sign) sBlock.getState();
-								sPlayer.openSignEditGUI(sign);
+								
+								if (Digilock.getHooks().isResidencyAvailable()) {					
+									ClaimedResidence res = Residence.getResidenceManager().getByLoc(sBlock.getLocation());
+									boolean canBuild = true;
+									if (res != null) {
+										canBuild = res.getPermissions().playerHas(sPlayer.getName(), "build", true);
+									}
+									if (canBuild) {
+										sPlayer.openSignEditGUI(sign);
+									} else {
+										sPlayer.sendMessage("Residence is currently restricting your Sign Editing Abilities.");
+									}
+								} else {
+									sPlayer.openSignEditGUI(sign);	
+								}
 							} else {
 
 							}
@@ -159,7 +175,7 @@ public class LockButton extends GenericButton {
 				// Buttons in sPlayer.setPincode
 				// ************************************
 				else if (buttonName.equals("setPincodeLock")
-						&& Permissions.hasPerm(sPlayer, "lock.create",
+						&& Permissions.hasPerm(sPlayer, "digilock.create",
 						Permissions.QUIET)) {
 					if (validateSetPincodeFields(sPlayer)) {
 						sPlayer.closeActiveWindow();

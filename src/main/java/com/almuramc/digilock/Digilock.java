@@ -12,6 +12,7 @@ import com.almuramc.digilock.util.Dependency;
 import com.almuramc.digilock.util.LockConfig;
 import com.almuramc.digilock.util.Messages;
 import com.almuramc.digilock.util.SqlHandler;
+import com.almuramc.digilock.util.Permissions;
 
 import org.bukkit.plugin.Plugin;
 
@@ -24,6 +25,7 @@ public class Digilock extends SpoutPlugin {
 	private static Dependency hooks;
 	private static LockConfig config;
 	private static SqlHandler sql;
+	
 
 	@Override
 	public void onDisable() {
@@ -40,13 +42,16 @@ public class Digilock extends SpoutPlugin {
 
 		//Setup config
 		config = new LockConfig(this);
-
+		
 		//Handles all dependencies
 		hooks = new Dependency(this);
 
 		sql = new SqlHandler(this);
 
-		//Register command
+		//Setup permissions
+		 Permissions.setupPermissions(this);
+		
+		 //Register command
 		new LockCommand(this);
 
 		registerEvents(new BlockListener());
@@ -89,7 +94,7 @@ public class Digilock extends SpoutPlugin {
 		if (!userno.containsKey(id)) {
 			// DigiLock
 			userno.put(id, new Integer(id));
-			holdingKey.put(id, "");
+			holdingKey.put(id, "KEY_LCONTROL");
 		}
 
 	}

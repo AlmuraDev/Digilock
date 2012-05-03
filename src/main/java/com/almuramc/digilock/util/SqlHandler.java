@@ -27,7 +27,7 @@ public class SqlHandler {
 			if (mysql.checkConnection()) {
 				//Check if the Connection was successful
 				String query;
-				Messages.showInfo("MySQL Initialization Sucessful.");
+				Messages.showInfo("MySQL Initialization Successful.");
 				if (!mysql.checkTable(digilockTable)) {
 					query = "CREATE TABLE "
 							+ digilockTable
@@ -35,7 +35,7 @@ public class SqlHandler {
 							+ "pincode VARCHAR(255), coowners VARCHAR(255), users VARCHAR(255), closetimer INT, "
 							+ "typeid INT, connectedto VARCHAR(255), usecost INT);";
 					mysql.createTable(query);
-					Messages.showInfo("MySQL Table Created Sucessfully.");
+					Messages.showInfo("MySQL Table Created Successfully.");
 				} else {
 					Messages.showInfo("MySQL Table Loaded.");
 				}
@@ -50,6 +50,7 @@ public class SqlHandler {
 			}
 			sqlite.open();
 			if (sqlite.open() != null) {
+				Messages.showInfo("SQLite Initialization Successful.");
 				String query;
 				if (!sqlite.checkTable(digilockTable)) {
 					query = "CREATE TABLE "
@@ -59,7 +60,7 @@ public class SqlHandler {
 							+ " coowners TEXT, users TEXT, closetimer INTEGER,"
 							+ " typeid INTEGER, connectedto TEXT, usecost INTEGER);";
 					sqlite.createTable(query);
-					Messages.showInfo("SQLite Table Created Sucessfully.");
+					Messages.showInfo("SQLite Table Created Successfully.");
 				} else {
 					Messages.showInfo("SQLite Table Loaded.");
 				}

@@ -20,7 +20,7 @@ commands:
 permissions:
     digilock.admin:
         default: op
-    digilock.lock.signadmin:
+    digilock.signedit:
         default: op
     digilock.lock.create:
         default: op
