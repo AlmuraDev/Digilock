@@ -7,8 +7,6 @@ import lib.PatPeter.SQLibrary.SQLite;
 
 import org.bukkit.plugin.Plugin;
 
-import com.almuramc.digilock.util.Dependency;
-
 public class SqlHandler {
 	private Plugin plugin;
 	private MySQL mysql;

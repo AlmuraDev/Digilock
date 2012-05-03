@@ -1,7 +1,5 @@
 package com.almuramc.digilock.gui;
 
-import org.bukkit.ChatColor;
-
 import org.getspout.spoutapi.gui.Color;
 import org.getspout.spoutapi.gui.GenericButton;
 import org.getspout.spoutapi.gui.GenericGradient;
@@ -10,6 +8,8 @@ import org.getspout.spoutapi.gui.GenericListWidget;
 import org.getspout.spoutapi.gui.GenericPopup;
 import org.getspout.spoutapi.gui.GenericTexture;
 import org.getspout.spoutapi.gui.RenderPriority;
+
+import org.bukkit.ChatColor;
 
 public class LockGUI extends GenericPopup {
 	private GenericListWidget list;

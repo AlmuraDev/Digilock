@@ -1,15 +1,14 @@
 package com.almuramc.digilock.util;
 
+import com.almuramc.digilock.Digilock;
+
 import net.milkbowl.vault.permission.Permission;
+import org.getspout.spoutapi.player.SpoutPlayer;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
-
-import org.getspout.spoutapi.player.SpoutPlayer;
-
-import com.almuramc.digilock.Digilock;
 
 public class Permissions {
 	public static String PERMISSION_NODE;

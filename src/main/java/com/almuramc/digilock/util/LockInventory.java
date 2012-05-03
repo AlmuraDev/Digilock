@@ -7,15 +7,15 @@ import java.util.Map;
 
 import com.almuramc.digilock.Digilock;
 
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.gui.GenericPopup;
 import org.getspout.spoutapi.gui.GenericTextField;
 import org.getspout.spoutapi.gui.PopupScreen;
 import org.getspout.spoutapi.player.SpoutPlayer;
+
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 public class LockInventory {
 	private Digilock plugin;
@@ -150,9 +150,9 @@ public class LockInventory {
 			if (result != null && result.next()) {
 				result.close();
 				return true;
-				
-			} else {				
-				return false;			}
+			} else {
+				return false;
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

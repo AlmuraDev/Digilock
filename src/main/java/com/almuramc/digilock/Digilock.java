@@ -6,15 +6,13 @@ import java.util.Map;
 import com.almuramc.digilock.command.LockCommand;
 import com.almuramc.digilock.gui.KeyHandler;
 import com.almuramc.digilock.listener.BlockListener;
-import com.almuramc.digilock.listener.PlayerListener;
 import com.almuramc.digilock.listener.KeyboardListener;
+import com.almuramc.digilock.listener.PlayerListener;
 import com.almuramc.digilock.util.Dependency;
 import com.almuramc.digilock.util.LockConfig;
 import com.almuramc.digilock.util.Messages;
-import com.almuramc.digilock.util.SqlHandler;
 import com.almuramc.digilock.util.Permissions;
-
-import org.bukkit.plugin.Plugin;
+import com.almuramc.digilock.util.SqlHandler;
 
 import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.keyboard.Keyboard;
@@ -25,13 +23,12 @@ public class Digilock extends SpoutPlugin {
 	private static Dependency hooks;
 	private static LockConfig config;
 	private static SqlHandler sql;
-	
 
 	@Override
 	public void onDisable() {
 		if (Digilock.getConf().getSQLType().equals("SQLITE")) {
-		sql.getSqliteHandler().close();
-		Messages.showInfo("SQLite Database Closed.");
+			sql.getSqliteHandler().close();
+			Messages.showInfo("SQLite Database Closed.");
 		}
 		log("disabled.");
 	}
@@ -42,16 +39,16 @@ public class Digilock extends SpoutPlugin {
 
 		//Setup config
 		config = new LockConfig(this);
-		
+
 		//Handles all dependencies
 		hooks = new Dependency(this);
 
 		sql = new SqlHandler(this);
 
 		//Setup permissions
-		 Permissions.setupPermissions(this);
-		
-		 //Register command
+		Permissions.setupPermissions(this);
+
+		//Register command
 		new LockCommand(this);
 
 		registerEvents(new BlockListener());
@@ -96,6 +93,5 @@ public class Digilock extends SpoutPlugin {
 			userno.put(id, new Integer(id));
 			holdingKey.put(id, "KEY_LCONTROL");
 		}
-
 	}
 }

@@ -9,6 +9,9 @@ import com.almuramc.digilock.util.Permissions;
 import com.bekvon.bukkit.residence.Residence;
 import com.bekvon.bukkit.residence.protection.ClaimedResidence;
 
+import org.getspout.spoutapi.block.SpoutBlock;
+import org.getspout.spoutapi.player.SpoutPlayer;
+
 import org.bukkit.Material;
 import org.bukkit.block.Chest;
 import org.bukkit.block.Dispenser;
@@ -27,9 +30,6 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Button;
 import org.bukkit.material.Lever;
-
-import org.getspout.spoutapi.block.SpoutBlock;
-import org.getspout.spoutapi.player.SpoutPlayer;
 
 public class PlayerListener implements Listener {
 	@EventHandler
@@ -549,7 +549,7 @@ public class PlayerListener implements Listener {
 									"digilock.signedit",
 									Permissions.NOT_QUIET)) {
 								Sign sign = (Sign) sBlock.getState();
-								if (Digilock.getHooks().isResidencyAvailable()) {					
+								if (Digilock.getHooks().isResidencyAvailable()) {
 									ClaimedResidence res = Residence.getResidenceManager().getByLoc(sBlock.getLocation());
 									boolean canBuild = true;
 									if (res != null) {
@@ -561,7 +561,7 @@ public class PlayerListener implements Listener {
 										sPlayer.sendMessage("Residence is currently restricting your Sign Editing Abilities.");
 									}
 								} else {
-									sPlayer.openSignEditGUI(sign);	
+									sPlayer.openSignEditGUI(sign);
 								}
 							}
 						} else {
@@ -721,7 +721,7 @@ public class PlayerListener implements Listener {
 				// HANDLING THE DOUBLEDOOR
 				if (BlockTools.isDoubleDoor(sBlock)) {
 					// if LEFT_CLICK_BLOCK is canceled the double door cant be
-					
+
 					//if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
 					//	event.setCancelled(true);
 					//	if (BlockTools.isDoubleDoorOpen(sBlock)) {
@@ -771,7 +771,7 @@ public class PlayerListener implements Listener {
 							"digilock.signedit",
 							Permissions.NOT_QUIET)) {
 						Sign sign = (Sign) sBlock.getState();
-						if (Digilock.getHooks().isResidencyAvailable()) {					
+						if (Digilock.getHooks().isResidencyAvailable()) {
 							ClaimedResidence res = Residence.getResidenceManager().getByLoc(sBlock.getLocation());
 							boolean canBuild = true;
 							if (res != null) {
@@ -783,7 +783,7 @@ public class PlayerListener implements Listener {
 								sPlayer.sendMessage("Residence is currently restricting your Sign Editing Abilities.");
 							}
 						} else {
-							sPlayer.openSignEditGUI(sign);	
+							sPlayer.openSignEditGUI(sign);
 						}
 					}
 				}

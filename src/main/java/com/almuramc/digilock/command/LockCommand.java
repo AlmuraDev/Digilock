@@ -5,6 +5,9 @@ import com.almuramc.digilock.util.BlockTools;
 import com.almuramc.digilock.util.Messages;
 import com.almuramc.digilock.util.Permissions;
 
+import org.getspout.spoutapi.block.SpoutBlock;
+import org.getspout.spoutapi.player.SpoutPlayer;
+
 import org.bukkit.Material;
 import org.bukkit.block.Chest;
 import org.bukkit.block.Dispenser;
@@ -15,9 +18,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.java.JavaPlugin;
-
-import org.getspout.spoutapi.block.SpoutBlock;
-import org.getspout.spoutapi.player.SpoutPlayer;
 
 public class LockCommand implements CommandExecutor {
 	public LockCommand(JavaPlugin instance) {

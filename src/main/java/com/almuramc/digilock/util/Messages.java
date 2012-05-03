@@ -5,9 +5,9 @@ import java.util.logging.Logger;
 
 import com.almuramc.digilock.Digilock;
 
-import org.bukkit.Material;
-
 import org.getspout.spoutapi.player.SpoutPlayer;
+
+import org.bukkit.Material;
 
 public class Messages {
 	public static final Logger l = Logger.getLogger("Minecraft");

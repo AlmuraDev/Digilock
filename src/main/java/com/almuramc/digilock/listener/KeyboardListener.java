@@ -1,13 +1,12 @@
 package com.almuramc.digilock.listener;
 
 import com.almuramc.digilock.Digilock;
-import com.almuramc.digilock.LockCore;
-
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 
 import org.getspout.spoutapi.event.input.KeyPressedEvent;
 import org.getspout.spoutapi.event.input.KeyReleasedEvent;
+
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 
 public class KeyboardListener implements Listener {
 	@EventHandler

@@ -4,6 +4,9 @@ import com.almuramc.digilock.Digilock;
 import com.almuramc.digilock.util.BlockTools;
 import com.almuramc.digilock.util.Messages;
 
+import org.getspout.spoutapi.block.SpoutBlock;
+import org.getspout.spoutapi.player.SpoutPlayer;
+
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.event.EventHandler;
@@ -21,9 +24,6 @@ import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.block.BlockRedstoneEvent;
 import org.bukkit.event.block.BlockSpreadEvent;
 import org.bukkit.event.block.SignChangeEvent;
-
-import org.getspout.spoutapi.block.SpoutBlock;
-import org.getspout.spoutapi.player.SpoutPlayer;
 
 public class BlockListener implements Listener {
 	@EventHandler

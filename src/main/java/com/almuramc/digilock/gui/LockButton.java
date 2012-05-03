@@ -11,6 +11,11 @@ import com.almuramc.digilock.util.Permissions;
 import com.bekvon.bukkit.residence.Residence;
 import com.bekvon.bukkit.residence.protection.ClaimedResidence;
 
+import org.getspout.spoutapi.block.SpoutBlock;
+import org.getspout.spoutapi.event.screen.ButtonClickEvent;
+import org.getspout.spoutapi.gui.GenericButton;
+import org.getspout.spoutapi.player.SpoutPlayer;
+
 import org.bukkit.Material;
 import org.bukkit.block.Chest;
 import org.bukkit.block.Dispenser;
@@ -19,11 +24,6 @@ import org.bukkit.block.Jukebox;
 import org.bukkit.block.Sign;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-
-import org.getspout.spoutapi.block.SpoutBlock;
-import org.getspout.spoutapi.event.screen.ButtonClickEvent;
-import org.getspout.spoutapi.gui.GenericButton;
-import org.getspout.spoutapi.player.SpoutPlayer;
 
 public class LockButton extends GenericButton {
 	public LockButton(String name) {
@@ -108,8 +108,8 @@ public class LockButton extends GenericButton {
 									&& Permissions.hasPerm(sPlayer, "digilock.signedit",
 									Permissions.NOT_QUIET)) {
 								Sign sign = (Sign) sBlock.getState();
-								
-								if (Digilock.getHooks().isResidencyAvailable()) {					
+
+								if (Digilock.getHooks().isResidencyAvailable()) {
 									ClaimedResidence res = Residence.getResidenceManager().getByLoc(sBlock.getLocation());
 									boolean canBuild = true;
 									if (res != null) {
@@ -121,7 +121,7 @@ public class LockButton extends GenericButton {
 										sPlayer.sendMessage("Residence is currently restricting your Sign Editing Abilities.");
 									}
 								} else {
-									sPlayer.openSignEditGUI(sign);	
+									sPlayer.openSignEditGUI(sign);
 								}
 							} else {
 

@@ -6,19 +6,10 @@ import java.util.UUID;
 
 import com.almuramc.digilock.gui.LockButton;
 import com.almuramc.digilock.util.BlockTools;
-import com.almuramc.digilock.util.LockConfig;
 import com.almuramc.digilock.util.Messages;
 import com.almuramc.digilock.util.Permissions;
-import com.almuramc.digilock.util.Dependency;
 import com.bekvon.bukkit.residence.Residence;
 import com.bekvon.bukkit.residence.protection.ClaimedResidence;
-import com.bekvon.bukkit.residence.protection.ResidencePermissions;
-
-import lib.PatPeter.SQLibrary.MySQL;
-import lib.PatPeter.SQLibrary.SQLite;
-
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.PluginManager;
 
 import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.gui.GenericLabel;
@@ -39,7 +30,6 @@ public class LockCore {
 	public int typeId;
 	public String connectedTo;
 	public int useCost;
-
 	private Digilock plugin;
 
 	/**
@@ -55,8 +45,8 @@ public class LockCore {
 	 * @param useCost
 	 */
 	public LockCore(Digilock plugin, SpoutBlock block, String pincode, String owner, int closetimer,
-			String coowners, String users, int typeId, String connectedTo,
-			int useCost) {
+					String coowners, String users, int typeId, String connectedTo,
+					int useCost) {
 		this.plugin = plugin;
 		this.sBlock = block;
 		this.pincode = pincode;
@@ -82,15 +72,15 @@ public class LockCore {
 	 * @param useCost     is the cost to use the block.
 	 */
 	public static void SaveDigiLock(SpoutPlayer sPlayer, SpoutBlock block,
-			String pincode, String owner, Integer closetimer, String coowners,
-			String users, int typeId, String connectedTo, int useCost) {
+									String pincode, String owner, Integer closetimer, String coowners,
+									String users, int typeId, String connectedTo, int useCost) {
 		String query;
 		boolean createlock = true;
 		boolean newLock = true;
 		double cost = Digilock.getConf().getLockCost();
 		block = BlockTools.getDigiLockBlock(block);
 
-		if (Digilock.getHooks().isResidencyAvailable()) {					
+		if (Digilock.getHooks().isResidencyAvailable()) {
 			ClaimedResidence res = Residence.getResidenceManager().getByLoc(block.getLocation());
 			boolean canLock = true;
 
@@ -144,9 +134,9 @@ public class LockCore {
 		}
 		if (createlock) {
 			if (Digilock.getConf().getSQLType().equals("MYSQL")) {
-				Digilock.getHandler().getMySQLHandler().query(query);		
+				Digilock.getHandler().getMySQLHandler().query(query);
 			} else {
-				Digilock.getHandler().getSqliteHandler().query(query);	
+				Digilock.getHandler().getSqliteHandler().query(query);
 
 				Messages.sendNotification(sPlayer, "SQLite Command Ran.");
 			}
@@ -299,8 +289,8 @@ public class LockCore {
 	}
 
 	public void setDigiLock(SpoutBlock block, String pincode, String owner,
-			int closetimer, String coowners, String users, String connectedTo,
-			int useCost) {
+							int closetimer, String coowners, String users, String connectedTo,
+							int useCost) {
 		this.sBlock = block;
 		this.pincode = pincode;
 		this.owner = owner;
@@ -359,9 +349,9 @@ public class LockCore {
 					if (!(i == 0 && j == 0 && k == 0)) {
 						SpoutBlock sb = sBlock.getRelative(i, j, k);
 						if (
-								// BlockTools.isLockable(sb)
+							// BlockTools.isLockable(sb)
 								BlockTools.isLocked(sb)
-								&& (BlockTools.isDoubleDoor(sb)
+										&& (BlockTools.isDoubleDoor(sb)
 										|| BlockTools.isDoor(sb) || BlockTools.isPiston(sb)
 										|| BlockTools.isTrapdoor(sb)
 										|| BlockTools.isDispenser(sb))) {
@@ -375,7 +365,7 @@ public class LockCore {
 	}
 
 	public SpoutBlock getNextLockableBlock(SpoutPlayer sPlayer,
-			SpoutBlock sBlock) {
+										   SpoutBlock sBlock) {
 		for (int i = -1; i < 1 + 1; i++) {
 			for (int j = -1; j < +1; j++) {
 				for (int k = -1; k < +1; k++) {
@@ -384,8 +374,8 @@ public class LockCore {
 						if (BlockTools.isLockable(sb)
 								// BlockTools.isLocked(sb)
 								&& (BlockTools.isDoubleDoor(sb)
-										|| BlockTools.isDoor(sb) || BlockTools.isPiston(sb)
-										|| BlockTools.isTrapdoor(sb) || BlockTools.isDispenser(sb))) {
+								|| BlockTools.isDoor(sb) || BlockTools.isPiston(sb)
+								|| BlockTools.isTrapdoor(sb) || BlockTools.isDispenser(sb))) {
 							return sb;
 						}
 					}
@@ -431,44 +421,44 @@ public class LockCore {
 	//TODO put this in config
 	private static String getTextureUrl(SpoutBlock sBlock) {
 		switch (sBlock.getTypeId()) {
-		case 23:
-			return "http://www.almuramc.com/images/dispenser.png";
+			case 23:
+				return "http://www.almuramc.com/images/dispenser.png";
 			// Dispenser - looks nice.
 
-		case 54:
-			return "http://www.almuramc.com/images/singlechest.png";
+			case 54:
+				return "http://www.almuramc.com/images/singlechest.png";
 			// Wooden Chest
 
-		case 61:
-			return "http://www.almuramc.com/images/furnace.png";
+			case 61:
+				return "http://www.almuramc.com/images/furnace.png";
 			// Furnace - looks nice.
 
-		case 62:
-			return "http://www.almuramc.com/images/furnace.png";
+			case 62:
+				return "http://www.almuramc.com/images/furnace.png";
 			// Burning Furnace
 
-		case 64:
-			// return 324
-			// Wooden door
-			return "http://www.almuramc.com/images/woodendoor.png";
+			case 64:
+				// return 324
+				// Wooden door
+				return "http://www.almuramc.com/images/woodendoor.png";
 
-		case 69:
-			// return 69; // Lever
-			return "http://www.almuramc.com/images/lever.png";
+			case 69:
+				// return 69; // Lever
+				return "http://www.almuramc.com/images/lever.png";
 
-		case 71:
-			// return 330; // Iron door
-			return "http://www.almuramc.com/images/steeldoor.png";
+			case 71:
+				// return 330; // Iron door
+				return "http://www.almuramc.com/images/steeldoor.png";
 
-		case 77:
-			// return 77; // Stone button
-			return "http://www.almuramc.com/images/button.png";
+			case 77:
+				// return 77; // Stone button
+				return "http://www.almuramc.com/images/button.png";
 
-		case 96:
-			return "http://www.almuramc.com/images/Trapdoor.png";
+			case 96:
+				return "http://www.almuramc.com/images/Trapdoor.png";
 			// Trap_door
-		default:
-			return "http://www.almuramc.com/images/noid.png";
+			default:
+				return "http://www.almuramc.com/images/noid.png";
 		}
 	}
 
@@ -478,36 +468,36 @@ public class LockCore {
 	 */
 	public static int getPincodeBlock(SpoutBlock sBlock) {
 		switch (sBlock.getTypeId()) {
-		case 23:
-			return 23; // Dispenser - looks nice.
-		case 47:
-			return 47; // Bookshelf - looks nice.
-		case 54:
-			return 54; // Chest - looks nice.
-		case 61:
-			return 61; // Furnace - looks nice.
-		case 62:
-			return 62; // Burning Furnace
-		case 63:
-			return 95; // SIGN_POST
-		case 64:
-			return 324; // Wooden door
+			case 23:
+				return 23; // Dispenser - looks nice.
+			case 47:
+				return 47; // Bookshelf - looks nice.
+			case 54:
+				return 54; // Chest - looks nice.
+			case 61:
+				return 61; // Furnace - looks nice.
+			case 62:
+				return 62; // Burning Furnace
+			case 63:
+				return 95; // SIGN_POST
+			case 64:
+				return 324; // Wooden door
 			// return 95;
-		case 68:
-			return 68;
-		case 69:
-			return 69; // Lever
+			case 68:
+				return 68;
+			case 69:
+				return 69; // Lever
 			// return 95;
-		case 71:
-			return 330; // Iron door
+			case 71:
+				return 330; // Iron door
 			// return 95;
-		case 77:
-			return 77; // Stone button
+			case 77:
+				return 77; // Stone button
 			// return 95;
-		case 96:
-			return 95; // Trap_door
-		case 107:
-			return 95; // FENCEGATE
+			case 96:
+				return 95; // Trap_door
+			case 107:
+				return 95; // FENCEGATE
 		}
 		return 95;
 	}
@@ -750,7 +740,7 @@ public class LockCore {
 		if (BlockTools.isLocked(sBlock)
 				&& BlockTools.isChest(sBlock) // Displays only if sBlock=Chest.
 				&& Permissions.hasPerm(sPlayer, "admin",
-						Permissions.NOT_QUIET)) {
+				Permissions.NOT_QUIET)) {
 			LockButton adminButton = new LockButton("Open");
 			adminButton.setAuto(false).setX(155).setY(153).setHeight(height + 5).setWidth(35);
 			adminButton.setTooltip("Administrator Open Override.");

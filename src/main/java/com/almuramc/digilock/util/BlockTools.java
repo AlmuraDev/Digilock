@@ -6,6 +6,10 @@ import java.sql.SQLException;
 import com.almuramc.digilock.Digilock;
 import com.almuramc.digilock.LockCore;
 
+import org.getspout.spoutapi.SpoutManager;
+import org.getspout.spoutapi.block.SpoutBlock;
+import org.getspout.spoutapi.player.SpoutPlayer;
+
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -15,10 +19,6 @@ import org.bukkit.inventory.DoubleChestInventory;
 import org.bukkit.material.Button;
 import org.bukkit.material.Door;
 import org.bukkit.material.Lever;
-
-import org.getspout.spoutapi.SpoutManager;
-import org.getspout.spoutapi.block.SpoutBlock;
-import org.getspout.spoutapi.player.SpoutPlayer;
 
 public class BlockTools {
 	private static final Material lockablematerials[] = {Material.CHEST,
@@ -89,7 +89,7 @@ public class BlockTools {
 						closetimer, coowners, users, typeId, connectedTo,
 						useCost);
 				result.close();
-				
+
 				return lock;
 			} else {
 				return null;
@@ -910,12 +910,12 @@ public class BlockTools {
 					Door door = (Door) sBlock.getState().getData();
 					if (door.getFacing() == BlockFace.EAST
 							&& door.getHingeCorner() == BlockFace.SOUTH_EAST) {
-						
+
 						if (isDoor(sBlock.getRelative(BlockFace.NORTH))) {
 							Door door2 = (Door) sBlock
 									.getRelative(BlockFace.NORTH).getState()
 									.getData();
-							
+
 							if (door2.getHingeCorner() == BlockFace.NORTH_EAST) { //North_East
 								return true;
 							}
@@ -923,7 +923,7 @@ public class BlockTools {
 							Door door2 = (Door) sBlock
 									.getRelative(BlockFace.WEST).getState()
 									.getData();
-							
+
 							if (door2.getHingeCorner() == BlockFace.SOUTH_WEST) {
 								return true;
 							}
