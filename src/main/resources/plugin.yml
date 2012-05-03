@@ -26,8 +26,6 @@ permissions:
         default: op
     digilock.use:
         default: op
-    digilock.admin:
-        default: op
 
 
 
