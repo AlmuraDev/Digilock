@@ -1,5 +1,7 @@
 package com.almuramc.digilock.listener;
 
+import java.util.logging.Logger;
+
 import com.almuramc.digilock.Digilock;
 import com.almuramc.digilock.LockCore;
 import com.almuramc.digilock.util.BlockTools;
@@ -793,5 +795,5 @@ public class PlayerListener implements Listener {
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		int id = event.getPlayer().getEntityId();
 		Digilock.removeUserData(id);
-	}
+	}	
 }

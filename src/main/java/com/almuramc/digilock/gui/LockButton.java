@@ -1,6 +1,7 @@
 package com.almuramc.digilock.gui;
 
 import java.util.UUID;
+import java.util.logging.Logger;
 
 import com.almuramc.digilock.Digilock;
 import com.almuramc.digilock.LockCore;
@@ -28,8 +29,7 @@ import org.bukkit.inventory.ItemStack;
 public class LockButton extends GenericButton {
 	public LockButton(String name) {
 		super(name);
-	}
-
+	}			
 	@Override
 	public void onButtonClick(ButtonClickEvent event) {
 		if (event instanceof ButtonClickEvent) {
@@ -47,8 +47,7 @@ public class LockButton extends GenericButton {
 				// Buttons in getPincodeWindow
 				// ************************************
 				String buttonName = LockCore.BITDigiLockButtons.get(uuid);
-				if (buttonName.equals("getPincodeUnlock")) {
-					//BlockTools.popupScreen.get(entId).close();
+				if (buttonName.equals("getPincodeUnlock")) {			
 					LockCore.cleanupPopupScreen(sPlayer);
 					if ((lock.getPincode().equals(
 							LockCore.pincodeGUI.get(entId).getText()) && Permissions
@@ -161,18 +160,18 @@ public class LockButton extends GenericButton {
 						}
 						sPlayer.damage(5);
 					}
+					LockCore.cleanupPopupScreen(sPlayer);					
+					LockCore.BITDigiLockButtons.remove(uuid);
+					
+				} else if (buttonName.equals("getPincodeCancel")) {					
 					LockCore.cleanupPopupScreen(sPlayer);
 					LockCore.BITDigiLockButtons.remove(uuid);
-				} else if (buttonName.equals("getPincodeCancel")) {
 					sPlayer.closeActiveWindow();
-					LockCore.cleanupPopupScreen(sPlayer);
-					LockCore.BITDigiLockButtons.remove(uuid);
-				}
-
+					
 				// ************************************
 				// Buttons in sPlayer.setPincode
 				// ************************************
-				else if (buttonName.equals("setPincodeLock")
+				} else if (buttonName.equals("setPincodeLock")
 						&& Permissions.hasPerm(sPlayer, "create",
 						Permissions.QUIET)) {
 					if (validateSetPincodeFields(sPlayer)) {
@@ -192,26 +191,25 @@ public class LockButton extends GenericButton {
 								.getTypeId(), "",
 								Integer.valueOf(digiString3));
 						LockCore.cleanupPopupScreen(sPlayer);
-						LockCore.BITDigiLockButtons.remove(uuid);
+						LockCore.BITDigiLockButtons.remove(uuid);						
 					}
 				} else if (buttonName.equals("setPincodeCancel")) {
-					sPlayer.closeActiveWindow();
+					sPlayer.closeActiveWindow();										
 					LockCore.cleanupPopupScreen(sPlayer);
 					LockCore.BITDigiLockButtons.remove(uuid);
 				} else if (buttonName.equals("setPincodeRemove")) {
-					sPlayer.closeActiveWindow();
-					LockCore.cleanupPopupScreen(sPlayer);
+					
+					LockCore.cleanupPopupScreen(sPlayer);					
 					LockCore.BITDigiLockButtons.remove(uuid);
 
 					if (BlockTools.isLocked(sBlock)) {
 						lock.RemoveDigiLock(sPlayer);
 					}
-
+					sPlayer.closeActiveWindow();					
 					// Dockter 12/27/11 to add AdminOpen Button to User Interface.
 				} else if (buttonName.equals("AdminOpen")) {
 					LockCore.cleanupPopupScreen(sPlayer);
 					LockCore.BITDigiLockButtons.remove(uuid);
-
 					if (BlockTools.isLocked(sBlock)) {
 						if (BlockTools.isChest(lock.getBlock())) {
 							if (sBlock.getState() instanceof Chest) {
@@ -222,6 +220,7 @@ public class LockButton extends GenericButton {
 							}
 						}
 					}
+					//LockCore.removeUserData(sPlayer.getEntityId());
 				} else if (buttonName.equals("OwnerButton")) {
 					if (validateSetPincodeFields(sPlayer)) {
 					}
@@ -244,7 +243,7 @@ public class LockButton extends GenericButton {
 				// ************************************
 				else {
 				}
-			}
+			}			
 		}
 	}
 
