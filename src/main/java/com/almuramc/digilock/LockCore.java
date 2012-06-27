@@ -541,17 +541,17 @@ public class LockCore {
 		popupScreen.get(id).attachWidget(Digilock.getInstance(), border);		
 		y += 3 * height;
 
-		GenericTextField pincodeGUI = new GenericTextField();
-		pincodeGUI.setText("");
-		pincodeGUI.setTooltip("Enter the pincode and press unlock.");
-		pincodeGUI.setCursorPosition(1).setMaximumCharacters(20);
-		pincodeGUI.setAnchor(WidgetAnchor.CENTER_CENTER);
-		pincodeGUI.shiftXPos(-50).shiftYPos(43);
-		pincodeGUI.setHeight(height).setWidth(80);
-		pincodeGUI.setMargin(0);
-		pincodeGUI.setPasswordField(true);
-		pincodeGUI.setFocus(true);
-		popupScreen.get(id).attachWidget(Digilock.getInstance(), pincodeGUI);
+		//GenericTextField pincodeGUI = new GenericTextField();
+		pincodeGUI.get(id).setText("");
+		pincodeGUI.get(id).setTooltip("Enter the pincode and press unlock.");
+		pincodeGUI.get(id).setCursorPosition(1).setMaximumCharacters(20);
+		pincodeGUI.get(id).setAnchor(WidgetAnchor.CENTER_CENTER);
+		pincodeGUI.get(id).shiftXPos(-50).shiftYPos(43);
+		pincodeGUI.get(id).setHeight(height).setWidth(80);
+		pincodeGUI.get(id).setMargin(0);
+		pincodeGUI.get(id).setPasswordField(true);
+		pincodeGUI.get(id).setFocus(true);
+		popupScreen.get(id).attachWidget(Digilock.getInstance(), pincodeGUI.get(id));
 		y += height;
 
 		LockButton unlockButton = new LockButton("Unlock");
