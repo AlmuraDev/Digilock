@@ -11,6 +11,8 @@ import com.almuramc.digilock.util.Permissions;
 import com.bekvon.bukkit.residence.Residence;
 import com.bekvon.bukkit.residence.protection.ClaimedResidence;
 
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.gui.GenericLabel;
 import org.getspout.spoutapi.gui.GenericPopup;
@@ -22,7 +24,7 @@ import org.getspout.spoutapi.gui.WidgetAnchor;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 public class LockCore {
-	public SpoutBlock sBlock;
+	public Block sBlock;
 	public String pincode;
 	public String owner;
 	public int closetimer;
@@ -45,7 +47,7 @@ public class LockCore {
 	 * @param connectedTo
 	 * @param useCost
 	 */
-	public LockCore(Digilock plugin, SpoutBlock block, String pincode, String owner, int closetimer,
+	public LockCore(Digilock plugin, Block block, String pincode, String owner, int closetimer,
 			String coowners, String users, int typeId, String connectedTo,
 			int useCost) {
 		this.plugin = plugin;
@@ -72,7 +74,7 @@ public class LockCore {
 	 * @param connectedTo - not used yet.
 	 * @param useCost     is the cost to use the block.
 	 */
-	public static void SaveDigiLock(SpoutPlayer sPlayer, SpoutBlock block,
+	public static void SaveDigiLock(SpoutPlayer sPlayer, Block block,
 			String pincode, String owner, Integer closetimer, String coowners,
 			String users, int typeId, String connectedTo, int useCost) {
 		String query;
@@ -189,7 +191,7 @@ public class LockCore {
 	 * @param sPlayer
 	 * @return true or false
 	 */
-	public static boolean isOwner(SpoutPlayer sPlayer, SpoutBlock sBlock) {
+	public static boolean isOwner(SpoutPlayer sPlayer, Block sBlock) {
 		if (sBlock != null) {
 			if (BlockTools.loadDigiLock(sBlock).getOwner().toLowerCase()
 					.equals(sPlayer.getName().toLowerCase())) {
@@ -245,7 +247,7 @@ public class LockCore {
 		return users;
 	}
 
-	public SpoutBlock getBlock() {
+	public Block getBlock() {
 		return sBlock;
 	}
 
@@ -261,7 +263,7 @@ public class LockCore {
 		this.pincode = pincode;
 	}
 
-	public void setBlock(SpoutBlock block) {
+	public void setBlock(Block block) {
 		this.sBlock = block;
 	}
 
@@ -289,7 +291,7 @@ public class LockCore {
 		this.connectedTo = connectedTo;
 	}
 
-	public void setDigiLock(SpoutBlock block, String pincode, String owner,
+	public void setDigiLock(Block block, String pincode, String owner,
 			int closetimer, String coowners, String users, String connectedTo,
 			int useCost) {
 		this.sBlock = block;
@@ -343,12 +345,12 @@ public class LockCore {
 		}
 	}
 
-	public SpoutBlock getNextLockedBlock(SpoutPlayer sPlayer, SpoutBlock sBlock) {
+	public Block getNextLockedBlock(SpoutPlayer sPlayer, Block sBlock) {
 		for (int i = -1; i < 1 + 1; i++) {
 			for (int j = -1; j < +1; j++) {
 				for (int k = -1; k < +1; k++) {
 					if (!(i == 0 && j == 0 && k == 0)) {
-						SpoutBlock sb = sBlock.getRelative(i, j, k);
+						Block sb = sBlock.getRelative(i, j, k);
 						if (
 								// BlockTools.isLockable(sb)
 								BlockTools.isLocked(sb)
@@ -365,13 +367,13 @@ public class LockCore {
 		return null;
 	}
 
-	public SpoutBlock getNextLockableBlock(SpoutPlayer sPlayer,
-			SpoutBlock sBlock) {
+	public Block getNextLockableBlock(SpoutPlayer sPlayer,
+			Block sBlock) {
 		for (int i = -1; i < 1 + 1; i++) {
 			for (int j = -1; j < +1; j++) {
 				for (int k = -1; k < +1; k++) {
 					if (!(i == 0 && j == 0 && k == 0)) {
-						SpoutBlock sb = sBlock.getRelative(i, j, k);
+						Block sb = sBlock.getRelative(i, j, k);
 						if (BlockTools.isLockable(sb)
 								// BlockTools.isLocked(sb)
 								&& (BlockTools.isDoubleDoor(sb)
@@ -401,26 +403,26 @@ public class LockCore {
 	public static Map<Integer, GenericTextField> usersGUI = new HashMap<Integer, GenericTextField>();
 	public static Map<Integer, GenericTextField> useCostGUI = new HashMap<Integer, GenericTextField>();
 	public static Map<Integer, GenericTextField> connectedToGUI = new HashMap<Integer, GenericTextField>();
-	public static Map<Integer, SpoutBlock> clickedBlock = new HashMap<Integer, SpoutBlock>();
+	public static Map<Integer, Block> clickedBlock = new HashMap<Integer, Block>();
 	// Buttons for lock
 	public static HashMap<UUID, String> BITDigiLockButtons = new HashMap<UUID, String>();
 
 	/**
 	 * @param sPlayer
 	 */
-	public static void cleanupPopupScreen(SpoutPlayer sPlayer) {		
+	public static void cleanupPopupScreen(Player sPlayer) {		
 		int playerId = sPlayer.getEntityId();		
 		if (popupScreen.containsKey(playerId)) {			
 			popupScreen.get(playerId).removeWidgets(Digilock.getInstance());
 			popupScreen.get(playerId).setDirty(true);
-			sPlayer.getMainScreen().removeWidgets(Digilock.getInstance());
+			((SpoutPlayer) sPlayer).getMainScreen().removeWidgets(Digilock.getInstance());
 			popupScreen.get(playerId).close();
 			clickedBlock.remove(sPlayer.getEntityId());			
 		}
 	}
 
 	//TODO put this in config
-	private static String getTextureUrl(SpoutBlock sBlock) {
+	private static String getTextureUrl(Block sBlock) {
 		switch (sBlock.getTypeId()) {
 		case 23:
 			return "http://www.almuramc.com/images/dispenser.png";
@@ -467,7 +469,7 @@ public class LockCore {
 	 * @param sBlock
 	 * @return
 	 */
-	public static int getPincodeBlock(SpoutBlock sBlock) {
+	public static int getPincodeBlock(Block sBlock) {
 		switch (sBlock.getTypeId()) {
 		case 23:
 			return 23; // Dispenser - looks nice.
@@ -522,7 +524,7 @@ public class LockCore {
 	 * @param sBlock
 	 * @author Gabriel333 / Rocologo
 	 */
-	public static void getPincode(SpoutPlayer sPlayer, SpoutBlock sBlock) {   // y = up/down  x = left/right
+	public static void getPincode(SpoutPlayer sPlayer, Block sBlock) {   // y = up/down  x = left/right
 		int y = 88; int height = 15; int width = 50;
 		int x = 204;
 		int id = sPlayer.getEntityId();
@@ -579,7 +581,7 @@ public class LockCore {
 	 * @param sPlayer
 	 * @param sBlock
 	 */
-	public static void setPincode(SpoutPlayer sPlayer, SpoutBlock sBlock) {
+	public static void setPincode(SpoutPlayer sPlayer, Block sBlock) {
 		int id = sPlayer.getEntityId();
 		int height = 9;
 		int x, y, w1, w2, w3, w4;

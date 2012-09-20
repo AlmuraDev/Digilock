@@ -6,6 +6,7 @@ import com.almuramc.digilock.util.BlockTools;
 import com.almuramc.digilock.util.Messages;
 import com.almuramc.digilock.util.Permissions;
 
+import org.bukkit.block.Block;
 import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.event.input.KeyBindingEvent;
 import org.getspout.spoutapi.gui.ScreenType;
@@ -30,7 +31,7 @@ public class KeyHandler implements BindingExecutionDelegate {
 	public void keyReleased(KeyBindingEvent event) {
 		SpoutPlayer sPlayer = event.getPlayer();
 		ScreenType screentype = event.getScreenType();
-		SpoutBlock targetblock = (SpoutBlock) sPlayer.getTargetBlock(null, 4);
+		Block targetblock = (Block) sPlayer.getTargetBlock(null, 4);
 
 		// Remove broken DigiLocks
 		if (BlockTools.isLocked(targetblock) && !BlockTools.isLockable(targetblock)) {

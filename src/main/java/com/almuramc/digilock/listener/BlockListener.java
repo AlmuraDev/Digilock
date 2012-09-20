@@ -46,28 +46,28 @@ public class BlockListener implements Listener {
 
 	@EventHandler
 	public void onBlockPhysics(BlockPhysicsEvent event) {
-		if (event.isCancelled()) {
-			return;
-		}
-		Block b = event.getBlock();
-		if (b != null && (event.getBlock() instanceof SpoutBlock)) {
+	//	if (event.isCancelled()) {
+	//		return;
+	//	}
+	//	Block b = event.getBlock();
+	//	if (b != null && (event.getBlock() instanceof SpoutBlock)) {
 
-			if (!BlockTools.isLockable(b)) {
-				return;
-			}
-			SpoutBlock sBlock = (SpoutBlock) b;
-			if (BlockTools.isLocked(sBlock)) {
-				event.setCancelled(true);
-			}
-		}
+	//		if (!BlockTools.isLockable(b)) {
+	//			return;
+	//		}
+	//		SpoutBlock sBlock = (SpoutBlock) b;
+	//		if (BlockTools.isLocked(sBlock)) {
+	//			event.setCancelled(true);
+	//		}
+	//	}
 	}
 
 	@EventHandler
 	public void onBlockFromTo(BlockFromToEvent event) {
-		if (event.isCancelled() || !(event.getBlock() instanceof SpoutBlock)) {
+		if (event.isCancelled() || !(event.getBlock() instanceof Block)) {
 			return;
 		}
-		SpoutBlock block = (SpoutBlock) event.getBlock();
+		Block block = (Block) event.getBlock();
 		if (!BlockTools.isLockable(block)) {
 			return;
 		}
@@ -85,8 +85,8 @@ public class BlockListener implements Listener {
 			return;
 		}
 		SpoutPlayer sPlayer = (SpoutPlayer) event.getPlayer();
-		SpoutBlock sBlock = (SpoutBlock) event.getBlock();
-		SpoutBlock blockOnTop = sBlock.getRelative(BlockFace.UP);
+		Block sBlock = (Block) event.getBlock();
+		Block blockOnTop = sBlock.getRelative(BlockFace.UP);
 		if (BlockTools.isLocked(sBlock) || BlockTools.isLocked(blockOnTop)) {
 			sPlayer.damage(5);
 			event.setCancelled(true);
@@ -98,7 +98,7 @@ public class BlockListener implements Listener {
 		if (event.isCancelled()) {
 			return;
 		}
-		SpoutBlock sBlock = (SpoutBlock) event.getBlock();
+		Block sBlock = (Block) event.getBlock();
 		if (!BlockTools.isLockable(sBlock)) {
 			return;
 		}
@@ -112,7 +112,7 @@ public class BlockListener implements Listener {
 		if (event.isCancelled()) {
 			return;
 		}
-		SpoutBlock sBlock = (SpoutBlock) event.getBlock();
+		Block sBlock = (Block) event.getBlock();
 		if (BlockTools.isLocked(sBlock)) {
 			event.setCancelled(true);
 		}
@@ -123,7 +123,7 @@ public class BlockListener implements Listener {
 		if (event.isCancelled()) {
 			return;
 		}
-		SpoutBlock sBlock = (SpoutBlock) event.getBlock();
+		Block sBlock = (Block) event.getBlock();
 		if (!BlockTools.isLockable(sBlock)) {
 			return;
 		}
@@ -137,7 +137,7 @@ public class BlockListener implements Listener {
 		if (event.isCancelled()) {
 			return;
 		}
-		SpoutBlock sBlock = (SpoutBlock) event.getBlock();
+		Block sBlock = (Block) event.getBlock();
 		if (!BlockTools.isLockable(sBlock)) {
 			return;
 		}
@@ -151,7 +151,7 @@ public class BlockListener implements Listener {
 		if (event.isCancelled()) {
 			return;
 		}
-		SpoutBlock sBlock = (SpoutBlock) event.getBlock();
+		Block sBlock = (Block) event.getBlock();
 		if (!BlockTools.isLockable(sBlock)) {
 			return;
 		}
@@ -165,7 +165,7 @@ public class BlockListener implements Listener {
 		if (event.isCancelled()) {
 			return;
 		}
-		SpoutBlock sBlock = (SpoutBlock) event.getBlock();
+		Block sBlock = (Block) event.getBlock();
 		if (!BlockTools.isLockable(sBlock)) {
 			return;
 		}
@@ -181,7 +181,7 @@ public class BlockListener implements Listener {
 		if (event.isCancelled()) {
 			return;
 		}
-		SpoutBlock sBlock = (SpoutBlock) event.getBlock();
+		Block sBlock = (Block) event.getBlock();
 		if (!BlockTools.isLockable(sBlock)) {
 			return;
 		}
@@ -197,7 +197,7 @@ public class BlockListener implements Listener {
 		if (event.isCancelled()) {
 			return;
 		}
-		SpoutBlock sBlock = (SpoutBlock) event.getBlock();
+		Block sBlock = (Block) event.getBlock();
 		if (!BlockTools.isLockable(sBlock)) {
 			return;
 		}
@@ -211,7 +211,7 @@ public class BlockListener implements Listener {
 		if (event.isCancelled()) {
 			return;
 		}
-		SpoutBlock sBlock = (SpoutBlock) event.getBlock();
+		Block sBlock = (Block) event.getBlock();
 		if (!BlockTools.isLockable(sBlock)) {
 			return;
 		}

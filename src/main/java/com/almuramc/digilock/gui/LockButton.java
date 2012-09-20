@@ -1,5 +1,7 @@
 package com.almuramc.digilock.gui;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -18,11 +20,14 @@ import org.getspout.spoutapi.gui.GenericButton;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
 import org.bukkit.block.Dispenser;
 import org.bukkit.block.Furnace;
 import org.bukkit.block.Jukebox;
 import org.bukkit.block.Sign;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -34,12 +39,13 @@ public class LockButton extends GenericButton {
 	public void onButtonClick(ButtonClickEvent event) {
 		if (event instanceof ButtonClickEvent) {
 			UUID uuid = this.getId();
-			SpoutPlayer sPlayer = event.getPlayer();
+			SpoutPlayer sPlayer = event.getPlayer();			
 			int entId = sPlayer.getEntityId();
-			SpoutBlock sBlock;
+			//SpoutBlock sBlock;
+			Block sBlock;
 			sBlock = LockCore.clickedBlock.get(entId);
 			if (sBlock == null) {
-				sBlock = (SpoutBlock) sPlayer.getTargetBlock(null, 4);
+				sBlock = (Block) sPlayer.getTargetBlock(null, 4);
 			}
 			if (BlockTools.isLockable(sBlock)) {
 				LockCore lock = BlockTools.loadDigiLock(sBlock);
@@ -57,8 +63,9 @@ public class LockButton extends GenericButton {
 							"admin", Permissions.QUIET)) {
 						if (BlockTools.isChest(lock.getBlock())) {
 							Chest sChest = (Chest) sBlock.getState();
-							Inventory inv = sChest.getInventory();
+							Inventory inv = sChest.getInventory();							
 							sPlayer.openInventory(inv);
+							
 						} else if (BlockTools.isDoubleDoor(lock.getBlock())) {
 							BlockTools.playDigiLockSound(lock.getBlock());
 							BlockTools.changeDoorStates(true, sPlayer, lock.getUseCost(), sBlock, BlockTools.getDoubleDoor(sBlock));
@@ -89,12 +96,12 @@ public class LockButton extends GenericButton {
 							BlockTools.playDigiLockSound(lock.getBlock());
 							Dispenser dispenser = (Dispenser) sBlock.getState();
 							Inventory inv = dispenser.getInventory();
-							sPlayer.openInventoryWindow(inv);
+							sPlayer.openInventory(inv);
 						} else if (lock.getBlock().getType() == Material.FURNACE) {
 							BlockTools.playDigiLockSound(lock.getBlock());
 							Furnace furnace = (Furnace) sBlock.getState();
 							Inventory inv = furnace.getInventory();
-							sPlayer.openInventoryWindow(inv);
+							sPlayer.openInventory(inv);
 						} else if (lock.getBlock().getType() == Material.BOOKSHELF) {
 							LockInventory bitInventory = LockInventory
 									.loadBitInventory(sPlayer, sBlock);
@@ -216,7 +223,8 @@ public class LockButton extends GenericButton {
 								Chest sChest = (Chest) (sBlock.getState());
 								Inventory inv = sChest.getInventory();
 								sPlayer.openInventory(inv);
-								BlockTools.playDigiLockSound(sBlock);
+								BlockTools.playDigiLockSound(sBlock);								
+													
 							}
 						}
 					}

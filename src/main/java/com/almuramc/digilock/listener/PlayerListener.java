@@ -16,12 +16,15 @@ import org.getspout.spoutapi.keyboard.Keyboard;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
 import org.bukkit.block.Dispenser;
 import org.bukkit.block.Furnace;
 import org.bukkit.block.Jukebox;
 import org.bukkit.block.Sign;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -35,7 +38,7 @@ import org.bukkit.material.Button;
 import org.bukkit.material.Lever;
 
 public class PlayerListener implements Listener {
-	@EventHandler
+	@EventHandler // (priority = EventPriority.LOWEST)
 	public void onPlayerInteract(PlayerInteractEvent event) {
 
 		if (event.isCancelled()) {
@@ -46,12 +49,14 @@ public class PlayerListener implements Listener {
 		if (!(event.getAction().equals(Action.RIGHT_CLICK_BLOCK) || event.getAction().equals(Action.LEFT_CLICK_BLOCK))) {
 			return;
 		}
-		SpoutBlock sBlock = (SpoutBlock) event.getClickedBlock();
+		SpoutPlayer sPlayer = (SpoutPlayer) event.getPlayer();
+		Block sBlock = (Block) event.getClickedBlock();
+		
 		// for faster handling
 		if (!BlockTools.isLockable(sBlock)) {
 			return;
 		}
-		SpoutPlayer sPlayer = (SpoutPlayer) event.getPlayer();
+
 		ItemStack itemInHand = sPlayer.getInventory().getItemInHand();
 		// sPlayer.sendMessage("PlayerListener:"+itemInHand.getTypeId());
 		int id = sPlayer.getEntityId();
@@ -63,8 +68,8 @@ public class PlayerListener implements Listener {
 				&& Digilock.holdingKey.get(id).equals(Keyboard.KEY_LCONTROL)
 				&& event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
 				&& (Permissions.hasPerm(sPlayer, "create",
-				Permissions.NOT_QUIET) || Permissions.hasPerm(
-				sPlayer, "admin", Permissions.NOT_QUIET))) {
+						Permissions.NOT_QUIET) || Permissions.hasPerm(
+								sPlayer, "admin", Permissions.NOT_QUIET))) {
 
 			event.setCancelled(true);
 			if (BlockTools.isLocked(sBlock)) {
@@ -72,7 +77,7 @@ public class PlayerListener implements Listener {
 				if (lock.isOwner(sPlayer)
 						|| lock.isCoowner(sPlayer)
 						|| Permissions.hasPerm(sPlayer, "admin",
-						Permissions.NOT_QUIET)) {
+								Permissions.NOT_QUIET)) {
 					LockCore.setPincode(sPlayer, sBlock);
 				} else {
 					sPlayer.sendMessage("You are not the owner or coowner");
@@ -87,12 +92,13 @@ public class PlayerListener implements Listener {
 				LockCore lock = BlockTools.loadDigiLock(sBlock);
 
 				// HANDLING A LOCKED CHEST AND DOUBLECHEST
-				if (BlockTools.isChest(sBlock)) {
+				if (BlockTools.isChest(sBlock)) {					
+					event.setCancelled(true);
 					if ((lock.getPincode().equals("") || lock.getPincode()
 							.equalsIgnoreCase("fingerprint"))
 							&& event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
 							&& Permissions.hasPerm(sPlayer, "use",
-							Permissions.NOT_QUIET)) {
+									Permissions.NOT_QUIET)) {
 						// OPEN CHEST BY FINGERPRINT / NAME
 						if (lock.isOwner(sPlayer)
 								|| lock.isCoowner(sPlayer)
@@ -103,19 +109,18 @@ public class PlayerListener implements Listener {
 								Messages.sendNotification(sPlayer,
 										"Opened by fingerprint");
 								BlockTools.playDigiLockSound(sBlock);
-								sPlayer.openInventory(inv);
-							} else {
-								event.setCancelled(true);
-								sPlayer.sendMessage("Your fingerprint does not match the DigiLock");
+								sPlayer.openInventory(inv);																
 							}
+						} else {							
+							sPlayer.sendMessage("Your fingerprint does not match the DigiLock");
 						}
-					} else {
-						event.setCancelled(true);
+
+					} else {						
 						if (sPlayer.isSpoutCraftEnabled()
 								&& event.getAction().equals(
-								Action.RIGHT_CLICK_BLOCK)
-								&& Permissions.hasPerm(sPlayer, "use",
-								Permissions.NOT_QUIET)) {
+										Action.RIGHT_CLICK_BLOCK)
+										&& Permissions.hasPerm(sPlayer, "use",
+												Permissions.NOT_QUIET)) {
 							LockCore.getPincode(sPlayer, sBlock);
 						} else {
 							sPlayer.sendMessage("Locked with Digilock by " + lock.owner);
@@ -130,13 +135,13 @@ public class PlayerListener implements Listener {
 							|| lock.getPincode()
 							.equalsIgnoreCase("fingerprint")
 							&& Permissions.hasPerm(sPlayer, "use",
-							Permissions.NOT_QUIET)) {
+									Permissions.NOT_QUIET)) {
 						// TOGGLE DOOR BY FINGERPRINT / NAME
 						if (lock.isOwner(sPlayer)
 								|| lock.isCoowner(sPlayer)
 								|| lock.isUser(sPlayer)
 								|| Permissions.hasPerm(sPlayer, "admin",
-								Permissions.NOT_QUIET)) {
+										Permissions.NOT_QUIET)) {
 							BlockTools.playDigiLockSound(sBlock);
 							BlockTools.changeDoorStates(true, sPlayer, lock.getUseCost(), sBlock, BlockTools.getDoubleDoor(sBlock));
 							Messages.sendNotification(sPlayer,
@@ -152,9 +157,9 @@ public class PlayerListener implements Listener {
 						// ASK FOR PINCODE
 						if (!BlockTools.isDoubleDoorOpen(sBlock)
 								&& Permissions.hasPerm(sPlayer, "use",
-								Permissions.NOT_QUIET)) {
+										Permissions.NOT_QUIET)) {
 							if (sPlayer.isSpoutCraftEnabled()) {
-								LockCore.getPincode(sPlayer, (SpoutBlock) BlockTools.getDoubleDoor(sBlock));
+								LockCore.getPincode(sPlayer, (Block) BlockTools.getDoubleDoor(sBlock));
 							} else {
 								sPlayer.sendMessage("Digilock'ed by "
 										+ lock.owner);
@@ -173,13 +178,13 @@ public class PlayerListener implements Listener {
 							|| lock.getPincode()
 							.equalsIgnoreCase("fingerprint")
 							&& Permissions.hasPerm(sPlayer, "use",
-							Permissions.NOT_QUIET)) {
+									Permissions.NOT_QUIET)) {
 						// TOGGLE DOOR BY FINGERPRINT / NAME
 						if (lock.isOwner(sPlayer)
 								|| lock.isCoowner(sPlayer)
 								|| lock.isUser(sPlayer)
 								|| Permissions.hasPerm(sPlayer, "admin",
-								Permissions.NOT_QUIET)) {
+										Permissions.NOT_QUIET)) {
 							BlockTools.playDigiLockSound(sBlock);
 							if (BlockTools.isDoorOpen(sBlock)) {
 								BlockTools.closeDoor(sPlayer, sBlock, 0);
@@ -201,8 +206,8 @@ public class PlayerListener implements Listener {
 						if (!BlockTools.isDoorOpen(sBlock)) {
 							if (sPlayer.isSpoutCraftEnabled()
 									&& Permissions.hasPerm(sPlayer,
-									"use",
-									Permissions.NOT_QUIET)) {
+											"use",
+											Permissions.NOT_QUIET)) {
 								LockCore.getPincode(sPlayer, sBlock);
 							} else {
 								sPlayer.sendMessage("Digilock'ed by "
@@ -222,7 +227,7 @@ public class PlayerListener implements Listener {
 							|| lock.getPincode()
 							.equalsIgnoreCase("fingerprint")
 							&& Permissions.hasPerm(sPlayer, "use",
-							Permissions.NOT_QUIET)) {
+									Permissions.NOT_QUIET)) {
 						// TOGGLE DOOR BY FINGERPRINT / NAME
 						if (lock.isOwner(sPlayer)
 								|| lock.isCoowner(sPlayer)
@@ -248,8 +253,8 @@ public class PlayerListener implements Listener {
 						if (!BlockTools.isTrapdoorOpen(sPlayer, sBlock)) {
 							if (sPlayer.isSpoutCraftEnabled()
 									&& Permissions.hasPerm(sPlayer,
-									"use",
-									Permissions.NOT_QUIET)) {
+											"use",
+											Permissions.NOT_QUIET)) {
 								LockCore.getPincode(sPlayer, sBlock);
 							} else {
 								sPlayer.sendMessage("Digilock'ed by "
@@ -269,7 +274,7 @@ public class PlayerListener implements Listener {
 							|| lock.getPincode()
 							.equalsIgnoreCase("fingerprint")
 							&& Permissions.hasPerm(sPlayer, "use",
-							Permissions.NOT_QUIET)) {
+									Permissions.NOT_QUIET)) {
 						// TOGGLE DOOR BY FINGERPRINT / NAME
 						if (lock.isOwner(sPlayer)
 								|| lock.isCoowner(sPlayer)
@@ -295,8 +300,8 @@ public class PlayerListener implements Listener {
 						if (!BlockTools.isFenceGateOpen(sPlayer, sBlock)) {
 							if (sPlayer.isSpoutCraftEnabled()
 									&& Permissions.hasPerm(sPlayer,
-									"use",
-									Permissions.NOT_QUIET)) {
+											"use",
+											Permissions.NOT_QUIET)) {
 								LockCore.getPincode(sPlayer, sBlock);
 							} else {
 								sPlayer.sendMessage("Digilock'ed by "
@@ -315,7 +320,7 @@ public class PlayerListener implements Listener {
 							.equalsIgnoreCase("fingerprint"))
 							&& event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
 							&& Permissions.hasPerm(sPlayer, "use",
-							Permissions.NOT_QUIET)) {
+									Permissions.NOT_QUIET)) {
 						// USE DISPENSER BY FINGERPRINT (playername)
 						if (lock.isOwner(sPlayer)
 								|| lock.isCoowner(sPlayer)
@@ -325,7 +330,7 @@ public class PlayerListener implements Listener {
 							BlockTools.playDigiLockSound(lock.getBlock());
 							Dispenser dispenser = (Dispenser) sBlock.getState();
 							Inventory inv = dispenser.getInventory();
-							sPlayer.openInventoryWindow(inv);
+							sPlayer.openInventory(inv);
 						} else {
 							event.setCancelled(true);
 							sPlayer.sendMessage("Your fingerprint does not match the DigiLock");
@@ -334,9 +339,9 @@ public class PlayerListener implements Listener {
 						event.setCancelled(true);
 						if (sPlayer.isSpoutCraftEnabled()
 								&& event.getAction().equals(
-								Action.RIGHT_CLICK_BLOCK)
-								&& Permissions.hasPerm(sPlayer, "use",
-								Permissions.NOT_QUIET)) {
+										Action.RIGHT_CLICK_BLOCK)
+										&& Permissions.hasPerm(sPlayer, "use",
+												Permissions.NOT_QUIET)) {
 							LockCore.getPincode(sPlayer, sBlock);
 						} else {
 							sPlayer.sendMessage("Digilock'ed by "
@@ -350,8 +355,8 @@ public class PlayerListener implements Listener {
 					if ((lock.getPincode().equals("") || lock.getPincode()
 							.equalsIgnoreCase("fingerprint")
 							&& Permissions.hasPerm(sPlayer, "use",
-							Permissions.NOT_QUIET))
-							&& event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+									Permissions.NOT_QUIET))
+									&& event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
 						// USE FURNACE BY FINGERPRINT (playername)
 						if (lock.isOwner(sPlayer)
 								|| lock.isCoowner(sPlayer)
@@ -361,7 +366,7 @@ public class PlayerListener implements Listener {
 							BlockTools.playDigiLockSound(lock.getBlock());
 							Furnace furnace = (Furnace) sBlock.getState();
 							Inventory inv = furnace.getInventory();
-							sPlayer.openInventoryWindow(inv);
+							sPlayer.openInventory(inv);
 						} else {
 							event.setCancelled(true);
 							sPlayer.sendMessage("Your fingerprint does not match the DigiLock");
@@ -370,9 +375,9 @@ public class PlayerListener implements Listener {
 						event.setCancelled(true);
 						if (sPlayer.isSpoutCraftEnabled()
 								&& event.getAction().equals(
-								Action.RIGHT_CLICK_BLOCK)
-								&& Permissions.hasPerm(sPlayer, "use",
-								Permissions.NOT_QUIET)) {
+										Action.RIGHT_CLICK_BLOCK)
+										&& Permissions.hasPerm(sPlayer, "use",
+												Permissions.NOT_QUIET)) {
 							LockCore.getPincode(sPlayer, sBlock);
 						} else {
 							sPlayer.sendMessage("Digilock'ed by "
@@ -384,13 +389,13 @@ public class PlayerListener implements Listener {
 				// HANDLING LEVER
 				else if (sBlock.getType().equals(Material.LEVER)) {
 					Lever lever = (Lever) sBlock.getState().getData();
-					SpoutBlock nextLockableBlock = lock.getNextLockableBlock(
+					Block nextLockableBlock = lock.getNextLockableBlock(
 							sPlayer, sBlock);
 					if (lock.getPincode().equals("")
 							|| lock.getPincode()
 							.equalsIgnoreCase("fingerprint")
 							&& Permissions.hasPerm(sPlayer, "use",
-							Permissions.NOT_QUIET)) {
+									Permissions.NOT_QUIET)) {
 						// USE LEVER BY FINGERPRINT
 						if (lock.isOwner(sPlayer)
 								|| lock.isCoowner(sPlayer)
@@ -437,8 +442,8 @@ public class PlayerListener implements Listener {
 								if (!BlockTools.isLeverOn(sBlock)) {
 									if (sPlayer.isSpoutCraftEnabled()
 											&& Permissions.hasPerm(sPlayer,
-											"use",
-											Permissions.NOT_QUIET)) {
+													"use",
+													Permissions.NOT_QUIET)) {
 										LockCore.getPincode(sPlayer, sBlock);
 									} else {
 										sPlayer.sendMessage("Digilock'ed by "
@@ -485,7 +490,7 @@ public class PlayerListener implements Listener {
 							|| lock.getPincode()
 							.equalsIgnoreCase("fingerprint")
 							&& Permissions.hasPerm(sPlayer, "use",
-							Permissions.NOT_QUIET)) {
+									Permissions.NOT_QUIET)) {
 						// PRESS STONE_BUTTON BY FINGERPRINT
 						// (playername)
 						Button button = (Button) sBlock.getState().getData();
@@ -507,7 +512,7 @@ public class PlayerListener implements Listener {
 						event.setCancelled(true);
 						if (sPlayer.isSpoutCraftEnabled()
 								&& Permissions.hasPerm(sPlayer, "use",
-								Permissions.NOT_QUIET)) {
+										Permissions.NOT_QUIET)) {
 							LockCore.getPincode(sPlayer, sBlock);
 							if (lock.getPincode().equals(
 									LockCore.pincodeGUI.get(id).getText())) {
@@ -529,7 +534,7 @@ public class PlayerListener implements Listener {
 							.equalsIgnoreCase("fingerprint"))
 							&& event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
 							&& Permissions.hasPerm(sPlayer, "use",
-							Permissions.NOT_QUIET)) {
+									Permissions.NOT_QUIET)) {
 						// USE SIGN BY FINGERPRINT (playername)
 						if (lock.isOwner(sPlayer)
 								|| lock.isCoowner(sPlayer)
@@ -540,7 +545,7 @@ public class PlayerListener implements Listener {
 									&& Digilock.getConf().useSignGUI()
 									&& Digilock.holdingKey.get(id).equals(Keyboard.KEY_LSHIFT)
 									&& Permissions.hasPerm(sPlayer, "signedit",
-									Permissions.NOT_QUIET)) {
+											Permissions.NOT_QUIET)) {
 								Sign sign = (Sign) sBlock.getState();
 								if (Digilock.getHooks().isResidencyAvailable()) {
 									ClaimedResidence res = Residence.getResidenceManager().getByLoc(sBlock.getLocation());
@@ -564,9 +569,9 @@ public class PlayerListener implements Listener {
 					} else {
 						if (sPlayer.isSpoutCraftEnabled()
 								&& event.getAction().equals(
-								Action.RIGHT_CLICK_BLOCK)
-								&& Permissions.hasPerm(sPlayer, "use",
-								Permissions.NOT_QUIET)) {
+										Action.RIGHT_CLICK_BLOCK)
+										&& Permissions.hasPerm(sPlayer, "use",
+												Permissions.NOT_QUIET)) {
 							LockCore.getPincode(sPlayer, sBlock);
 							if (lock.getPincode().equals(
 									LockCore.pincodeGUI.get(id).getText())) {
@@ -589,9 +594,9 @@ public class PlayerListener implements Listener {
 							.equalsIgnoreCase("fingerprint"))
 							&& event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
 							&& Permissions.hasPerm(sPlayer, "use",
-							Permissions.NOT_QUIET)
-							&& Permissions.hasPerm(sPlayer, "bookshelf.use",
-							Permissions.NOT_QUIET)) {
+									Permissions.NOT_QUIET)
+									&& Permissions.hasPerm(sPlayer, "bookshelf.use",
+											Permissions.NOT_QUIET)) {
 						// USE SIGN BY FINGERPRINT (playername)
 						if (lock.isOwner(sPlayer)
 								|| lock.isCoowner(sPlayer)
@@ -607,9 +612,9 @@ public class PlayerListener implements Listener {
 					} else {
 						if (sPlayer.isSpoutCraftEnabled()
 								&& event.getAction().equals(
-								Action.RIGHT_CLICK_BLOCK)
-								&& Permissions.hasPerm(sPlayer, "use",
-								Permissions.NOT_QUIET)) {
+										Action.RIGHT_CLICK_BLOCK)
+										&& Permissions.hasPerm(sPlayer, "use",
+												Permissions.NOT_QUIET)) {
 							LockCore.getPincode(sPlayer, sBlock);
 							if (lock.getPincode().equals(
 									LockCore.pincodeGUI.get(id).getText())) {
@@ -628,7 +633,7 @@ public class PlayerListener implements Listener {
 							.equalsIgnoreCase("fingerprint"))
 							&& event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
 							&& Permissions.hasPerm(sPlayer, "use",
-							Permissions.NOT_QUIET)) {
+									Permissions.NOT_QUIET)) {
 						// USE SIGN BY FINGERPRINT (playername)
 						if (lock.isOwner(sPlayer)
 								|| lock.isCoowner(sPlayer)
@@ -646,12 +651,12 @@ public class PlayerListener implements Listener {
 						Jukebox jukebox = (Jukebox) sBlock.getState();
 						if (sPlayer.isSpoutCraftEnabled()
 								&& event.getAction().equals(
-								Action.RIGHT_CLICK_BLOCK)
-								&& Permissions.hasPerm(sPlayer, "use",
-								Permissions.NOT_QUIET)
-								&& ((itemInHand.getTypeId() >= 2256 && itemInHand
-								.getTypeId() <= 2266) || jukebox
-								.isPlaying())) {
+										Action.RIGHT_CLICK_BLOCK)
+										&& Permissions.hasPerm(sPlayer, "use",
+												Permissions.NOT_QUIET)
+												&& ((itemInHand.getTypeId() >= 2256 && itemInHand
+												.getTypeId() <= 2266) || jukebox
+												.isPlaying())) {
 							LockCore.getPincode(sPlayer, sBlock);
 							if (lock.getPincode().equals(
 									LockCore.pincodeGUI.get(id).getText())) {
@@ -669,8 +674,8 @@ public class PlayerListener implements Listener {
 					if ((lock.getPincode().equals("") || lock.getPincode()
 							.equalsIgnoreCase("fingerprint")
 							&& Permissions.hasPerm(sPlayer, "use",
-							Permissions.NOT_QUIET))
-							&& event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+									Permissions.NOT_QUIET))
+									&& event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
 						// USE BREWING STAND BY FINGERPRINT (playername)
 						if (lock.isOwner(sPlayer)
 								|| lock.isCoowner(sPlayer)
@@ -686,9 +691,9 @@ public class PlayerListener implements Listener {
 						event.setCancelled(true);
 						if (sPlayer.isSpoutCraftEnabled()
 								&& event.getAction().equals(
-								Action.RIGHT_CLICK_BLOCK)
-								&& Permissions.hasPerm(sPlayer, "use",
-								Permissions.NOT_QUIET)) {
+										Action.RIGHT_CLICK_BLOCK)
+										&& Permissions.hasPerm(sPlayer, "use",
+												Permissions.NOT_QUIET)) {
 							LockCore.getPincode(sPlayer, sBlock);
 							sPlayer.sendMessage("Locking brewing stand with pincode is not suported yet!");
 							//BlockBrewingStand bs = (BlockBrewingStand) lock.getBlock();
@@ -751,8 +756,8 @@ public class PlayerListener implements Listener {
 							&& Digilock.getConf().useSignGUI()
 							&& Digilock.holdingKey.get(id).equals(Keyboard.KEY_LSHIFT)
 							&& Permissions.hasPerm(sPlayer,
-							"signedit",
-							Permissions.NOT_QUIET)) {
+									"signedit",
+									Permissions.NOT_QUIET)) {
 						Sign sign = (Sign) sBlock.getState();
 						if (Digilock.getHooks().isResidencyAvailable()) {
 							ClaimedResidence res = Residence.getResidenceManager().getByLoc(sBlock.getLocation());

@@ -62,13 +62,13 @@ public class BlockTools {
 		return false;
 	}
 
-	public static LockCore loadDigiLock(SpoutBlock block) {
+	public static LockCore loadDigiLock(Block sBlock) {
 		// TODO: fasten up the load of lock, select from a HASHMAP second
 		// time
-		block = getDigiLockBlock(block);
+		sBlock = getDigiLockBlock(sBlock);
 		String query = "SELECT * FROM " + Digilock.getHandler().getTableName() + " WHERE (x = "
-				+ block.getX() + " AND y = " + block.getY() + " AND z = "
-				+ block.getZ() + " AND world='" + block.getWorld().getName()
+				+ sBlock.getX() + " AND y = " + sBlock.getY() + " AND z = "
+				+ sBlock.getZ() + " AND world='" + sBlock.getWorld().getName()
 				+ "');";
 		ResultSet result = null;
 		if (Digilock.getConf().getSQLType().equals("MYSQL")) {
@@ -87,7 +87,7 @@ public class BlockTools {
 				int typeId = result.getInt("typeId");
 				String connectedTo = result.getString("connectedto");
 				int useCost = result.getInt("usecost");
-				LockCore lock = new LockCore(Digilock.getInstance(), block, pincode, owner,
+				LockCore lock = new LockCore(Digilock.getInstance(), sBlock, pincode, owner,
 						closetimer, coowners, users, typeId, connectedTo,
 						useCost);
 				result.close();
@@ -107,7 +107,7 @@ public class BlockTools {
 	 * @param block
 	 * @return true if it is locked, false if not
 	 */
-	public static Boolean isLocked(SpoutBlock block) {
+	public static Boolean isLocked(Block block) {
 		// TODO: Implement a HASHMAP for testing if the block is locked.
 		// Messages.showInfo("isLocked was called");
 		if (block != null) {
@@ -144,10 +144,10 @@ public class BlockTools {
 	 * @param sBlock SpoutBlock
 	 * @return SpoutBlock
 	 */
-	public static SpoutBlock getDigiLockBlock(SpoutBlock sBlock) {
+	public static Block getDigiLockBlock(Block sBlock) {
 		if (isDoor(sBlock)) {
 			if (isDoubleDoor(sBlock)) {
-				return (SpoutBlock) getDoubleDoor(sBlock);
+				return (Block) getDoubleDoor(sBlock);
 			}
 		} else if (isChest(sBlock) && (sBlock.getState() instanceof Chest)) {
 			Chest sChest1 = (Chest) sBlock.getState();
@@ -159,7 +159,7 @@ public class BlockTools {
 				} else {
 					sChest2 = (Chest) di.getLeftSide().getHolder();
 				}
-				SpoutBlock sBlock2 = (SpoutBlock) sChest2.getBlock();
+				Block sBlock2 = (Block) sChest2.getBlock();
 
 				if (sChest1.getX() == sChest2.getX()) {
 					if (sChest1.getZ() < sChest2.getZ()) {
@@ -180,18 +180,18 @@ public class BlockTools {
 	}
 
 	// Dockter 12/27/11, Added check to see if global sound is on or off.
-	public static void playDigiLockSound(SpoutBlock sBlock) {
+	public static void playDigiLockSound(Block doors) {
 		if (Digilock.getConf().playLockSound()) {
 			SpoutManager
 					.getSoundManager()
 					.playGlobalCustomSoundEffect(
 							Digilock.getInstance(),
 							Digilock.getConf().getSoundURL(),
-							true, sBlock.getLocation(), 5);
+							true, doors.getLocation(), 5);
 		}
 	}
 
-	public static boolean isNeighbourLocked(SpoutBlock block) {
+	public static boolean isNeighbourLocked(Block block) {
 		if (block != null) {
 			for (BlockFace bf : BlockFace.values()) {
 				if (isLocked(block.getRelative(bf))) {
@@ -202,7 +202,7 @@ public class BlockTools {
 		return false;
 	}
 
-	public static boolean isNeighbourSameOwner(SpoutBlock block, String owner) {
+	public static boolean isNeighbourSameOwner(Block block, String owner) {
 		for (BlockFace bf : BlockFace.values()) {
 			if (isLocked(block.getRelative(bf))) {
 				LockCore lock = loadDigiLock(block
@@ -257,7 +257,7 @@ public class BlockTools {
 	 * @param sBlock
 	 * @return true or false
 	 */
-	public static boolean isButton(SpoutBlock sBlock) {
+	public static boolean isButton(Block sBlock) {
 		if (sBlock != null) {
 			if (sBlock.getType().equals(Material.STONE_BUTTON)) {
 				return true;
@@ -271,7 +271,7 @@ public class BlockTools {
 	 * @param block
 	 * @return
 	 */
-	public static boolean isButtonOn(SpoutBlock block) {
+	public static boolean isButtonOn(Block block) {
 		Button button = (Button) block.getState().getData();
 		return button.isPowered();
 	}
@@ -282,11 +282,11 @@ public class BlockTools {
 	 * @param sBlock  SpoutBlock
 	 * @param cost    the cost the player is charged when the button is pressed.
 	 */
-	public static void pressButtonOn(SpoutPlayer sPlayer, SpoutBlock sBlock,
+	public static void pressButtonOn(SpoutPlayer sPlayer, Block sBlock,
 									 int cost) {
 		boolean doTheWork = false;
 		LockCore lock = loadDigiLock(sBlock);
-		SpoutBlock nextBlock = lock.getNextLockedBlock(sPlayer, sBlock);
+		Block nextBlock = lock.getNextLockedBlock(sPlayer, sBlock);
 		if (nextBlock != null) {
 			LockCore nextLock = loadDigiLock(nextBlock);
 			if (lock.getOwner().equalsIgnoreCase(nextLock.getOwner())) {
@@ -349,12 +349,12 @@ public class BlockTools {
 
 	/**
 	 * Check if sBlock is a DISPENSER.
-	 * @param sBlock
+	 * @param sb
 	 * @return
 	 */
-	public static boolean isDispenser(SpoutBlock sBlock) {
-		if (sBlock != null) {
-			if (sBlock.getType().equals(Material.DISPENSER)) {
+	public static boolean isDispenser(Block sb) {
+		if (sb != null) {
+			if (sb.getType().equals(Material.DISPENSER)) {
 				return true;
 			}
 		}
@@ -372,7 +372,7 @@ public class BlockTools {
 	 * @param sBlock
 	 * @return
 	 */
-	public static boolean isLever(SpoutBlock sBlock) {
+	public static boolean isLever(Block sBlock) {
 		if (sBlock != null) {
 			if (sBlock.getType().equals(Material.LEVER)) {
 				return true;
@@ -386,16 +386,16 @@ public class BlockTools {
 	 * @param sBlock
 	 * @return
 	 */
-	public static boolean isLeverOn(SpoutBlock sBlock) {
+	public static boolean isLeverOn(Block sBlock) {
 		Lever lever = (Lever) sBlock.getState().getData();
 		return lever.isPowered();
 	}
 
-	public static void leverOn(SpoutPlayer sPlayer, SpoutBlock sBlock, int cost) {
+	public static void leverOn(SpoutPlayer sPlayer, Block sBlock, int cost) {
 		boolean doTheWork = false;
 		LockCore lock = loadDigiLock(sBlock);
 		if (lock != null) {
-			SpoutBlock nextBlock = lock.getNextLockedBlock(sPlayer, sBlock);
+			Block nextBlock = lock.getNextLockedBlock(sPlayer, sBlock);
 			if (nextBlock != null) {
 				LockCore nextLock = loadDigiLock(nextBlock);
 
@@ -462,11 +462,11 @@ public class BlockTools {
 		}
 	}
 
-	public static void leverOff(SpoutPlayer sPlayer, SpoutBlock sBlock) {
+	public static void leverOff(SpoutPlayer sPlayer, Block sBlock) {
 		if (isLeverOn(sBlock)) {
 			LockCore lock = loadDigiLock(sBlock);
 			if (lock != null) {
-				SpoutBlock nextBlock = lock.getNextLockedBlock(sPlayer,
+				Block nextBlock = lock.getNextLockedBlock(sPlayer,
 						sBlock);
 				if (nextBlock != null) {
 					LockCore nextLock = loadDigiLock(nextBlock);
@@ -493,14 +493,14 @@ public class BlockTools {
 
 	//
 	public static int scheduleLeverOff(final SpoutPlayer sPlayer,
-									   final SpoutBlock sBlock, final int closetimer) {
+									   final Block sBlock, final int closetimer) {
 		int fs = closetimer * 20;
 		// 20 ticks / second
 		int taskID = Digilock.getInstance().getServer().getScheduler()
 				.scheduleSyncDelayedTask(Digilock.getInstance(), new Runnable() {
 					@Override
 					public void run() {
-						SpoutBlock sb = sBlock;
+						Block sb = sBlock;
 						SpoutPlayer sp = sPlayer;
 						if (isLeverOn(sBlock)) {
 							leverOff(sp, sb);
@@ -531,7 +531,7 @@ public class BlockTools {
 		return false;
 	}
 
-	public static boolean isDoorOpen(SpoutBlock sBlock) {
+	public static boolean isDoorOpen(Block sBlock) {
 		if ((sBlock.getState().getData().getData() & 4) == 4) {
 			return true;
 		} else {
@@ -539,7 +539,7 @@ public class BlockTools {
 		}
 	}
 
-	public static void openDoor(SpoutPlayer sPlayer, SpoutBlock sBlock, int cost) {
+	public static void openDoor(SpoutPlayer sPlayer, Block sBlock, int cost) {
 		boolean opendoor = true;
 		LockCore lock = loadDigiLock(sBlock);
 		if (Digilock.getConf().useEconomy() && cost > 0 && lock.isUser(sPlayer)
@@ -567,7 +567,7 @@ public class BlockTools {
 			}
 		}
 		Door door = (Door) sBlock.getState().getData();
-		SpoutBlock nextBlock;
+		Block nextBlock;
 		if (opendoor) {
 			if (!isDoorOpen(sBlock)) {
 				playDigiLockSound(sBlock);
@@ -591,7 +591,7 @@ public class BlockTools {
 		}
 	}
 
-	public static void closeDoor(SpoutPlayer sPlayer, SpoutBlock sBlock,
+	public static void closeDoor(SpoutPlayer sPlayer, Block sBlock,
 								 int cost) {
 		boolean closedoor = true;
 		LockCore lock = loadDigiLock(sBlock);
@@ -624,7 +624,7 @@ public class BlockTools {
 			if (isDoorOpen(sBlock)) {
 				playDigiLockSound(sBlock);
 				Door door = (Door) sBlock.getState().getData();
-				SpoutBlock nextBlock;
+				Block nextBlock;
 				sBlock.setData((byte) ((sBlock.getState().getData().getData() | 4) ^ 4));
 				if (door.isTopHalf()) {
 					nextBlock = sBlock.getRelative(BlockFace.DOWN);
@@ -639,11 +639,11 @@ public class BlockTools {
 		}
 	}
 
-	public static void closeDoor(SpoutBlock sBlock) {
+	public static void closeDoor(Block sBlock) {
 		if (isDoorOpen(sBlock)) {
 			playDigiLockSound(sBlock);
 			Door door = (Door) sBlock.getState().getData();
-			SpoutBlock nextBlock;
+			Block nextBlock;
 			sBlock.setData((byte) ((sBlock.getState().getData().getData() | 4) ^ 4));
 			if (door.isTopHalf()) {
 				nextBlock = sBlock.getRelative(BlockFace.DOWN);
@@ -657,10 +657,10 @@ public class BlockTools {
 		}
 	}
 
-	public static void toggleDoor(SpoutBlock sBlock) {
+	public static void toggleDoor(Block sBlock) {
 		playDigiLockSound(sBlock);
 		Door door = (Door) sBlock.getState().getData();
-		SpoutBlock nextBlock;
+		Block nextBlock;
 		sBlock.setData((byte) (sBlock.getState().getData().getData() ^ 4));
 		if (door.isTopHalf()) {
 			nextBlock = sBlock.getRelative(BlockFace.DOWN);
@@ -674,14 +674,14 @@ public class BlockTools {
 	}
 
 	public static int scheduleCloseDoor(final SpoutPlayer sPlayer,
-										final SpoutBlock sBlock, final int closetimer, final int cost) {
+										final Block sBlock, final int closetimer, final int cost) {
 		int fs = closetimer * 20;
 		// 20 ticks / second
 		int taskID = Digilock.getInstance().getServer().getScheduler()
 				.scheduleSyncDelayedTask(Digilock.getInstance(), new Runnable() {
 					@Override
 					public void run() {
-						SpoutBlock sb = sBlock;
+						Block sb = sBlock;
 						SpoutPlayer sp = sPlayer;
 						int c = cost;
 						if (isDoor(sb) && !isDoubleDoor(sb)) {
@@ -710,7 +710,7 @@ public class BlockTools {
 		return false;
 	}
 
-	public static boolean isTrapdoorOpen(SpoutPlayer sPlayer, SpoutBlock sBlock) {
+	public static boolean isTrapdoorOpen(SpoutPlayer sPlayer, Block sBlock) {
 		if ((sBlock.getState().getData().getData() & 4) == 4) {
 			return true;
 		} else {
@@ -718,7 +718,7 @@ public class BlockTools {
 		}
 	}
 
-	public static void openTrapdoor(SpoutPlayer sPlayer, SpoutBlock sBlock,
+	public static void openTrapdoor(SpoutPlayer sPlayer, Block sBlock,
 									int cost) {
 		boolean opentrapdoor = true;
 		LockCore lock = loadDigiLock(sBlock);
@@ -760,23 +760,23 @@ public class BlockTools {
 		}
 	}
 
-	public static void closeTrapdoor(SpoutPlayer sPlayer, SpoutBlock sBlock) {
+	public static void closeTrapdoor(SpoutPlayer sPlayer, Block sBlock) {
 		sBlock.setData((byte) ((sBlock.getState().getData().getData() | 4) ^ 4));
 	}
 
-	public static void toggleTrapdoor(SpoutPlayer sPlayer, SpoutBlock sBlock) {
+	public static void toggleTrapdoor(SpoutPlayer sPlayer, Block sBlock) {
 		sBlock.setData((byte) (sBlock.getState().getData().getData() ^ 4));
 	}
 
 	public static int scheduleCloseTrapdoor(final SpoutPlayer sPlayer,
-											final SpoutBlock sBlock, final int closetimer) {
+											final Block sBlock, final int closetimer) {
 		int fs = closetimer * 20;
 		// 20 ticks / second
 		int taskID = Digilock.getInstance().getServer().getScheduler()
 				.scheduleSyncDelayedTask(Digilock.getInstance(), new Runnable() {
 					@Override
 					public void run() {
-						SpoutBlock sb = sBlock;
+						Block sb = sBlock;
 						SpoutPlayer sp = sPlayer;
 						if (sBlock.getType() == Material.TRAP_DOOR) {
 							if (isTrapdoorOpen(sp, sb)) {
@@ -804,7 +804,7 @@ public class BlockTools {
 		return false;
 	}
 
-	public static boolean isFenceGateOpen(SpoutPlayer sPlayer, SpoutBlock sBlock) {
+	public static boolean isFenceGateOpen(SpoutPlayer sPlayer, Block sBlock) {
 		if ((sBlock.getState().getData().getData() & 4) == 4) {
 			return true;
 		} else {
@@ -812,7 +812,7 @@ public class BlockTools {
 		}
 	}
 
-	public static void openFenceGate(SpoutPlayer sPlayer, SpoutBlock sBlock,
+	public static void openFenceGate(SpoutPlayer sPlayer, Block sBlock,
 									 int cost) {
 		boolean openFenceGate = true;
 		LockCore lock = loadDigiLock(sBlock);
@@ -854,23 +854,23 @@ public class BlockTools {
 		}
 	}
 
-	public static void closeFenceGate(SpoutPlayer sPlayer, SpoutBlock sBlock) {
+	public static void closeFenceGate(SpoutPlayer sPlayer, Block sBlock) {
 		sBlock.setData((byte) ((sBlock.getState().getData().getData() | 4) ^ 4));
 	}
 
-	public static void toggleFenceGate(SpoutPlayer sPlayer, SpoutBlock sBlock) {
+	public static void toggleFenceGate(SpoutPlayer sPlayer, Block sBlock) {
 		sBlock.setData((byte) (sBlock.getState().getData().getData() ^ 4));
 	}
 
 	public static int scheduleCloseFenceGate(final SpoutPlayer sPlayer,
-											 final SpoutBlock sBlock, final int closetimer) {
+											 final Block sBlock, final int closetimer) {
 		int fs = closetimer * 20;
 		// 20 ticks / second
 		int taskID = Digilock.getInstance().getServer().getScheduler()
 				.scheduleSyncDelayedTask(Digilock.getInstance(), new Runnable() {
 					@Override
 					public void run() {
-						SpoutBlock sb = sBlock;
+						Block sb = sBlock;
 						SpoutPlayer sp = sPlayer;
 						if (sBlock.getType() == Material.FENCE_GATE) {
 							if (isFenceGateOpen(sp, sb)) {
@@ -889,8 +889,8 @@ public class BlockTools {
 	//
 	// *******************************************************
 
-	public static boolean isDoubleDoor(SpoutBlock block) {
-		if (getDoubleDoor(block) != null) {
+	public static boolean isDoubleDoor(Block sBlock) {
+		if (getDoubleDoor(sBlock) != null) {
 			return true;
 		}
 
@@ -902,7 +902,7 @@ public class BlockTools {
 	 * @param sBlock
 	 * @return
 	 */
-	public static Block getDoubleDoor(SpoutBlock sBlock) {
+	public static Block getDoubleDoor(Block sBlock) {
 		Block block = sBlock;
 		if ((sBlock.getData() & 0x8) == 0x8) {
 			block = block.getRelative(BlockFace.DOWN);
@@ -948,8 +948,8 @@ public class BlockTools {
 			return;
 		}
 
-		SpoutBlock sBlock = (SpoutBlock) doors[0];
-		playDigiLockSound((SpoutBlock) doors[0]);
+		Block sBlock = (Block) doors[0];
+		playDigiLockSound((Block) doors[0]);
 		LockCore lock = loadDigiLock(sBlock);
 		if (Digilock.getConf().useEconomy() && cost > 0 && lock.isUser(sPlayer) && !(lock.isOwner(sPlayer) || lock.isCoowner(sPlayer))) {
 			if (Digilock.getHooks().getEconHook().hasAccount(sPlayer.getName())) {
@@ -967,7 +967,7 @@ public class BlockTools {
 		}
 	}
 
-	public static boolean isDoubleDoorOpen(SpoutBlock block) {
+	public static boolean isDoubleDoorOpen(Block block) {
 		if ((block.getData() & 0x4) == 0) {
 			return false;
 		}
@@ -994,7 +994,7 @@ public class BlockTools {
 		return null;
 	}
 
-	public static int scheduleCloseDoubleDoor(final SpoutPlayer sPlayer, final SpoutBlock sBlock, final int closetimer, final int cost) {
+	public static int scheduleCloseDoubleDoor(final SpoutPlayer sPlayer, final Block sBlock, final int closetimer, final int cost) {
 		final Block doubleDoorBlock = getDoubleDoor(sBlock);
 
 		int taskID = Digilock.getInstance().getServer().getScheduler().scheduleSyncDelayedTask(Digilock.getInstance(), new Runnable() {
@@ -1016,7 +1016,7 @@ public class BlockTools {
 	 * @param sBlock
 	 * @return true or false
 	 */
-	public static boolean isJukebox(SpoutBlock sBlock) {
+	public static boolean isJukebox(Block sBlock) {
 		if (sBlock != null) {
 			if (sBlock.getType().equals(Material.JUKEBOX)) {
 				return true;
@@ -1025,9 +1025,9 @@ public class BlockTools {
 		return false;
 	}
 
-	public static boolean isPiston(SpoutBlock sBlock) {  //Dockter this doesnt work yet.
-		if (sBlock != null) {
-			if (sBlock.getType().equals(Material.PISTON_BASE) || sBlock.getType().equals(Material.PISTON_STICKY_BASE)) {
+	public static boolean isPiston(Block sb) {  //Dockter this doesnt work yet.
+		if (sb != null) {
+			if (sb.getType().equals(Material.PISTON_BASE) || sb.getType().equals(Material.PISTON_STICKY_BASE)) {
 				return true;
 			}
 		}

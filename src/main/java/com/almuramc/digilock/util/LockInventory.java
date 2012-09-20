@@ -14,12 +14,13 @@ import org.getspout.spoutapi.gui.GenericTextField;
 import org.getspout.spoutapi.gui.PopupScreen;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
+import org.bukkit.block.Block;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 public class LockInventory {
 	private Digilock plugin;
-	protected SpoutBlock sBlock;
+	protected Block sBlock;
 	protected String name;
 	protected String owner;
 	protected String coOwners;
@@ -33,7 +34,7 @@ public class LockInventory {
 	public static Map<Integer, GenericTextField> ownerGUI = new HashMap<Integer, GenericTextField>();
 	public static Map<Integer, GenericTextField> coOwnersGUI = new HashMap<Integer, GenericTextField>();
 	public static Map<Integer, GenericTextField> useCostGUI = new HashMap<Integer, GenericTextField>();
-	public static Map<Integer, SpoutBlock> clickedBlock = new HashMap<Integer, SpoutBlock>();
+	public static Map<Integer, Block> clickedBlock = new HashMap<Integer, Block>();
 
 	public LockInventory(Digilock plugin) {
 		this.plugin = plugin;
@@ -42,7 +43,7 @@ public class LockInventory {
 	/**
 	 * Constructs a new BITInventory
 	 */
-	LockInventory(SpoutBlock sBlock, String owner, String name, String coowners,
+	LockInventory(Block sBlock, String owner, String name, String coowners,
 				  Inventory inventory, int useCost) {
 		this.sBlock = sBlock;
 		this.name = name;
@@ -52,7 +53,7 @@ public class LockInventory {
 		this.useCost = useCost;
 	}
 
-	public void setInventory(SpoutBlock sBlock, String owner, String name,
+	public void setInventory(Block sBlock, String owner, String name,
 							 String coOwners, Inventory inventory, int useCost) {
 		this.sBlock = sBlock;
 		this.owner = owner;
@@ -78,14 +79,14 @@ public class LockInventory {
 		return this.useCost;
 	}
 
-	public SpoutBlock getBlock() {
+	public Block getBlock() {
 		return this.sBlock;
 	}
 
 	public void openBitInventory(SpoutPlayer sPlayer, LockInventory inventory) {
 		int id = sPlayer.getEntityId();
 		openedInventories.put(id, inventory);
-		sPlayer.openInventoryWindow(inventory.getInventory());
+		sPlayer.openInventory(inventory.getInventory());
 	}
 
 	public void closeBitInventory(SpoutPlayer sPlayer) {
@@ -103,7 +104,7 @@ public class LockInventory {
 		}
 	}
 
-	public static void saveBitInventory(SpoutPlayer sPlayer, SpoutBlock block,
+	public static void saveBitInventory(SpoutPlayer sPlayer, Block block,
 										String owner, String name, String coowners, Inventory inventory,
 										int useCost) {
 		String query;
@@ -135,7 +136,7 @@ public class LockInventory {
 		}
 	}
 
-	public static Boolean isBitInventoryCreated(SpoutBlock block) {
+	public static Boolean isBitInventoryCreated(Block block) {
 		String query = "SELECT * FROM " + Digilock.getHandler().getTableName()
 				+ " WHERE (x = " + block.getX() + " AND y = " + block.getY()
 				+ " AND z = " + block.getZ() + " AND world='"
@@ -160,8 +161,8 @@ public class LockInventory {
 	}
 
 	public static LockInventory loadBitInventory(SpoutPlayer sPlayer,
-												 SpoutBlock sBlock) {
-		int size = loadBitInventorySize(sBlock);
+												 Block sBlock2) {
+		int size = loadBitInventorySize(sBlock2);
 		String name = "Bookshelf";
 		Inventory inventory = SpoutManager.getInventoryBuilder().construct(
 				size, name);
@@ -169,9 +170,9 @@ public class LockInventory {
 		String coOwners = "";
 		int useCost = 0;
 		String query = "SELECT * FROM " + Digilock.getHandler().getTableName()
-				+ " WHERE (x = " + sBlock.getX() + " AND y = " + sBlock.getY()
-				+ " AND z = " + sBlock.getZ() + " AND world='"
-				+ sBlock.getWorld().getName() + "');";
+				+ " WHERE (x = " + sBlock2.getX() + " AND y = " + sBlock2.getY()
+				+ " AND z = " + sBlock2.getZ() + " AND world='"
+				+ sBlock2.getWorld().getName() + "');";
 		// sPlayer.sendMessage("select:" + query);
 		ResultSet result = null;
 		if (Digilock.getConf().getSQLType().equals("MYSQL")) {
@@ -209,14 +210,14 @@ public class LockInventory {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		LockInventory inv = new LockInventory(sBlock, owner, name, coOwners,
+		LockInventory inv = new LockInventory(sBlock2, owner, name, coOwners,
 				inventory, useCost);
 
 		return inv;
 	}
 
 	public static String loadBitInventoryName(SpoutPlayer sPlayer,
-											  SpoutBlock block) {
+											  Block block) {
 		String name;
 		String query = "SELECT * FROM " + Digilock.getHandler().getTableName()
 				+ " WHERE (x = " + block.getX() + " AND y = " + block.getY()
@@ -240,12 +241,12 @@ public class LockInventory {
 		return null;
 	}
 
-	public static int loadBitInventorySize(SpoutBlock block) {
+	public static int loadBitInventorySize(Block sBlock2) {
 		int i = 0;
 		String query = "SELECT * FROM " + Digilock.getHandler().getTableName()
-				+ " WHERE (x = " + block.getX() + " AND y = " + block.getY()
-				+ " AND z = " + block.getZ() + " AND world='"
-				+ block.getWorld().getName() + "');";
+				+ " WHERE (x = " + sBlock2.getX() + " AND y = " + sBlock2.getY()
+				+ " AND z = " + sBlock2.getZ() + " AND world='"
+				+ sBlock2.getWorld().getName() + "');";
 		ResultSet result = null;
 		if (Digilock.getConf().getSQLType().equals("MYSQL")) {
 			result = Digilock.getHandler().getMySQLHandler().query(query);
@@ -335,7 +336,7 @@ public class LockInventory {
 	}
 
 	// Updated to reflect new Images.
-	private static String getTextureUrl(SpoutBlock sBlock) {
+	private static String getTextureUrl(Block sBlock) {
 		switch (sBlock.getTypeId()) {
 			case 23:
 				return "http://dl.dropbox.com/u/36067670/BukkitInventoryTools/Textures/Dispenser.png";
