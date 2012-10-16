@@ -72,17 +72,17 @@
 
     <repositories>
         <repository>
+            <id>spout-repo</id>
+            <url>http://repo.spout.org/</url>
+        </repository>
+        <repository>
             <id>bukkit-repo</id>
             <url>http://repo.bukkit.org/artifactory/repo</url>
         </repository>
         <repository>
             <id>zml repo</id>
             <url>http://files.zachsthings.com/repo/</url>
-        </repository>
-        <repository>
-            <id>spout-repo</id>
-            <url>http://repo.spout.org/</url>
-        </repository>
+        </repository>       
     </repositories>
     <build>
         <defaultGoal>clean install</defaultGoal>
