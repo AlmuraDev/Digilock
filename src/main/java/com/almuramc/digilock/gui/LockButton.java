@@ -159,7 +159,8 @@ public class LockButton extends GenericButton {
 						} else if (BlockTools.isChest(sBlock)
 								|| BlockTools.isDispenser(sBlock)
 								|| sBlock.getType() == Material.FURNACE) {
-							sPlayer.closeActiveWindow();
+							//sPlayer.closeActiveWindow();
+							sPlayer.getMainScreen().closePopup();
 							LockCore.cleanupPopupScreen(sPlayer);
 							LockCore.BITDigiLockButtons.remove(uuid);
 						} else if (BlockTools.isLever(sBlock)) {
@@ -182,7 +183,8 @@ public class LockButton extends GenericButton {
 						&& Permissions.hasPerm(sPlayer, "create",
 						Permissions.QUIET)) {
 					if (validateSetPincodeFields(sPlayer)) {
-						sPlayer.closeActiveWindow();
+						//sPlayer.closeActiveWindow();
+						sPlayer.getMainScreen().closePopup();
 						String digiString2 = LockCore.closetimerGUI.get(entId).getText();
 						digiString2 = digiString2.replaceAll("[^0-9]+", "");
 
@@ -201,7 +203,8 @@ public class LockButton extends GenericButton {
 						LockCore.BITDigiLockButtons.remove(uuid);						
 					}
 				} else if (buttonName.equals("setPincodeCancel")) {
-					sPlayer.closeActiveWindow();										
+					//sPlayer.closeActiveWindow();
+					sPlayer.getMainScreen().closePopup();
 					LockCore.cleanupPopupScreen(sPlayer);
 					LockCore.BITDigiLockButtons.remove(uuid);
 				} else if (buttonName.equals("setPincodeRemove")) {
@@ -212,7 +215,8 @@ public class LockButton extends GenericButton {
 					if (BlockTools.isLocked(sBlock)) {
 						lock.RemoveDigiLock(sPlayer);
 					}
-					sPlayer.closeActiveWindow();					
+					sPlayer.getMainScreen().closePopup();
+					//sPlayer.closeActiveWindow();					
 					// Dockter 12/27/11 to add AdminOpen Button to User Interface.
 				} else if (buttonName.equals("AdminOpen")) {
 					LockCore.cleanupPopupScreen(sPlayer);

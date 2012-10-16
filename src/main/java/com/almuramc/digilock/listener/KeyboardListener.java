@@ -15,6 +15,9 @@ import org.bukkit.event.Listener;
 public class KeyboardListener implements Listener {
 	@EventHandler
 	public void onKeyPressedEvent(KeyPressedEvent event) {
+		if (event.getKey().equals(Keyboard.MOUSE_LEFT)) {
+			return;
+		}
 		Digilock.holdingKey.put(event.getPlayer().getEntityId(), event.getKey());	
 	}
 

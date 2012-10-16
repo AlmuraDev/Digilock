@@ -182,12 +182,7 @@ public class BlockTools {
 	// Dockter 12/27/11, Added check to see if global sound is on or off.
 	public static void playDigiLockSound(Block doors) {
 		if (Digilock.getConf().playLockSound()) {
-			SpoutManager
-					.getSoundManager()
-					.playGlobalCustomSoundEffect(
-							Digilock.getInstance(),
-							Digilock.getConf().getSoundURL(),
-							true, doors.getLocation(), 5);
+			SpoutManager.getSoundManager().playGlobalCustomSoundEffect(Digilock.getInstance(),	Digilock.getConf().getSoundURL(),true, doors.getLocation(), 5);
 		}
 	}
 

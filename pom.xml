@@ -8,17 +8,19 @@
     <name>Digilock</name>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <bukkitVersion>1.3.2-R1.0</bukkitVersion>
+        <buildNumber>Unknown</buildNumber>
     </properties>
     <dependencies>
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
-            <version>1.3.2-R0.2-SNAPSHOT</version>
+            <version>1.3.2-R1.0</version>
         </dependency>
         <dependency>
             <groupId>org.getspout</groupId>
-            <artifactId>spoutpluginapi</artifactId>
-            <version>dev-SNAPSHOT</version>
+            <artifactId>spoutplugin</artifactId>
+            <version>1.3.2-R1.0-snapshot</version>
         </dependency>
         <dependency>
             <groupId>net.milkbowl</groupId>
@@ -29,8 +31,7 @@
             <groupId>com.sk89q</groupId>
             <artifactId>worldguard</artifactId>
             <version>5.5</version>
-        </dependency>
-
+        </dependency> 
         <!-- local deps -->
         <dependency>
             <groupId>com.garbagemule</groupId>

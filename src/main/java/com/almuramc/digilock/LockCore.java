@@ -13,6 +13,7 @@ import com.bekvon.bukkit.residence.protection.ClaimedResidence;
 
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.ChatColor;
 import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.gui.GenericLabel;
 import org.getspout.spoutapi.gui.GenericPopup;
@@ -92,7 +93,7 @@ public class LockCore {
 			}
 
 			if (!canLock) {
-				sPlayer.sendMessage("Residence is currently restricting your Digilock Abilities.");
+				sPlayer.sendMessage(ChatColor.GOLD + "[Digilock]" + ChatColor.WHITE + " - Residence is currently restricting your Digilock Abilities.");
 				return;
 			}
 		}
@@ -139,9 +140,7 @@ public class LockCore {
 			if (Digilock.getConf().getSQLType().equals("MYSQL")) {
 				Digilock.getHandler().getMySQLHandler().query(query);
 			} else {
-				Digilock.getHandler().getSqliteHandler().query(query);
-
-				Messages.sendNotification(sPlayer, "SQLite Command Ran.");
+				Digilock.getHandler().getSqliteHandler().query(query);				
 			}
 			if (newLock) {
 				Messages.sendNotification(sPlayer, "DigiLock created.");
@@ -149,7 +148,7 @@ public class LockCore {
 				Messages.sendNotification(sPlayer, "DigiLock updated.");
 			}
 		} else {
-			sPlayer.sendMessage("You dont have enough money. Cost is:" + cost);
+			sPlayer.sendMessage(ChatColor.GOLD + "[Digilock]" + ChatColor.WHITE + " - You dont have enough money. Cost is:" + cost);
 		}
 	}
 
@@ -320,9 +319,7 @@ public class LockCore {
 							+ Digilock.getHooks().getEconHook().format(Digilock.getConf().getDestroyCost())
 							+ ".");
 				} else {
-					sPlayer.sendMessage("You dont have enough money ("
-							+ Digilock.getHooks().getEconHook().getBalance(sPlayer.getName())
-							+ "). Cost is:"
+					sPlayer.sendMessage("You dont have enough money (" + Digilock.getHooks().getEconHook().getBalance(sPlayer.getName())+ "). Cost is:"
 							+ Digilock.getHooks().getEconHook().format(Digilock.getConf().getDestroyCost()));
 					deletelock = false;
 				}
@@ -340,8 +337,7 @@ public class LockCore {
 			}
 			Messages.sendNotification(sPlayer, "DigiLock removed.");
 		} else {
-			Messages.sendNotification(sPlayer, "You need more money ("
-					+ Digilock.getConf().getDestroyCost() + ")");
+			Messages.sendNotification(sPlayer, "You need more money ("+ Digilock.getConf().getDestroyCost() + ")");
 		}
 	}
 
@@ -351,13 +347,8 @@ public class LockCore {
 				for (int k = -1; k < +1; k++) {
 					if (!(i == 0 && j == 0 && k == 0)) {
 						Block sb = sBlock.getRelative(i, j, k);
-						if (
-								// BlockTools.isLockable(sb)
-								BlockTools.isLocked(sb)
-								&& (BlockTools.isDoubleDoor(sb)
-										|| BlockTools.isDoor(sb) || BlockTools.isPiston(sb)
-										|| BlockTools.isTrapdoor(sb)
-										|| BlockTools.isDispenser(sb))) {
+						if (BlockTools.isLocked(sb)	&& (BlockTools.isDoubleDoor(sb)	|| BlockTools.isDoor(sb) || BlockTools.isPiston(sb)
+										|| BlockTools.isTrapdoor(sb) || BlockTools.isDispenser(sb))) {
 							return sb;
 						}
 					}
@@ -374,10 +365,7 @@ public class LockCore {
 				for (int k = -1; k < +1; k++) {
 					if (!(i == 0 && j == 0 && k == 0)) {
 						Block sb = sBlock.getRelative(i, j, k);
-						if (BlockTools.isLockable(sb)
-								// BlockTools.isLocked(sb)
-								&& (BlockTools.isDoubleDoor(sb)
-										|| BlockTools.isDoor(sb) || BlockTools.isPiston(sb)
+						if (BlockTools.isLockable(sb) && (BlockTools.isDoubleDoor(sb) || BlockTools.isDoor(sb) || BlockTools.isPiston(sb)
 										|| BlockTools.isTrapdoor(sb) || BlockTools.isDispenser(sb))) {
 							return sb;
 						}
@@ -522,7 +510,7 @@ public class LockCore {
 	 * Open Generic PopupScreen and ask for the pincode.
 	 * @param sPlayer
 	 * @param sBlock
-	 * @author Gabriel333 / Rocologo
+	 * @author Gabriel333 / Rocologo / Dockter
 	 */
 	public static void getPincode(SpoutPlayer sPlayer, Block sBlock) {   // y = up/down  x = left/right
 		int y = 88; int height = 15; int width = 50;

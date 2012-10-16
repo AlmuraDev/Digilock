@@ -19,6 +19,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
+import org.bukkit.ChatColor;
 import org.bukkit.block.Dispenser;
 import org.bukkit.block.Furnace;
 import org.bukkit.block.Jukebox;
@@ -58,29 +59,21 @@ public class PlayerListener implements Listener {
 		}
 
 		ItemStack itemInHand = sPlayer.getInventory().getItemInHand();
-		// sPlayer.sendMessage("PlayerListener:"+itemInHand.getTypeId());
 		int id = sPlayer.getEntityId();
 
 		// Call setPincode
 
-		if (sPlayer.isSpoutCraftEnabled()
-				&& BlockTools.isLockable(sBlock)
-				&& Digilock.holdingKey.get(id).equals(Keyboard.KEY_LCONTROL)
-				&& event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
-				&& (Permissions.hasPerm(sPlayer, "create",
-						Permissions.NOT_QUIET) || Permissions.hasPerm(
-								sPlayer, "admin", Permissions.NOT_QUIET))) {
+		if (sPlayer.isSpoutCraftEnabled() && BlockTools.isLockable(sBlock) && Digilock.holdingKey.get(id).equals(Keyboard.KEY_LCONTROL)
+				&& event.getAction().equals(Action.RIGHT_CLICK_BLOCK) && (Permissions.hasPerm(sPlayer, "create", 
+						Permissions.NOT_QUIET) || Permissions.hasPerm(sPlayer, "admin", Permissions.NOT_QUIET))) {
 
 			event.setCancelled(true);
 			if (BlockTools.isLocked(sBlock)) {
 				LockCore lock = BlockTools.loadDigiLock(sBlock);
-				if (lock.isOwner(sPlayer)
-						|| lock.isCoowner(sPlayer)
-						|| Permissions.hasPerm(sPlayer, "admin",
-								Permissions.NOT_QUIET)) {
+				if (lock.isOwner(sPlayer) || lock.isCoowner(sPlayer) || Permissions.hasPerm(sPlayer, "admin", Permissions.NOT_QUIET)) {
 					LockCore.setPincode(sPlayer, sBlock);
 				} else {
-					sPlayer.sendMessage("You are not the owner or coowner");
+					sPlayer.sendMessage(ChatColor.GOLD + "[Digilock]" + ChatColor.WHITE + " - You are not the owner or coowner");
 				}
 			} else {
 				LockCore.setPincode(sPlayer, sBlock);
@@ -94,25 +87,19 @@ public class PlayerListener implements Listener {
 				// HANDLING A LOCKED CHEST AND DOUBLECHEST
 				if (BlockTools.isChest(sBlock)) {					
 					event.setCancelled(true);
-					if ((lock.getPincode().equals("") || lock.getPincode()
-							.equalsIgnoreCase("fingerprint"))
-							&& event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
-							&& Permissions.hasPerm(sPlayer, "use",
-									Permissions.NOT_QUIET)) {
+					if ((lock.getPincode().equals("") || lock.getPincode().equalsIgnoreCase("fingerprint"))
+							&& event.getAction().equals(Action.RIGHT_CLICK_BLOCK) && Permissions.hasPerm(sPlayer, "use", Permissions.NOT_QUIET)) {
 						// OPEN CHEST BY FINGERPRINT / NAME
-						if (lock.isOwner(sPlayer)
-								|| lock.isCoowner(sPlayer)
-								|| lock.isUser(sPlayer)) {
+						if (lock.isOwner(sPlayer) || lock.isCoowner(sPlayer) || lock.isUser(sPlayer)) {
 							if (sBlock.getState() instanceof Chest) {
 								Chest sChest = (Chest) (sBlock.getState());
 								Inventory inv = sChest.getInventory();
-								Messages.sendNotification(sPlayer,
-										"Opened by fingerprint");
+								Messages.sendNotification(sPlayer, "Opened by fingerprint");
 								BlockTools.playDigiLockSound(sBlock);
 								sPlayer.openInventory(inv);																
 							}
 						} else {							
-							sPlayer.sendMessage("Your fingerprint does not match the DigiLock");
+							sPlayer.sendMessage(ChatColor.GOLD + "[Digilock]" + ChatColor.WHITE + " - Access Denied!");
 						}
 
 					} else {						
@@ -123,7 +110,7 @@ public class PlayerListener implements Listener {
 												Permissions.NOT_QUIET)) {
 							LockCore.getPincode(sPlayer, sBlock);
 						} else {
-							sPlayer.sendMessage("Locked with Digilock by " + lock.owner);
+							sPlayer.sendMessage(ChatColor.GOLD + "[Digilock]" + ChatColor.WHITE + " - Locked with Digilock by " + lock.owner);
 						}
 					}
 				}
@@ -131,23 +118,15 @@ public class PlayerListener implements Listener {
 				// HANDLING A LOCKED DOUBLEDOOR
 				else if (BlockTools.isDoubleDoor(sBlock)) {
 					event.setCancelled(true);
-					if (lock.getPincode().equals("")
-							|| lock.getPincode()
-							.equalsIgnoreCase("fingerprint")
-							&& Permissions.hasPerm(sPlayer, "use",
-									Permissions.NOT_QUIET)) {
+					if (lock.getPincode().equals("") || lock.getPincode().equalsIgnoreCase("fingerprint") && Permissions.hasPerm(sPlayer, "use", Permissions.NOT_QUIET)) {
 						// TOGGLE DOOR BY FINGERPRINT / NAME
-						if (lock.isOwner(sPlayer)
-								|| lock.isCoowner(sPlayer)
-								|| lock.isUser(sPlayer)
-								|| Permissions.hasPerm(sPlayer, "admin",
-										Permissions.NOT_QUIET)) {
+						if (lock.isOwner(sPlayer) || lock.isCoowner(sPlayer) || lock.isUser(sPlayer) || Permissions.hasPerm(sPlayer, "admin", Permissions.NOT_QUIET)) {
 							BlockTools.playDigiLockSound(sBlock);
+							
 							BlockTools.changeDoorStates(true, sPlayer, lock.getUseCost(), sBlock, BlockTools.getDoubleDoor(sBlock));
-							Messages.sendNotification(sPlayer,
-									"Used with fingerprint");
+							Messages.sendNotification(sPlayer, "Used with fingerprint");
 						} else {
-							sPlayer.sendMessage("Your fingerprint does not match the DigiLock");
+							sPlayer.sendMessage(ChatColor.GOLD + "[Digilock]" + ChatColor.WHITE + " - Your fingerprint does not match the DigiLock");
 							if (BlockTools.isDoubleDoorOpen(sBlock)) {
 								BlockTools.playDigiLockSound(sBlock);
 								BlockTools.changeDoorStates(true, sPlayer, 0, sBlock, BlockTools.getDoubleDoor(sBlock));
@@ -180,22 +159,16 @@ public class PlayerListener implements Listener {
 							&& Permissions.hasPerm(sPlayer, "use",
 									Permissions.NOT_QUIET)) {
 						// TOGGLE DOOR BY FINGERPRINT / NAME
-						if (lock.isOwner(sPlayer)
-								|| lock.isCoowner(sPlayer)
-								|| lock.isUser(sPlayer)
-								|| Permissions.hasPerm(sPlayer, "admin",
-										Permissions.NOT_QUIET)) {
+						if (lock.isOwner(sPlayer) || lock.isCoowner(sPlayer) || lock.isUser(sPlayer) || Permissions.hasPerm(sPlayer, "admin", Permissions.NOT_QUIET)) {
 							BlockTools.playDigiLockSound(sBlock);
 							if (BlockTools.isDoorOpen(sBlock)) {
 								BlockTools.closeDoor(sPlayer, sBlock, 0);
 							} else {
-								BlockTools.openDoor(sPlayer, sBlock,
-										lock.getUseCost());
+								BlockTools.openDoor(sPlayer, sBlock, lock.getUseCost());
 							}
-							Messages.sendNotification(sPlayer,
-									"Used with fingerprint");
+							Messages.sendNotification(sPlayer,"Used with fingerprint");
 						} else {
-							sPlayer.sendMessage("Your fingerprint does not match the DigiLock");
+							sPlayer.sendMessage(ChatColor.GOLD + "[Digilock]" + ChatColor.WHITE + " - Your fingerprint does not match the DigiLock");
 							if (BlockTools.isDoorOpen(sBlock)) {
 								BlockTools.playDigiLockSound(sBlock);
 								BlockTools.closeDoor(sPlayer, sBlock, 0);
@@ -204,14 +177,10 @@ public class PlayerListener implements Listener {
 					} else {
 						// ASK FOR PINCODE
 						if (!BlockTools.isDoorOpen(sBlock)) {
-							if (sPlayer.isSpoutCraftEnabled()
-									&& Permissions.hasPerm(sPlayer,
-											"use",
-											Permissions.NOT_QUIET)) {
+							if (sPlayer.isSpoutCraftEnabled() && Permissions.hasPerm(sPlayer,	"use", Permissions.NOT_QUIET)) {
 								LockCore.getPincode(sPlayer, sBlock);
 							} else {
-								sPlayer.sendMessage("Digilock'ed by "
-										+ lock.owner);
+								sPlayer.sendMessage(ChatColor.GOLD + "[Digilock]" + ChatColor.WHITE + " - Digilock'ed by "+ lock.owner);
 							}
 						} else {
 							BlockTools.closeDoor(sPlayer, sBlock, 0);
@@ -242,7 +211,7 @@ public class PlayerListener implements Listener {
 							Messages.sendNotification(sPlayer,
 									"Used with fingerprint");
 						} else {
-							sPlayer.sendMessage("Your fingerprint does not match the DigiLock");
+							sPlayer.sendMessage(ChatColor.GOLD + "[Digilock]" + ChatColor.WHITE +  "- Your fingerprint does not match the DigiLock");
 							if (BlockTools.isTrapdoorOpen(sPlayer, sBlock)) {
 								BlockTools.playDigiLockSound(sBlock);
 								BlockTools.closeTrapdoor(sPlayer, sBlock);
@@ -289,7 +258,7 @@ public class PlayerListener implements Listener {
 							Messages.sendNotification(sPlayer,
 									"Used with fingerprint");
 						} else {
-							sPlayer.sendMessage("Your fingerprint does not match the DigiLock");
+							sPlayer.sendMessage(ChatColor.GOLD + "[Digilock]" + ChatColor.WHITE + " - Your fingerprint does not match the DigiLock");
 							if (BlockTools.isFenceGateOpen(sPlayer, sBlock)) {
 								BlockTools.playDigiLockSound(sBlock);
 								BlockTools.closeFenceGate(sPlayer, sBlock);
@@ -299,13 +268,10 @@ public class PlayerListener implements Listener {
 						// ASK FOR PINCODE
 						if (!BlockTools.isFenceGateOpen(sPlayer, sBlock)) {
 							if (sPlayer.isSpoutCraftEnabled()
-									&& Permissions.hasPerm(sPlayer,
-											"use",
-											Permissions.NOT_QUIET)) {
+									&& Permissions.hasPerm(sPlayer,	"use", Permissions.NOT_QUIET)) {
 								LockCore.getPincode(sPlayer, sBlock);
 							} else {
-								sPlayer.sendMessage("Digilock'ed by "
-										+ lock.owner);
+								sPlayer.sendMessage(ChatColor.GOLD + "[Digilock]" + ChatColor.WHITE + " - Digilock'ed by "+ lock.owner);
 							}
 						} else {
 							BlockTools.closeFenceGate(sPlayer, sBlock);
@@ -322,66 +288,48 @@ public class PlayerListener implements Listener {
 							&& Permissions.hasPerm(sPlayer, "use",
 									Permissions.NOT_QUIET)) {
 						// USE DISPENSER BY FINGERPRINT (playername)
-						if (lock.isOwner(sPlayer)
-								|| lock.isCoowner(sPlayer)
-								|| lock.isUser(sPlayer)) {
-							Messages.sendNotification(sPlayer,
-									"Opened with fingerprint");
+						if (lock.isOwner(sPlayer) || lock.isCoowner(sPlayer) || lock.isUser(sPlayer)) {
+							Messages.sendNotification(sPlayer, "Opened with fingerprint");
 							BlockTools.playDigiLockSound(lock.getBlock());
 							Dispenser dispenser = (Dispenser) sBlock.getState();
 							Inventory inv = dispenser.getInventory();
 							sPlayer.openInventory(inv);
 						} else {
 							event.setCancelled(true);
-							sPlayer.sendMessage("Your fingerprint does not match the DigiLock");
+							sPlayer.sendMessage(ChatColor.GOLD + "[Digilock]" + ChatColor.WHITE + " - Your fingerprint does not match the DigiLock");
 						}
 					} else {
 						event.setCancelled(true);
 						if (sPlayer.isSpoutCraftEnabled()
-								&& event.getAction().equals(
-										Action.RIGHT_CLICK_BLOCK)
-										&& Permissions.hasPerm(sPlayer, "use",
-												Permissions.NOT_QUIET)) {
+								&& event.getAction().equals(Action.RIGHT_CLICK_BLOCK) && Permissions.hasPerm(sPlayer, "use", Permissions.NOT_QUIET)) {
 							LockCore.getPincode(sPlayer, sBlock);
 						} else {
-							sPlayer.sendMessage("Digilock'ed by "
-									+ lock.owner);
+							sPlayer.sendMessage(ChatColor.GOLD + "[Digilock]" + ChatColor.WHITE + " - Digilock'ed by "+ lock.owner);
 						}
 					}
 				}
 
 				// HANDLING FURNACE
 				else if (sBlock.getType().equals(Material.FURNACE)) {
-					if ((lock.getPincode().equals("") || lock.getPincode()
-							.equalsIgnoreCase("fingerprint")
-							&& Permissions.hasPerm(sPlayer, "use",
-									Permissions.NOT_QUIET))
-									&& event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+					if ((lock.getPincode().equals("") || lock.getPincode().equalsIgnoreCase("fingerprint") && Permissions.hasPerm(sPlayer, "use", 
+							Permissions.NOT_QUIET)) && event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
 						// USE FURNACE BY FINGERPRINT (playername)
-						if (lock.isOwner(sPlayer)
-								|| lock.isCoowner(sPlayer)
-								|| lock.isUser(sPlayer)) {
-							Messages.sendNotification(sPlayer,
-									"Used with fingerprint");
+						if (lock.isOwner(sPlayer) || lock.isCoowner(sPlayer) || lock.isUser(sPlayer)) {
+							Messages.sendNotification(sPlayer, "Used with fingerprint");
 							BlockTools.playDigiLockSound(lock.getBlock());
 							Furnace furnace = (Furnace) sBlock.getState();
 							Inventory inv = furnace.getInventory();
 							sPlayer.openInventory(inv);
 						} else {
 							event.setCancelled(true);
-							sPlayer.sendMessage("Your fingerprint does not match the DigiLock");
+							sPlayer.sendMessage(ChatColor.GOLD + "[Digilock]" + ChatColor.WHITE + " - Your fingerprint does not match the DigiLock");
 						}
 					} else {
 						event.setCancelled(true);
-						if (sPlayer.isSpoutCraftEnabled()
-								&& event.getAction().equals(
-										Action.RIGHT_CLICK_BLOCK)
-										&& Permissions.hasPerm(sPlayer, "use",
-												Permissions.NOT_QUIET)) {
+						if (sPlayer.isSpoutCraftEnabled() && event.getAction().equals(Action.RIGHT_CLICK_BLOCK) && Permissions.hasPerm(sPlayer, "use", Permissions.NOT_QUIET)) {
 							LockCore.getPincode(sPlayer, sBlock);
 						} else {
-							sPlayer.sendMessage("Digilock'ed by "
-									+ lock.owner);
+							sPlayer.sendMessage(ChatColor.GOLD + "[Digilock]" + ChatColor.WHITE + " - Digilock'ed by "+ lock.owner);
 						}
 					}
 				}
@@ -389,50 +337,37 @@ public class PlayerListener implements Listener {
 				// HANDLING LEVER
 				else if (sBlock.getType().equals(Material.LEVER)) {
 					Lever lever = (Lever) sBlock.getState().getData();
-					Block nextLockableBlock = lock.getNextLockableBlock(
-							sPlayer, sBlock);
-					if (lock.getPincode().equals("")
-							|| lock.getPincode()
-							.equalsIgnoreCase("fingerprint")
-							&& Permissions.hasPerm(sPlayer, "use",
-									Permissions.NOT_QUIET)) {
+					Block nextLockableBlock = lock.getNextLockableBlock(sPlayer, sBlock);
+					if (lock.getPincode().equals("") || lock.getPincode().equalsIgnoreCase("fingerprint")&& Permissions.hasPerm(sPlayer, "use",	Permissions.NOT_QUIET)) {
 						// USE LEVER BY FINGERPRINT
-						if (lock.isOwner(sPlayer)
-								|| lock.isCoowner(sPlayer)
-								|| lock.isUser(sPlayer)) {
+						if (lock.isOwner(sPlayer) || lock.isCoowner(sPlayer) || lock.isUser(sPlayer)) {
 							if (nextLockableBlock != null) {
 								if (BlockTools.isLocked(nextLockableBlock)) {
-									Messages.sendNotification(sPlayer,
-											"Used with fingerprint");
+									Messages.sendNotification(sPlayer,"Used with fingerprint");
 									BlockTools.playDigiLockSound(sBlock);
 									if (lever.isPowered()) {
 										BlockTools.leverOff(sPlayer, sBlock);
 									} else {
-										BlockTools.leverOn(sPlayer, sBlock,
-												lock.getUseCost());
+										BlockTools.leverOn(sPlayer, sBlock,	lock.getUseCost());
 									}
 									BlockTools.playDigiLockSound(sBlock);
 								} else {
-									sPlayer.sendMessage("The connected block "
-											+ nextLockableBlock.getType()
-											+ " is not locked. Please lock it.");
+									sPlayer.sendMessage(ChatColor.GOLD + "[Digilock]" + ChatColor.WHITE + " - The connected block " + nextLockableBlock.getType() + " is not locked. Please lock it.");
 									if (BlockTools.isDoubleDoor(nextLockableBlock)) {
 										BlockTools.changeDoorStates(true, sPlayer, 0, nextLockableBlock, BlockTools.getDoubleDoor(nextLockableBlock));
 									} else if (BlockTools.isDoor(nextLockableBlock)) {
-										BlockTools.closeDoor(sPlayer,
-												nextLockableBlock, 0);
+										BlockTools.closeDoor(sPlayer, nextLockableBlock, 0);
 									} else if (BlockTools.isTrapdoor(nextLockableBlock)) {
-										BlockTools.closeTrapdoor(sPlayer,
-												nextLockableBlock);
+										BlockTools.closeTrapdoor(sPlayer, nextLockableBlock);
 									}
 									BlockTools.leverOff(sPlayer, sBlock);
 									event.setCancelled(true);
 								}
 							} else {
-								sPlayer.sendMessage("The lever is not connected to anything.");
+								sPlayer.sendMessage(ChatColor.GOLD + "[Digilock]" + ChatColor.WHITE + " - The lever is not connected to anything.");
 							}
 						} else {
-							sPlayer.sendMessage("Your fingerprint does not match the DigiLock");
+							sPlayer.sendMessage(ChatColor.GOLD + "[Digilock]" + ChatColor.WHITE + " - Your fingerprint does not match the DigiLock");
 							event.setCancelled(true);
 							BlockTools.leverOff(sPlayer, sBlock);
 						}
@@ -440,89 +375,68 @@ public class PlayerListener implements Listener {
 						if (nextLockableBlock != null) {
 							if (BlockTools.isLocked(nextLockableBlock)) {
 								if (!BlockTools.isLeverOn(sBlock)) {
-									if (sPlayer.isSpoutCraftEnabled()
-											&& Permissions.hasPerm(sPlayer,
-													"use",
-													Permissions.NOT_QUIET)) {
+									if (sPlayer.isSpoutCraftEnabled()&& Permissions.hasPerm(sPlayer, "use",	Permissions.NOT_QUIET)) {
 										LockCore.getPincode(sPlayer, sBlock);
 									} else {
-										sPlayer.sendMessage("Digilock'ed by "
-												+ lock.owner);
+										sPlayer.sendMessage(ChatColor.GOLD + "[Digilock]" + ChatColor.WHITE + " - Digilock'ed by "+ lock.owner);
 										event.setCancelled(true);
 									}
 								} else {
 									if (BlockTools.isDoubleDoor(nextLockableBlock)) {
 										BlockTools.changeDoorStates(true, sPlayer, 0, nextLockableBlock, BlockTools.getDoubleDoor(nextLockableBlock));
 									} else if (BlockTools.isDoor(nextLockableBlock)) {
-										BlockTools.closeDoor(sPlayer,
-												nextLockableBlock, 0);
+										BlockTools.closeDoor(sPlayer, nextLockableBlock, 0);
 									} else if (BlockTools.isTrapdoor(nextLockableBlock)) {
-										BlockTools.closeTrapdoor(sPlayer,
-												nextLockableBlock);
+										BlockTools.closeTrapdoor(sPlayer,nextLockableBlock);
 									}
 									BlockTools.leverOff(sPlayer, sBlock);
 								}
 							} else {
-								sPlayer.sendMessage("The connected block "
-										+ nextLockableBlock.getType()
-										+ " is not locked. Please lock it.");
+								sPlayer.sendMessage(ChatColor.GOLD + "[Digilock]" + ChatColor.WHITE + " - The connected block " + nextLockableBlock.getType()+ " is not locked. Please lock it.");
 								if (BlockTools.isDoubleDoor(nextLockableBlock)) {
 									BlockTools.changeDoorStates(true, sPlayer, 0, sBlock, BlockTools.getDoubleDoor(sBlock));
 								} else if (BlockTools.isDoor(nextLockableBlock)) {
-									BlockTools.closeDoor(sPlayer,
-											nextLockableBlock, 0);
+									BlockTools.closeDoor(sPlayer, nextLockableBlock, 0);
 								} else if (BlockTools.isTrapdoor(nextLockableBlock)) {
-									BlockTools.closeTrapdoor(sPlayer,
-											nextLockableBlock);
+									BlockTools.closeTrapdoor(sPlayer, nextLockableBlock);
 								}
 								BlockTools.leverOff(sPlayer, sBlock);
 								event.setCancelled(true);
 							}
 						} else {
-							sPlayer.sendMessage("The lever is not connected to anything.");
+							sPlayer.sendMessage(ChatColor.GOLD + "[Digilock]" + ChatColor.WHITE + " - The lever is not connected to anything.");
 						}
 					}
 				}
 
 				// HANDLING STONE_BUTTON
 				else if (sBlock.getType().equals(Material.STONE_BUTTON)) {
-					if (lock.getPincode().equals("")
-							|| lock.getPincode()
-							.equalsIgnoreCase("fingerprint")
-							&& Permissions.hasPerm(sPlayer, "use",
-									Permissions.NOT_QUIET)) {
+					if (lock.getPincode().equals("") || lock.getPincode().equalsIgnoreCase("fingerprint") && Permissions.hasPerm(sPlayer, "use", Permissions.NOT_QUIET)) {
 						// PRESS STONE_BUTTON BY FINGERPRINT
 						// (playername)
 						Button button = (Button) sBlock.getState().getData();
-						if (lock.isOwner(sPlayer)
-								|| lock.isCoowner(sPlayer)
-								|| lock.isUser(sPlayer)) {
-							Messages.sendNotification(sPlayer,
-									"Used with fingerprint");
+						if (lock.isOwner(sPlayer) || lock.isCoowner(sPlayer) || lock.isUser(sPlayer)) {
+							Messages.sendNotification(sPlayer, "Used with fingerprint");
 							BlockTools.playDigiLockSound(sBlock);
 							if (!button.isPowered()) {
-								BlockTools.pressButtonOn(sPlayer, sBlock,
-										lock.getUseCost());
+								BlockTools.pressButtonOn(sPlayer, sBlock, lock.getUseCost());
 							}
 						} else {
 							event.setCancelled(true);
-							sPlayer.sendMessage("Your fingerprint does not match the DigiLock");
+							sPlayer.sendMessage(ChatColor.GOLD + "[Digilock]" + ChatColor.WHITE + " - Your fingerprint does not match the DigiLock");
 						}
 					} else {
+						//TODO:  Whats suppose to happen here?
 						event.setCancelled(true);
-						if (sPlayer.isSpoutCraftEnabled()
-								&& Permissions.hasPerm(sPlayer, "use",
-										Permissions.NOT_QUIET)) {
+						if (sPlayer.isSpoutCraftEnabled() && Permissions.hasPerm(sPlayer, "use", Permissions.NOT_QUIET)) {
 							LockCore.getPincode(sPlayer, sBlock);
-							if (lock.getPincode().equals(
-									LockCore.pincodeGUI.get(id).getText())) {
+							if (lock.getPincode().equals(LockCore.pincodeGUI.get(id).getText())) {
 								// okay - go on
 							} else {
 								// event.setCancelled(true);
 							}
 						} else {
-							sPlayer.sendMessage("Digilock'ed by "
-									+ lock.owner);
+							sPlayer.sendMessage(ChatColor.GOLD + "[Digilock]" + ChatColor.WHITE + " - Digilock'ed by "+ lock.owner);
 							// event.setCancelled(true);
 						}
 					}
@@ -530,22 +444,13 @@ public class PlayerListener implements Listener {
 
 				// HANDLING SIGN and SIGN_POST
 				else if (BlockTools.isSign(sBlock)) {
-					if ((lock.getPincode().equals("") || lock.getPincode()
-							.equalsIgnoreCase("fingerprint"))
-							&& event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
-							&& Permissions.hasPerm(sPlayer, "use",
-									Permissions.NOT_QUIET)) {
+					if ((lock.getPincode().equals("") || lock.getPincode().equalsIgnoreCase("fingerprint"))	&& event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
+							&& Permissions.hasPerm(sPlayer, "use", Permissions.NOT_QUIET)) {
 						// USE SIGN BY FINGERPRINT (playername)
-						if (lock.isOwner(sPlayer)
-								|| lock.isCoowner(sPlayer)
-								|| lock.isUser(sPlayer)) {
-							Messages.sendNotification(sPlayer,
-									"Used with fingerprint");
-							if (sPlayer.isSpoutCraftEnabled()
-									&& Digilock.getConf().useSignGUI()
-									&& Digilock.holdingKey.get(id).equals(Keyboard.KEY_LSHIFT)
-									&& Permissions.hasPerm(sPlayer, "signedit",
-											Permissions.NOT_QUIET)) {
+						if (lock.isOwner(sPlayer) || lock.isCoowner(sPlayer) || lock.isUser(sPlayer)) {
+							Messages.sendNotification(sPlayer, "Used with fingerprint");
+							if (sPlayer.isSpoutCraftEnabled() && Digilock.getConf().useSignGUI() && Digilock.holdingKey.get(id).equals(Keyboard.KEY_LSHIFT)
+									&& Permissions.hasPerm(sPlayer, "signedit",	Permissions.NOT_QUIET)) {
 								Sign sign = (Sign) sBlock.getState();
 								if (Digilock.getHooks().isResidencyAvailable()) {
 									ClaimedResidence res = Residence.getResidenceManager().getByLoc(sBlock.getLocation());
@@ -556,7 +461,7 @@ public class PlayerListener implements Listener {
 									if (canBuild) {
 										sPlayer.openSignEditGUI(sign);
 									} else {
-										sPlayer.sendMessage("Residence is currently restricting your Sign Editing Abilities.");
+										sPlayer.sendMessage(ChatColor.GOLD + "[Digilock]" + ChatColor.WHITE + " - Residence is currently restricting your Sign Editing Abilities.");
 									}
 								} else {
 									sPlayer.openSignEditGUI(sign);
@@ -564,14 +469,10 @@ public class PlayerListener implements Listener {
 							}
 						} else {
 							event.setCancelled(true);
-							sPlayer.sendMessage("Your fingerprint does not match the DigiLock");
+							sPlayer.sendMessage(ChatColor.GOLD + "[Digilock]" + ChatColor.WHITE + " - Your fingerprint does not match the DigiLock");
 						}
 					} else {
-						if (sPlayer.isSpoutCraftEnabled()
-								&& event.getAction().equals(
-										Action.RIGHT_CLICK_BLOCK)
-										&& Permissions.hasPerm(sPlayer, "use",
-												Permissions.NOT_QUIET)) {
+						if (sPlayer.isSpoutCraftEnabled() && event.getAction().equals(Action.RIGHT_CLICK_BLOCK) && Permissions.hasPerm(sPlayer, "use", Permissions.NOT_QUIET)) {
 							LockCore.getPincode(sPlayer, sBlock);
 							if (lock.getPincode().equals(
 									LockCore.pincodeGUI.get(id).getText())) {
@@ -581,8 +482,7 @@ public class PlayerListener implements Listener {
 								event.setCancelled(true);
 							}
 						} else {
-							sPlayer.sendMessage("Digilock'ed by "
-									+ lock.owner);
+							sPlayer.sendMessage(ChatColor.GOLD + "[Digilock]" + ChatColor.WHITE + " - Digilock'ed by "+ lock.owner);
 							event.setCancelled(true);
 						}
 					}
@@ -590,122 +490,81 @@ public class PlayerListener implements Listener {
 
 				// BOOKSHELF
 				else if ((sBlock.getType().equals(Material.BOOKSHELF))) {
-					if ((lock.getPincode().equals("") || lock.getPincode()
-							.equalsIgnoreCase("fingerprint"))
-							&& event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
-							&& Permissions.hasPerm(sPlayer, "use",
-									Permissions.NOT_QUIET)
-									&& Permissions.hasPerm(sPlayer, "bookshelf.use",
-											Permissions.NOT_QUIET)) {
+					if ((lock.getPincode().equals("") || lock.getPincode().equalsIgnoreCase("fingerprint"))	&& event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
+							&& Permissions.hasPerm(sPlayer, "use", Permissions.NOT_QUIET) && Permissions.hasPerm(sPlayer, "bookshelf.use", Permissions.NOT_QUIET)) {
 						// USE SIGN BY FINGERPRINT (playername)
-						if (lock.isOwner(sPlayer)
-								|| lock.isCoowner(sPlayer)
-								|| lock.isUser(sPlayer)) {
-							Messages.sendNotification(sPlayer,
-									"Used with fingerprint");
-							LockInventory bitInventory = LockInventory
-									.loadBitInventory(sPlayer, sBlock);
+						if (lock.isOwner(sPlayer) || lock.isCoowner(sPlayer) || lock.isUser(sPlayer)) {
+							Messages.sendNotification(sPlayer, "Used with fingerprint");
+							LockInventory bitInventory = LockInventory.loadBitInventory(sPlayer, sBlock);
 							bitInventory.openBitInventory(sPlayer, bitInventory);
 						} else {
-							sPlayer.sendMessage("Your fingerprint does not match the DigiLock");
+							sPlayer.sendMessage(ChatColor.GOLD + "[Digilock]" + ChatColor.WHITE + " - Your fingerprint does not match the DigiLock");
 						}
 					} else {
-						if (sPlayer.isSpoutCraftEnabled()
-								&& event.getAction().equals(
-										Action.RIGHT_CLICK_BLOCK)
-										&& Permissions.hasPerm(sPlayer, "use",
-												Permissions.NOT_QUIET)) {
+						if (sPlayer.isSpoutCraftEnabled() && event.getAction().equals(Action.RIGHT_CLICK_BLOCK) && Permissions.hasPerm(sPlayer, "use", Permissions.NOT_QUIET)) {
 							LockCore.getPincode(sPlayer, sBlock);
-							if (lock.getPincode().equals(
-									LockCore.pincodeGUI.get(id).getText())) {
+							if (lock.getPincode().equals(LockCore.pincodeGUI.get(id).getText())) {
 								// okay - go on
 							}
 						} else {
-							sPlayer.sendMessage("Digilock'ed by "
-									+ lock.owner);
-
+							sPlayer.sendMessage(ChatColor.GOLD + "[Digilock]" + ChatColor.WHITE + " - Digilock'ed by "+ lock.owner);
 							event.setCancelled(true);
 						}
 					}
 					// JUKEBOX
 				} else if ((BlockTools.isJukebox(sBlock))) {
-					if ((lock.getPincode().equals("") || lock.getPincode()
-							.equalsIgnoreCase("fingerprint"))
-							&& event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
-							&& Permissions.hasPerm(sPlayer, "use",
-									Permissions.NOT_QUIET)) {
+					if ((lock.getPincode().equals("") || lock.getPincode().equalsIgnoreCase("fingerprint")) && event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
+							&& Permissions.hasPerm(sPlayer, "use", Permissions.NOT_QUIET)) {
 						// USE SIGN BY FINGERPRINT (playername)
-						if (lock.isOwner(sPlayer)
-								|| lock.isCoowner(sPlayer)
-								|| lock.isUser(sPlayer)) {
-							Messages.sendNotification(sPlayer,
-									"Used with fingerprint");
-							// BITInventory bitInventory = BITInventory
-							// .loadBitInventory(sPlayer, sBlock);
-							// bitInventory.openBitInventory(sPlayer, bitInventory);
+						if (lock.isOwner(sPlayer) || lock.isCoowner(sPlayer) || lock.isUser(sPlayer)) {
+							Messages.sendNotification(sPlayer, "Used with fingerprint");
+							// TODO: Something Special here?
+
 						} else {
-							sPlayer.sendMessage("Your fingerprint does not match the DigiLock");
+							sPlayer.sendMessage(ChatColor.GOLD + "[Digilock]" + ChatColor.WHITE + " - Your fingerprint does not match the DigiLock");
 						}
 					} else {
 						event.setCancelled(true);
 						Jukebox jukebox = (Jukebox) sBlock.getState();
-						if (sPlayer.isSpoutCraftEnabled()
-								&& event.getAction().equals(
-										Action.RIGHT_CLICK_BLOCK)
-										&& Permissions.hasPerm(sPlayer, "use",
-												Permissions.NOT_QUIET)
-												&& ((itemInHand.getTypeId() >= 2256 && itemInHand
-												.getTypeId() <= 2266) || jukebox
-												.isPlaying())) {
+						if (sPlayer.isSpoutCraftEnabled() && event.getAction().equals(Action.RIGHT_CLICK_BLOCK)	&& Permissions.hasPerm(sPlayer, "use",
+								Permissions.NOT_QUIET) && ((itemInHand.getTypeId() >= 2256 && itemInHand.getTypeId() <= 2266) || jukebox.isPlaying())) {
 							LockCore.getPincode(sPlayer, sBlock);
 							if (lock.getPincode().equals(
 									LockCore.pincodeGUI.get(id).getText())) {
 								// okay - go on
 							}
 						} else {
-							sPlayer.sendMessage("Digilock'ed by "
-									+ lock.owner);
+							sPlayer.sendMessage(ChatColor.GOLD + "[Digilock]" + ChatColor.WHITE + " - Digilock'ed by "+ lock.owner);
 						}
 					}
 				}
 
 				// BREWING_STAND
 				else if (sBlock.getType().equals(Material.BREWING_STAND)) {
-					if ((lock.getPincode().equals("") || lock.getPincode()
-							.equalsIgnoreCase("fingerprint")
-							&& Permissions.hasPerm(sPlayer, "use",
-									Permissions.NOT_QUIET))
-									&& event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+					if ((lock.getPincode().equals("") || lock.getPincode().equalsIgnoreCase("fingerprint")
+							&& Permissions.hasPerm(sPlayer, "use", Permissions.NOT_QUIET)) && event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
 						// USE BREWING STAND BY FINGERPRINT (playername)
-						if (lock.isOwner(sPlayer)
-								|| lock.isCoowner(sPlayer)
-								|| lock.isUser(sPlayer)) {
-							Messages.sendNotification(sPlayer,
-									"Used with fingerprint");
+						if (lock.isOwner(sPlayer) || lock.isCoowner(sPlayer) || lock.isUser(sPlayer)) {
+							Messages.sendNotification(sPlayer, "Used with fingerprint");
 							BlockTools.playDigiLockSound(lock.getBlock());
 						} else {
 							event.setCancelled(true);
-							sPlayer.sendMessage("Your fingerprint does not match the DigiLock");
+							sPlayer.sendMessage(ChatColor.GOLD + "[Digilock]" + ChatColor.WHITE + " - Your fingerprint does not match the DigiLock");
 						}
 					} else {
 						event.setCancelled(true);
-						if (sPlayer.isSpoutCraftEnabled()
-								&& event.getAction().equals(
-										Action.RIGHT_CLICK_BLOCK)
-										&& Permissions.hasPerm(sPlayer, "use",
-												Permissions.NOT_QUIET)) {
+						if (sPlayer.isSpoutCraftEnabled()&& event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
+										&& Permissions.hasPerm(sPlayer, "use", Permissions.NOT_QUIET)) {
 							LockCore.getPincode(sPlayer, sBlock);
-							sPlayer.sendMessage("Locking brewing stand with pincode is not suported yet!");
+							sPlayer.sendMessage(ChatColor.GOLD + "[Digilock]" + ChatColor.WHITE + " - Locking brewing stand with pincode is not suported yet!");
 							//BlockBrewingStand bs = (BlockBrewingStand) lock.getBlock();
 							//TODO: open brewing stand / inventory.
 						} else {
-							sPlayer.sendMessage("Digilock'ed by "
-									+ lock.owner);
+							sPlayer.sendMessage(ChatColor.GOLD + "[Digilock]" + ChatColor.WHITE + " - Digilock'ed by "+ lock.owner);
 						}
 					}
 				} else {
-					sPlayer.sendMessage("ERROR: PlayerListener. Cant handle block:"
-							+ sBlock.getType());
+					sPlayer.sendMessage(ChatColor.GOLD + "[Digilock]" + ChatColor.WHITE + " - ERROR: PlayerListener. Cant handle block:" + sBlock.getType());
 				}
 
 				// ELSE - IT WAS NOT A LOCKED BLOCK
@@ -752,12 +611,8 @@ public class PlayerListener implements Listener {
 
 				// HANDLING SIGN and SIGN_POST
 				else if (BlockTools.isSign(sBlock)) {
-					if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
-							&& Digilock.getConf().useSignGUI()
-							&& Digilock.holdingKey.get(id).equals(Keyboard.KEY_LSHIFT)
-							&& Permissions.hasPerm(sPlayer,
-									"signedit",
-									Permissions.NOT_QUIET)) {
+					if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK) && Digilock.getConf().useSignGUI() && Digilock.holdingKey.get(id).equals(Keyboard.KEY_LSHIFT) 
+						&& Permissions.hasPerm(sPlayer,	"signedit",	Permissions.NOT_QUIET)) {
 						Sign sign = (Sign) sBlock.getState();
 						if (Digilock.getHooks().isResidencyAvailable()) {
 							ClaimedResidence res = Residence.getResidenceManager().getByLoc(sBlock.getLocation());
@@ -768,7 +623,7 @@ public class PlayerListener implements Listener {
 							if (canBuild) {
 								sPlayer.openSignEditGUI(sign);
 							} else {
-								sPlayer.sendMessage("Residence is currently restricting your Sign Editing Abilities.");
+								sPlayer.sendMessage(ChatColor.GOLD + "[Digilock]" + ChatColor.WHITE + " - Residence is currently restricting your Sign Editing Abilities.");
 							}
 						} else {
 							sPlayer.openSignEditGUI(sign);

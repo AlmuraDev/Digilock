@@ -7,6 +7,7 @@ import com.almuramc.digilock.util.Messages;
 import com.almuramc.digilock.util.Permissions;
 
 import org.bukkit.block.Block;
+import org.bukkit.ChatColor;
 import org.getspout.spoutapi.block.SpoutBlock;
 import org.getspout.spoutapi.event.input.KeyBindingEvent;
 import org.getspout.spoutapi.gui.ScreenType;
@@ -43,8 +44,7 @@ public class KeyHandler implements BindingExecutionDelegate {
 		// GAME_SCREEN
 		else if (BlockTools.isLockable(targetblock)) {
 			if (screentype == ScreenType.GAME_SCREEN) {
-				if ((Permissions.hasPerm(sPlayer, "create",
-						Permissions.QUIET) || Permissions.hasPerm(sPlayer, "admin", Permissions.QUIET))) {
+				if ((Permissions.hasPerm(sPlayer, "create",	Permissions.QUIET) || Permissions.hasPerm(sPlayer, "admin", Permissions.QUIET))) {
 					if (BlockTools.isLocked(targetblock)) {
 						LockCore lock = BlockTools.loadDigiLock(targetblock);
 						if (BlockTools.isDoubleDoor(targetblock)) {
@@ -76,6 +76,9 @@ public class KeyHandler implements BindingExecutionDelegate {
 						}
 					}
 				}
+			} else {
+				System.out.println("DIGILOCK ERROR: Invalid Screentype.  Current Screen: " + screentype);
+				sPlayer.sendMessage(ChatColor.GOLD + "[DigiLock]" + ChatColor.WHITE + "Invalid Screen Type detected, screen type: "+ screentype + "Please Report to Developer.");
 			}
 		}
 	}
