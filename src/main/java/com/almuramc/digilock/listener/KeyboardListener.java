@@ -14,15 +14,18 @@ import org.bukkit.event.Listener;
 
 public class KeyboardListener implements Listener {
 	@EventHandler
-	public void onKeyPressedEvent(KeyPressedEvent event) {
-		if (event.getKey().equals(Keyboard.MOUSE_LEFT)) {
+	public void onKeyPressedEvent(KeyPressedEvent event) {		
+		if (event.getKey().equals(Keyboard.MOUSE_LEFT) || event.getKey().equals(Keyboard.MOUSE_RIGHT)) {			
 			return;
 		}
 		Digilock.holdingKey.put(event.getPlayer().getEntityId(), event.getKey());	
 	}
 
 	@EventHandler
-	public void onKeyReleasedEvent(KeyReleasedEvent event) {
+	public void onKeyReleasedEvent(KeyReleasedEvent event) {		
+		if (event.getKey().equals(Keyboard.MOUSE_LEFT) || event.getKey().equals(Keyboard.MOUSE_RIGHT)) {			
+			return;
+		}
 		Digilock.holdingKey.put(event.getPlayer().getEntityId(), Keyboard.CHAR_NONE);
 	}
 }
