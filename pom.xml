@@ -7,9 +7,10 @@
     <packaging>jar</packaging>
     <name>Digilock</name>
     <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <bukkitVersion>1.3.2-R1.0</bukkitVersion>
-        <buildNumber>Unknown</buildNumber>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <bukkitVersion>1.3.2-R1.0</bukkitVersion>
+    <spoutVersion>1.3.2-R1.0-SNAPSHOT</spoutVersion>
+    <buildNumber>Unknown</buildNumber>
     </properties>
     <dependencies>
         <dependency>
@@ -20,7 +21,7 @@
         <dependency>
             <groupId>org.getspout</groupId>
             <artifactId>spoutplugin</artifactId>
-            <version>1.3.2-R1.0-snapshot</version>
+            <version>1.3.2-R1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>net.milkbowl</groupId>
@@ -70,21 +71,23 @@
         </dependency>
     </dependencies>
 
-    <repositories>
+    <repositories>       
         <repository>
             <id>spout-repo</id>
-            <url>http://repo.spout.org/</url>
-        </repository>
-        <repository>
-            <id>bukkit-repo</id>
-            <url>http://repo.bukkit.org/artifactory/repo</url>
+            <url>http://repo.spout.org</url>
         </repository>
         <repository>
             <id>zml repo</id>
             <url>http://files.zachsthings.com/repo/</url>
-        </repository>       
+        </repository>  
     </repositories>
-    <build>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>spout-plugins</id>
+            <url>http://repo.spout.org</url>
+        </pluginRepository>
+    </pluginRepositories>
+     <build>
         <defaultGoal>clean install</defaultGoal>
         <!-- Resources -->
         <resources>

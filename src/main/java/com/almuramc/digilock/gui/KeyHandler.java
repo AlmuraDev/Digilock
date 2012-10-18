@@ -32,7 +32,7 @@ public class KeyHandler implements BindingExecutionDelegate {
 	public void keyReleased(KeyBindingEvent event) {
 		SpoutPlayer sPlayer = event.getPlayer();
 		ScreenType screentype = event.getScreenType();
-		if (screentype == ScreenType.CUSTOM_SCREEN  || screentype == ScreenType.CHAT_SCREEN) {
+		if (screentype != ScreenType.GAME_SCREEN) {
 			return;
 		}
 		Block targetblock = (Block) sPlayer.getTargetBlock(null, 4);
